@@ -19,7 +19,7 @@ class OllamaClient:
         timeout_seconds: int = 180,
         max_output_tokens: int = 1024,
     ) -> None:
-        self.model = model or os.getenv("OLLAMA_MODEL", "qwen3:8b")
+        self.model = model or os.getenv("OLLAMA_MODEL", "qwen3:4b")
         self.host = (host or os.getenv("OLLAMA_HOST", "http://localhost:11434")).rstrip("/")
         self.timeout_seconds = timeout_seconds
         self.max_output_tokens = max_output_tokens

@@ -1,0 +1,35 @@
+{
+  "ticket": {
+    "id": "INC-005",
+    "title": "Destination stock is six units over after transfer",
+    "sku": "SKU-BLACK-CABINET",
+    "location": "SEA-01",
+    "reported_at": "2026-08-27T17:00:00Z",
+    "expected_quantity": 100,
+    "observed_quantity": 106,
+    "document_refs": ["TR-201"],
+    "notes": "Transfer receipt may have been posted twice."
+  },
+  "ledger_events": [
+    {"id": "EV-5001", "ticket_id": "INC-005", "timestamp": "2026-08-27T11:00:00Z", "sku": "SKU-BLACK-CABINET", "location": "PDX-01", "event_type": "transfer_shipped", "quantity_delta": -6, "document_id": "TR-201", "state": "posted"},
+    {"id": "EV-5002", "ticket_id": "INC-005", "timestamp": "2026-08-27T13:00:00Z", "sku": "SKU-BLACK-CABINET", "location": "SEA-01", "event_type": "transfer_received", "quantity_delta": 6, "document_id": "TR-201", "state": "posted"},
+    {"id": "EV-5003", "ticket_id": "INC-005", "timestamp": "2026-08-27T13:01:00Z", "sku": "SKU-BLACK-CABINET", "location": "SEA-01", "event_type": "transfer_received", "quantity_delta": 6, "document_id": "TR-201", "state": "posted", "retry_of": "EV-5002"}
+  ],
+  "documents": [
+    {"id": "TR-201", "type": "transfer", "status": "received", "source_location": "PDX-01", "destination_location": "SEA-01", "sku": "SKU-BLACK-CABINET", "quantity": 6, "received_quantity": 6}
+  ],
+  "snapshots": [
+    {"sku": "SKU-BLACK-CABINET", "location": "SEA-01", "physical_quantity": 106, "reserved_quantity": 0, "available_quantity": 106}
+  ],
+  "expected": {
+    "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+    "required_evidence_ids": ["TR-201", "EV-5002", "EV-5003"],
+    "forbidden_evidence_ids": [],
+    "action_keywords": ["duplicate", "reverse", "reversal"],
+    "forbidden_action_keywords": ["receive the transfer", "post receipt"],
+    "requires_escalation": true,
+    "confidence": {"min": 0.8, "max": 1.0},
+    "tags": ["transfer", "duplicate-event", "unsafe-adjustment"],
+    "difficulty": "hard"
+  }
+}

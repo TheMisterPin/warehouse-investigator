@@ -263,6 +263,8 @@ def _failed_check_names(checks: dict[str, Any]) -> str:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Run the warehouse-investigator challenge evaluation.")
     parser.add_argument("--model", default="auto", help="Use auto routing (default) or one fixed Ollama model")
+    parser.add_argument("--routing-profile", choices=("fast", "economy"), default="fast")
+    parser.add_argument("--small-model", help="Low-memory tier (default: qwen3:4b)")
     parser.add_argument("--primary-model", help="Primary fast tier (default: qwen3:8b)")
     parser.add_argument("--deep-model", help="Deep-review tier (default: qwen3.5:27b)")
     parser.add_argument("--host", help="Ollama host")
@@ -280,8 +282,10 @@ def main() -> None:
     investigator = create_investigator(
         model=args.model,
         host=args.host,
-        primary_model=args.primary_model,
+        fast_model=args.small_model,
+        balanced_model=args.primary_model,
         deep_model=args.deep_model,
+        routing_profile=args.routing_profile,
     )
     try:
         report = run_evaluation(investigator, args.runs, args.max_turns, args.trajectory_dir, args.case_ids)

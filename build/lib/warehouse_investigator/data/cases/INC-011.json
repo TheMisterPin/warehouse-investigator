@@ -1,0 +1,36 @@
+{
+  "ticket": {
+    "id": "INC-011",
+    "title": "Cancelled order leaves availability low amid unrelated activity",
+    "sku": "SKU-TEAL-OTTOMAN",
+    "location": "SEA-01",
+    "reported_at": "2026-08-27T22:00:00Z",
+    "expected_quantity": 50,
+    "observed_quantity": 41,
+    "document_refs": ["SO-903", "TR-202"],
+    "notes": "The ledger includes an unrelated transfer for a different SKU."
+  },
+  "ledger_events": [
+    {"id": "EV-11001", "ticket_id": "INC-011", "timestamp": "2026-08-27T08:00:00Z", "sku": "SKU-TEAL-OTTOMAN", "location": "SEA-01", "event_type": "reservation_created", "quantity_delta": -9, "document_id": "SO-903", "state": "active"},
+    {"id": "EV-11002", "ticket_id": "INC-011", "timestamp": "2026-08-27T09:00:00Z", "sku": "SKU-TEAL-OTTOMAN", "location": "SEA-01", "event_type": "order_cancelled", "quantity_delta": 0, "document_id": "SO-903", "state": "posted"},
+    {"id": "EV-11003", "ticket_id": "INC-011", "timestamp": "2026-08-27T09:30:00Z", "sku": "SKU-PINK-PILLOW", "location": "SEA-01", "event_type": "transfer_received", "quantity_delta": 20, "document_id": "TR-202", "state": "posted"}
+  ],
+  "documents": [
+    {"id": "SO-903", "type": "sales_order", "status": "cancelled", "location": "SEA-01", "sku": "SKU-TEAL-OTTOMAN", "quantity": 9, "reservation_release_id": null},
+    {"id": "TR-202", "type": "transfer", "status": "received", "source_location": "PDX-01", "destination_location": "SEA-01", "sku": "SKU-PINK-PILLOW", "quantity": 20, "received_quantity": 20}
+  ],
+  "snapshots": [
+    {"sku": "SKU-TEAL-OTTOMAN", "location": "SEA-01", "physical_quantity": 50, "reserved_quantity": 9, "available_quantity": 41}
+  ],
+  "expected": {
+    "root_cause_code": "STALE_RESERVATION",
+    "required_evidence_ids": ["SO-903", "EV-11001", "EV-11002"],
+    "forbidden_evidence_ids": ["TR-202", "EV-11003"],
+    "action_keywords": ["release", "reservation", "unreserve"],
+    "forbidden_action_keywords": ["transfer", "adjust inventory"],
+    "requires_escalation": false,
+    "confidence": {"min": 0.8, "max": 1.0},
+    "tags": ["reservation", "irrelevant-noise", "evidence-selection"],
+    "difficulty": "hard"
+  }
+}

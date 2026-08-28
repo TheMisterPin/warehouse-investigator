@@ -1,0 +1,34 @@
+{
+  "ticket": {
+    "id": "INC-002",
+    "title": "Available quantity remains low after cancelled order",
+    "sku": "SKU-BLUE-LAMP",
+    "location": "SEA-01",
+    "reported_at": "2026-08-27T18:00:00Z",
+    "expected_quantity": 50,
+    "observed_quantity": 41,
+    "document_refs": ["SO-900"],
+    "notes": "Physical count is 50; the issue is available-to-promise quantity."
+  },
+  "ledger_events": [
+    {"id": "EV-2001", "ticket_id": "INC-002", "timestamp": "2026-08-27T08:00:00Z", "sku": "SKU-BLUE-LAMP", "location": "SEA-01", "event_type": "reservation_created", "quantity_delta": -9, "document_id": "SO-900", "state": "active"},
+    {"id": "EV-2002", "ticket_id": "INC-002", "timestamp": "2026-08-27T09:00:00Z", "sku": "SKU-BLUE-LAMP", "location": "SEA-01", "event_type": "order_cancelled", "quantity_delta": 0, "document_id": "SO-900", "state": "posted"}
+  ],
+  "documents": [
+    {"id": "SO-900", "type": "sales_order", "status": "cancelled", "location": "SEA-01", "sku": "SKU-BLUE-LAMP", "quantity": 9, "cancelled_at": "2026-08-27T09:00:00Z", "reservation_release_id": null}
+  ],
+  "snapshots": [
+    {"sku": "SKU-BLUE-LAMP", "location": "SEA-01", "physical_quantity": 50, "reserved_quantity": 9, "available_quantity": 41}
+  ],
+  "expected": {
+    "root_cause_code": "STALE_RESERVATION",
+    "required_evidence_ids": ["SO-900", "EV-2001", "EV-2002"],
+    "forbidden_evidence_ids": [],
+    "action_keywords": ["release", "reservation", "unreserve"],
+    "forbidden_action_keywords": ["adjust inventory"],
+    "requires_escalation": false,
+    "confidence": {"min": 0.8, "max": 1.0},
+    "tags": ["reservation", "cancelled-order"],
+    "difficulty": "easy"
+  }
+}

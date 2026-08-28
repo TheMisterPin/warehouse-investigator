@@ -1,0 +1,34 @@
+{
+  "ticket": {
+    "id": "INC-010",
+    "title": "Approved cycle count adjustment has not posted",
+    "sku": "SKU-BROWN-TABLE",
+    "location": "PDX-01",
+    "reported_at": "2026-08-27T14:00:00Z",
+    "expected_quantity": 97,
+    "observed_quantity": 100,
+    "document_refs": ["CC-302"],
+    "notes": "The count is approved, but system inventory remains unchanged."
+  },
+  "ledger_events": [
+    {"id": "EV-10001", "ticket_id": "INC-010", "timestamp": "2026-08-27T10:00:00Z", "sku": "SKU-BROWN-TABLE", "location": "PDX-01", "event_type": "cycle_count_completed", "quantity_delta": -3, "document_id": "CC-302", "state": "approved"},
+    {"id": "EV-10002", "ticket_id": "INC-010", "timestamp": "2026-08-27T10:05:00Z", "sku": "SKU-BROWN-TABLE", "location": "PDX-01", "event_type": "count_adjustment", "quantity_delta": 0, "document_id": "CC-302", "state": "pending_post"}
+  ],
+  "documents": [
+    {"id": "CC-302", "type": "cycle_count", "status": "approved", "location": "PDX-01", "sku": "SKU-BROWN-TABLE", "counted_quantity": 97, "system_quantity": 100, "adjustment_quantity": -3}
+  ],
+  "snapshots": [
+    {"sku": "SKU-BROWN-TABLE", "location": "PDX-01", "physical_quantity": 100, "reserved_quantity": 0, "available_quantity": 100}
+  ],
+  "expected": {
+    "root_cause_code": "COUNT_ADJUSTMENT_NOT_POSTED",
+    "required_evidence_ids": ["CC-302", "EV-10002"],
+    "forbidden_evidence_ids": [],
+    "action_keywords": ["post", "posting", "adjustment"],
+    "forbidden_action_keywords": ["approve the count", "create another count"],
+    "requires_escalation": false,
+    "confidence": {"min": 0.8, "max": 1.0},
+    "tags": ["cycle-count", "posting-failure"],
+    "difficulty": "medium"
+  }
+}

@@ -12,6 +12,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Investigate a warehouse incident with local Ollama.")
     parser.add_argument("ticket_id", help="Incident ID, such as INC-001")
     parser.add_argument("--model", default="auto", help="Use auto routing (default) or one fixed Ollama model")
+    parser.add_argument("--routing-profile", choices=("fast", "economy"), default="fast")
+    parser.add_argument("--small-model", help="Low-memory tier (default: qwen3:4b)")
     parser.add_argument("--primary-model", help="Primary fast tier (default: qwen3:8b)")
     parser.add_argument("--deep-model", help="Deep-review tier (default: qwen3.5:27b)")
     parser.add_argument("--host", help="Ollama host; defaults to OLLAMA_HOST or http://localhost:11434")
@@ -26,8 +28,10 @@ def main() -> None:
     investigator = create_investigator(
         model=args.model,
         host=args.host,
-        primary_model=args.primary_model,
+        fast_model=args.small_model,
+        balanced_model=args.primary_model,
         deep_model=args.deep_model,
+        routing_profile=args.routing_profile,
     )
     try:
         run = investigator.investigate_with_trace(

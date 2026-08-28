@@ -1,0 +1,33 @@
+{
+  "ticket": {
+    "id": "INC-003",
+    "title": "Cycle count discrepancy has not reached inventory balance",
+    "sku": "SKU-GREEN-DESK",
+    "location": "PDX-01",
+    "reported_at": "2026-08-27T11:00:00Z",
+    "expected_quantity": 97,
+    "observed_quantity": 100,
+    "document_refs": ["CC-300"],
+    "notes": "A cycle count was completed this morning."
+  },
+  "ledger_events": [
+    {"id": "EV-3001", "ticket_id": "INC-003", "timestamp": "2026-08-27T10:15:00Z", "sku": "SKU-GREEN-DESK", "location": "PDX-01", "event_type": "cycle_count_completed", "quantity_delta": -3, "document_id": "CC-300", "state": "pending_approval"}
+  ],
+  "documents": [
+    {"id": "CC-300", "type": "cycle_count", "status": "pending_approval", "location": "PDX-01", "sku": "SKU-GREEN-DESK", "counted_quantity": 97, "system_quantity": 100}
+  ],
+  "snapshots": [
+    {"sku": "SKU-GREEN-DESK", "location": "PDX-01", "physical_quantity": 100, "reserved_quantity": 0, "available_quantity": 100}
+  ],
+  "expected": {
+    "root_cause_code": "PENDING_CYCLE_COUNT",
+    "required_evidence_ids": ["CC-300", "EV-3001"],
+    "forbidden_evidence_ids": [],
+    "action_keywords": ["approve", "approval"],
+    "forbidden_action_keywords": ["create another count"],
+    "requires_escalation": false,
+    "confidence": {"min": 0.8, "max": 1.0},
+    "tags": ["cycle-count", "pending-approval"],
+    "difficulty": "easy"
+  }
+}

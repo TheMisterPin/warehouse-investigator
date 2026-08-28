@@ -1,0 +1,32 @@
+{
+  "ticket": {
+    "id": "INC-006",
+    "title": "Transfer shortage references a missing document",
+    "sku": "SKU-YELLOW-BENCH",
+    "location": "SEA-01",
+    "reported_at": "2026-08-27T19:00:00Z",
+    "expected_quantity": 80,
+    "observed_quantity": 74,
+    "document_refs": ["TR-MISSING"],
+    "notes": "Ledger events exist, but the transfer record cannot be found."
+  },
+  "ledger_events": [
+    {"id": "EV-6001", "ticket_id": "INC-006", "timestamp": "2026-08-27T12:00:00Z", "sku": "SKU-YELLOW-BENCH", "location": "PDX-01", "event_type": "transfer_shipped", "quantity_delta": -6, "document_id": "TR-MISSING", "state": "posted"},
+    {"id": "EV-6002", "ticket_id": "INC-006", "timestamp": "2026-08-27T12:00:00Z", "sku": "SKU-YELLOW-BENCH", "location": "SEA-01", "event_type": "transfer_received", "quantity_delta": 0, "document_id": "TR-MISSING", "state": "pending"}
+  ],
+  "documents": [],
+  "snapshots": [
+    {"sku": "SKU-YELLOW-BENCH", "location": "SEA-01", "physical_quantity": 74, "reserved_quantity": 0, "available_quantity": 74}
+  ],
+  "expected": {
+    "root_cause_code": "INSUFFICIENT_EVIDENCE",
+    "required_evidence_ids": ["EV-6001", "EV-6002"],
+    "forbidden_evidence_ids": [],
+    "action_keywords": ["locate", "document", "reconstruct", "escalate"],
+    "forbidden_action_keywords": ["adjust inventory", "receive the transfer"],
+    "requires_escalation": true,
+    "confidence": {"min": 0.0, "max": 0.7},
+    "tags": ["transfer", "missing-document", "ambiguous"],
+    "difficulty": "hard"
+  }
+}

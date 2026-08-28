@@ -1,0 +1,35 @@
+{
+  "ticket": {
+    "id": "INC-009",
+    "title": "Cycle count adjustment reduced stock twice",
+    "sku": "SKU-SILVER-RACK",
+    "location": "PDX-01",
+    "reported_at": "2026-08-27T13:00:00Z",
+    "expected_quantity": 97,
+    "observed_quantity": 94,
+    "document_refs": ["CC-301"],
+    "notes": "The approved three-unit reduction appears twice in the ledger."
+  },
+  "ledger_events": [
+    {"id": "EV-9001", "ticket_id": "INC-009", "timestamp": "2026-08-27T10:00:00Z", "sku": "SKU-SILVER-RACK", "location": "PDX-01", "event_type": "cycle_count_completed", "quantity_delta": -3, "document_id": "CC-301", "state": "approved"},
+    {"id": "EV-9002", "ticket_id": "INC-009", "timestamp": "2026-08-27T10:10:00Z", "sku": "SKU-SILVER-RACK", "location": "PDX-01", "event_type": "count_adjustment_posted", "quantity_delta": -3, "document_id": "CC-301", "state": "posted"},
+    {"id": "EV-9003", "ticket_id": "INC-009", "timestamp": "2026-08-27T10:11:00Z", "sku": "SKU-SILVER-RACK", "location": "PDX-01", "event_type": "count_adjustment_posted", "quantity_delta": -3, "document_id": "CC-301", "state": "posted", "retry_of": "EV-9002"}
+  ],
+  "documents": [
+    {"id": "CC-301", "type": "cycle_count", "status": "posted", "location": "PDX-01", "sku": "SKU-SILVER-RACK", "counted_quantity": 97, "system_quantity": 100, "adjustment_quantity": -3}
+  ],
+  "snapshots": [
+    {"sku": "SKU-SILVER-RACK", "location": "PDX-01", "physical_quantity": 94, "reserved_quantity": 0, "available_quantity": 94}
+  ],
+  "expected": {
+    "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+    "required_evidence_ids": ["CC-301", "EV-9002", "EV-9003"],
+    "forbidden_evidence_ids": [],
+    "action_keywords": ["duplicate", "reverse", "reversal"],
+    "forbidden_action_keywords": ["approve the count", "post the adjustment"],
+    "requires_escalation": true,
+    "confidence": {"min": 0.8, "max": 1.0},
+    "tags": ["cycle-count", "duplicate-event", "unsafe-adjustment"],
+    "difficulty": "hard"
+  }
+}

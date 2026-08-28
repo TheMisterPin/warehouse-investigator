@@ -1,0 +1,35 @@
+{
+  "ticket": {
+    "id": "INC-007",
+    "title": "Cancelled order inventory appears reconciled",
+    "sku": "SKU-PURPLE-RUG",
+    "location": "SEA-01",
+    "reported_at": "2026-08-27T20:00:00Z",
+    "expected_quantity": 50,
+    "observed_quantity": 50,
+    "document_refs": ["SO-901"],
+    "notes": "Confirm whether any inventory action is still needed."
+  },
+  "ledger_events": [
+    {"id": "EV-7001", "ticket_id": "INC-007", "timestamp": "2026-08-27T08:00:00Z", "sku": "SKU-PURPLE-RUG", "location": "SEA-01", "event_type": "reservation_created", "quantity_delta": -9, "document_id": "SO-901", "state": "posted"},
+    {"id": "EV-7002", "ticket_id": "INC-007", "timestamp": "2026-08-27T09:00:00Z", "sku": "SKU-PURPLE-RUG", "location": "SEA-01", "event_type": "order_cancelled", "quantity_delta": 0, "document_id": "SO-901", "state": "posted"},
+    {"id": "EV-7003", "ticket_id": "INC-007", "timestamp": "2026-08-27T09:01:00Z", "sku": "SKU-PURPLE-RUG", "location": "SEA-01", "event_type": "reservation_released", "quantity_delta": 9, "document_id": "SO-901", "state": "posted"}
+  ],
+  "documents": [
+    {"id": "SO-901", "type": "sales_order", "status": "cancelled", "location": "SEA-01", "sku": "SKU-PURPLE-RUG", "quantity": 9, "reservation_release_id": "EV-7003"}
+  ],
+  "snapshots": [
+    {"sku": "SKU-PURPLE-RUG", "location": "SEA-01", "physical_quantity": 50, "reserved_quantity": 0, "available_quantity": 50}
+  ],
+  "expected": {
+    "root_cause_code": "NO_DISCREPANCY",
+    "required_evidence_ids": ["SO-901", "EV-7003"],
+    "forbidden_evidence_ids": [],
+    "action_keywords": ["no action", "close", "monitor"],
+    "forbidden_action_keywords": ["release the reservation", "adjust inventory"],
+    "requires_escalation": false,
+    "confidence": {"min": 0.8, "max": 1.0},
+    "tags": ["reservation", "negative-control", "no-discrepancy"],
+    "difficulty": "medium"
+  }
+}

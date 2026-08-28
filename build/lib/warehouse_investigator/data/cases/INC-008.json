@@ -1,0 +1,35 @@
+{
+  "ticket": {
+    "id": "INC-008",
+    "title": "Reservation release failed after order cancellation",
+    "sku": "SKU-ORANGE-STOOL",
+    "location": "SEA-01",
+    "reported_at": "2026-08-27T21:00:00Z",
+    "expected_quantity": 50,
+    "observed_quantity": 41,
+    "document_refs": ["SO-902"],
+    "notes": "The release workflow ran but reported a failure."
+  },
+  "ledger_events": [
+    {"id": "EV-8001", "ticket_id": "INC-008", "timestamp": "2026-08-27T08:00:00Z", "sku": "SKU-ORANGE-STOOL", "location": "SEA-01", "event_type": "reservation_created", "quantity_delta": -9, "document_id": "SO-902", "state": "posted"},
+    {"id": "EV-8002", "ticket_id": "INC-008", "timestamp": "2026-08-27T09:00:00Z", "sku": "SKU-ORANGE-STOOL", "location": "SEA-01", "event_type": "order_cancelled", "quantity_delta": 0, "document_id": "SO-902", "state": "posted"},
+    {"id": "EV-8003", "ticket_id": "INC-008", "timestamp": "2026-08-27T09:01:00Z", "sku": "SKU-ORANGE-STOOL", "location": "SEA-01", "event_type": "reservation_release", "quantity_delta": 0, "document_id": "SO-902", "state": "failed", "error": "lock_timeout"}
+  ],
+  "documents": [
+    {"id": "SO-902", "type": "sales_order", "status": "cancelled", "location": "SEA-01", "sku": "SKU-ORANGE-STOOL", "quantity": 9, "reservation_release_id": "EV-8003", "reservation_release_status": "failed"}
+  ],
+  "snapshots": [
+    {"sku": "SKU-ORANGE-STOOL", "location": "SEA-01", "physical_quantity": 50, "reserved_quantity": 9, "available_quantity": 41}
+  ],
+  "expected": {
+    "root_cause_code": "STALE_RESERVATION",
+    "required_evidence_ids": ["SO-902", "EV-8003"],
+    "forbidden_evidence_ids": [],
+    "action_keywords": ["retry", "release", "reservation"],
+    "forbidden_action_keywords": ["adjust inventory"],
+    "requires_escalation": false,
+    "confidence": {"min": 0.8, "max": 1.0},
+    "tags": ["reservation", "failed-release"],
+    "difficulty": "medium"
+  }
+}
