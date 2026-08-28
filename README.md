@@ -50,10 +50,10 @@ The CLI also prints a complete run record with the model, elapsed time, Ollama p
 ## Evaluate the fixed cases
 
 ```bash
-evaluate
+evaluate --model qwen3.5:27b --runs 3
 ```
 
-This runs each fixture through the agent and compares its `root_cause_code` to the expected code. It requires Ollama and a pulled model.
+This runs each fixture repeatedly and writes a JSON report under `reports/`. A run passes only when its ticket ID, root-cause code, required evidence, recommended action, and escalation behavior all meet the case definition. The report includes per-run trajectories plus aggregate accuracy, latency, and token usage. It requires Ollama and a pulled model.
 
 ## Project layout
 
@@ -68,3 +68,7 @@ The warehouse data is deliberately a small deterministic fixture. Replace `sampl
 ## Development notes
 
 The decisions, live-run result, evidence-gate change, and next milestones for the initial implementation are captured in [docs/first-pass-development.md](docs/first-pass-development.md).
+
+The repeatable 9-run baseline, stricter scoring contract, measured latency/token usage, and next evaluation expansion are captured in [docs/baseline-evaluation.md](docs/baseline-evaluation.md).
+
+The implementation changes and decisions for the second development pass are captured in [docs/second-pass-development.md](docs/second-pass-development.md).

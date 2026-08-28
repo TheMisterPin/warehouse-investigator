@@ -138,3 +138,24 @@ GROUND_TRUTH = {
     "INC-002": "STALE_RESERVATION",
     "INC-003": "PENDING_CYCLE_COUNT",
 }
+
+EVALUATION_CASES = {
+    "INC-001": {
+        "root_cause_code": "TRANSFER_NOT_RECEIVED",
+        "required_evidence_ids": ["TR-100", "EV-1002"],
+        "action_keywords": ["receive", "receipt", "receiving"],
+        "requires_escalation": False,
+    },
+    "INC-002": {
+        "root_cause_code": "STALE_RESERVATION",
+        "required_evidence_ids": ["SO-900", "EV-2001", "EV-2002"],
+        "action_keywords": ["release", "reservation", "unreserve"],
+        "requires_escalation": False,
+    },
+    "INC-003": {
+        "root_cause_code": "PENDING_CYCLE_COUNT",
+        "required_evidence_ids": ["CC-300", "EV-3001"],
+        "action_keywords": ["approve", "approval", "post", "adjustment"],
+        "requires_escalation": False,
+    },
+}
