@@ -287,19 +287,29 @@ def _evidence_flags(run: InvestigationRun) -> set[str]:
     if any(event.get("retry_of") for event in ledger_events) or _has_duplicate_effect(ledger_events):
         flags.add("duplicate_event")
 
-    completed_transfer = any(
-        document.get("type") == "transfer" and document.get("status") == "received" for document in documents
-    )
+    completed_transfer_ids = {
+        document.get("id")
+        for document in documents
+        if document.get("type") == "transfer"
+        and document.get("status") == "received"
+        and ticket
+        and document.get("sku") == ticket.get("sku")
+        and document.get("destination_location") == ticket.get("location")
+    }
     posted_receipt = any(
         event.get("event_type") == "transfer_received"
         and event.get("state") == "posted"
         and event.get("quantity_delta", 0) > 0
+        and event.get("document_id") in completed_transfer_ids
+        and ticket
+        and event.get("sku") == ticket.get("sku")
+        and event.get("location") == ticket.get("location")
         for event in ledger_events
     )
     if (
         ticket
         and snapshot
-        and completed_transfer
+        and completed_transfer_ids
         and posted_receipt
         and ticket.get("expected_quantity") != snapshot.get("physical_quantity")
     ):

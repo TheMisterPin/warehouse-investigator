@@ -1,0 +1,326 @@
+[
+  {
+    "sku": "SKU-RED-CHAIR",
+    "location": "SEA-01",
+    "physical_quantity": 94,
+    "reserved_quantity": 0,
+    "available_quantity": 94,
+    "captured_at": "2026-08-20T15:00:00Z",
+    "snapshot_id": "SNAP-001-HISTORICAL"
+  },
+  {
+    "sku": "SKU-RED-CHAIR",
+    "location": "SEA-01",
+    "physical_quantity": 94,
+    "reserved_quantity": 0,
+    "available_quantity": 94,
+    "captured_at": "2026-08-25T15:00:00Z",
+    "snapshot_id": "SNAP-001-PREVIOUS"
+  },
+  {
+    "sku": "SKU-RED-CHAIR",
+    "location": "SEA-01",
+    "physical_quantity": 94,
+    "reserved_quantity": 0,
+    "available_quantity": 94,
+    "captured_at": "2026-08-27T14:55:00Z",
+    "snapshot_id": "SNAP-001-LATEST"
+  },
+  {
+    "sku": "SKU-BLUE-LAMP",
+    "location": "SEA-01",
+    "physical_quantity": 50,
+    "reserved_quantity": 9,
+    "available_quantity": 41,
+    "captured_at": "2026-08-20T18:00:00Z",
+    "snapshot_id": "SNAP-002-HISTORICAL"
+  },
+  {
+    "sku": "SKU-BLUE-LAMP",
+    "location": "SEA-01",
+    "physical_quantity": 50,
+    "reserved_quantity": 9,
+    "available_quantity": 41,
+    "captured_at": "2026-08-25T18:00:00Z",
+    "snapshot_id": "SNAP-002-PREVIOUS"
+  },
+  {
+    "sku": "SKU-BLUE-LAMP",
+    "location": "SEA-01",
+    "physical_quantity": 50,
+    "reserved_quantity": 9,
+    "available_quantity": 41,
+    "captured_at": "2026-08-27T17:55:00Z",
+    "snapshot_id": "SNAP-002-LATEST"
+  },
+  {
+    "sku": "SKU-GREEN-DESK",
+    "location": "PDX-01",
+    "physical_quantity": 100,
+    "reserved_quantity": 0,
+    "available_quantity": 100,
+    "captured_at": "2026-08-20T11:00:00Z",
+    "snapshot_id": "SNAP-003-HISTORICAL"
+  },
+  {
+    "sku": "SKU-GREEN-DESK",
+    "location": "PDX-01",
+    "physical_quantity": 100,
+    "reserved_quantity": 0,
+    "available_quantity": 100,
+    "captured_at": "2026-08-25T11:00:00Z",
+    "snapshot_id": "SNAP-003-PREVIOUS"
+  },
+  {
+    "sku": "SKU-GREEN-DESK",
+    "location": "PDX-01",
+    "physical_quantity": 100,
+    "reserved_quantity": 0,
+    "available_quantity": 100,
+    "captured_at": "2026-08-27T10:55:00Z",
+    "snapshot_id": "SNAP-003-LATEST"
+  },
+  {
+    "sku": "SKU-WHITE-SHELF",
+    "location": "SEA-01",
+    "physical_quantity": 98,
+    "reserved_quantity": 0,
+    "available_quantity": 98,
+    "captured_at": "2026-08-20T16:00:00Z",
+    "snapshot_id": "SNAP-004-HISTORICAL"
+  },
+  {
+    "sku": "SKU-WHITE-SHELF",
+    "location": "SEA-01",
+    "physical_quantity": 98,
+    "reserved_quantity": 0,
+    "available_quantity": 98,
+    "captured_at": "2026-08-25T16:00:00Z",
+    "snapshot_id": "SNAP-004-PREVIOUS"
+  },
+  {
+    "sku": "SKU-WHITE-SHELF",
+    "location": "SEA-01",
+    "physical_quantity": 98,
+    "reserved_quantity": 0,
+    "available_quantity": 98,
+    "captured_at": "2026-08-27T15:55:00Z",
+    "snapshot_id": "SNAP-004-LATEST"
+  },
+  {
+    "sku": "SKU-BLACK-CABINET",
+    "location": "SEA-01",
+    "physical_quantity": 106,
+    "reserved_quantity": 0,
+    "available_quantity": 106,
+    "captured_at": "2026-08-20T17:00:00Z",
+    "snapshot_id": "SNAP-005-HISTORICAL"
+  },
+  {
+    "sku": "SKU-BLACK-CABINET",
+    "location": "SEA-01",
+    "physical_quantity": 106,
+    "reserved_quantity": 0,
+    "available_quantity": 106,
+    "captured_at": "2026-08-25T17:00:00Z",
+    "snapshot_id": "SNAP-005-PREVIOUS"
+  },
+  {
+    "sku": "SKU-BLACK-CABINET",
+    "location": "SEA-01",
+    "physical_quantity": 106,
+    "reserved_quantity": 0,
+    "available_quantity": 106,
+    "captured_at": "2026-08-27T16:55:00Z",
+    "snapshot_id": "SNAP-005-LATEST"
+  },
+  {
+    "sku": "SKU-YELLOW-BENCH",
+    "location": "SEA-01",
+    "physical_quantity": 74,
+    "reserved_quantity": 0,
+    "available_quantity": 74,
+    "captured_at": "2026-08-20T19:00:00Z",
+    "snapshot_id": "SNAP-006-HISTORICAL"
+  },
+  {
+    "sku": "SKU-YELLOW-BENCH",
+    "location": "SEA-01",
+    "physical_quantity": 74,
+    "reserved_quantity": 0,
+    "available_quantity": 74,
+    "captured_at": "2026-08-25T19:00:00Z",
+    "snapshot_id": "SNAP-006-PREVIOUS"
+  },
+  {
+    "sku": "SKU-YELLOW-BENCH",
+    "location": "SEA-01",
+    "physical_quantity": 74,
+    "reserved_quantity": 0,
+    "available_quantity": 74,
+    "captured_at": "2026-08-27T18:55:00Z",
+    "snapshot_id": "SNAP-006-LATEST"
+  },
+  {
+    "sku": "SKU-PURPLE-RUG",
+    "location": "SEA-01",
+    "physical_quantity": 50,
+    "reserved_quantity": 0,
+    "available_quantity": 50,
+    "captured_at": "2026-08-20T20:00:00Z",
+    "snapshot_id": "SNAP-007-HISTORICAL"
+  },
+  {
+    "sku": "SKU-PURPLE-RUG",
+    "location": "SEA-01",
+    "physical_quantity": 50,
+    "reserved_quantity": 0,
+    "available_quantity": 50,
+    "captured_at": "2026-08-25T20:00:00Z",
+    "snapshot_id": "SNAP-007-PREVIOUS"
+  },
+  {
+    "sku": "SKU-PURPLE-RUG",
+    "location": "SEA-01",
+    "physical_quantity": 50,
+    "reserved_quantity": 0,
+    "available_quantity": 50,
+    "captured_at": "2026-08-27T19:55:00Z",
+    "snapshot_id": "SNAP-007-LATEST"
+  },
+  {
+    "sku": "SKU-ORANGE-STOOL",
+    "location": "SEA-01",
+    "physical_quantity": 50,
+    "reserved_quantity": 9,
+    "available_quantity": 41,
+    "captured_at": "2026-08-20T21:00:00Z",
+    "snapshot_id": "SNAP-008-HISTORICAL"
+  },
+  {
+    "sku": "SKU-ORANGE-STOOL",
+    "location": "SEA-01",
+    "physical_quantity": 50,
+    "reserved_quantity": 9,
+    "available_quantity": 41,
+    "captured_at": "2026-08-25T21:00:00Z",
+    "snapshot_id": "SNAP-008-PREVIOUS"
+  },
+  {
+    "sku": "SKU-ORANGE-STOOL",
+    "location": "SEA-01",
+    "physical_quantity": 50,
+    "reserved_quantity": 9,
+    "available_quantity": 41,
+    "captured_at": "2026-08-27T20:55:00Z",
+    "snapshot_id": "SNAP-008-LATEST"
+  },
+  {
+    "sku": "SKU-SILVER-RACK",
+    "location": "PDX-01",
+    "physical_quantity": 94,
+    "reserved_quantity": 0,
+    "available_quantity": 94,
+    "captured_at": "2026-08-20T13:00:00Z",
+    "snapshot_id": "SNAP-009-HISTORICAL"
+  },
+  {
+    "sku": "SKU-SILVER-RACK",
+    "location": "PDX-01",
+    "physical_quantity": 94,
+    "reserved_quantity": 0,
+    "available_quantity": 94,
+    "captured_at": "2026-08-25T13:00:00Z",
+    "snapshot_id": "SNAP-009-PREVIOUS"
+  },
+  {
+    "sku": "SKU-SILVER-RACK",
+    "location": "PDX-01",
+    "physical_quantity": 94,
+    "reserved_quantity": 0,
+    "available_quantity": 94,
+    "captured_at": "2026-08-27T12:55:00Z",
+    "snapshot_id": "SNAP-009-LATEST"
+  },
+  {
+    "sku": "SKU-BROWN-TABLE",
+    "location": "PDX-01",
+    "physical_quantity": 100,
+    "reserved_quantity": 0,
+    "available_quantity": 100,
+    "captured_at": "2026-08-20T14:00:00Z",
+    "snapshot_id": "SNAP-010-HISTORICAL"
+  },
+  {
+    "sku": "SKU-BROWN-TABLE",
+    "location": "PDX-01",
+    "physical_quantity": 100,
+    "reserved_quantity": 0,
+    "available_quantity": 100,
+    "captured_at": "2026-08-25T14:00:00Z",
+    "snapshot_id": "SNAP-010-PREVIOUS"
+  },
+  {
+    "sku": "SKU-BROWN-TABLE",
+    "location": "PDX-01",
+    "physical_quantity": 100,
+    "reserved_quantity": 0,
+    "available_quantity": 100,
+    "captured_at": "2026-08-27T13:55:00Z",
+    "snapshot_id": "SNAP-010-LATEST"
+  },
+  {
+    "sku": "SKU-TEAL-OTTOMAN",
+    "location": "SEA-01",
+    "physical_quantity": 50,
+    "reserved_quantity": 9,
+    "available_quantity": 41,
+    "captured_at": "2026-08-20T22:00:00Z",
+    "snapshot_id": "SNAP-011-HISTORICAL"
+  },
+  {
+    "sku": "SKU-TEAL-OTTOMAN",
+    "location": "SEA-01",
+    "physical_quantity": 50,
+    "reserved_quantity": 9,
+    "available_quantity": 41,
+    "captured_at": "2026-08-25T22:00:00Z",
+    "snapshot_id": "SNAP-011-PREVIOUS"
+  },
+  {
+    "sku": "SKU-TEAL-OTTOMAN",
+    "location": "SEA-01",
+    "physical_quantity": 50,
+    "reserved_quantity": 9,
+    "available_quantity": 41,
+    "captured_at": "2026-08-27T21:55:00Z",
+    "snapshot_id": "SNAP-011-LATEST"
+  },
+  {
+    "sku": "SKU-GRAY-SOFA",
+    "location": "SEA-01",
+    "physical_quantity": 94,
+    "reserved_quantity": 0,
+    "available_quantity": 94,
+    "captured_at": "2026-08-20T23:00:00Z",
+    "snapshot_id": "SNAP-012-HISTORICAL"
+  },
+  {
+    "sku": "SKU-GRAY-SOFA",
+    "location": "SEA-01",
+    "physical_quantity": 94,
+    "reserved_quantity": 0,
+    "available_quantity": 94,
+    "captured_at": "2026-08-25T23:00:00Z",
+    "snapshot_id": "SNAP-012-PREVIOUS"
+  },
+  {
+    "sku": "SKU-GRAY-SOFA",
+    "location": "SEA-01",
+    "physical_quantity": 94,
+    "reserved_quantity": 0,
+    "available_quantity": 94,
+    "captured_at": "2026-08-27T22:55:00Z",
+    "snapshot_id": "SNAP-012-LATEST"
+  }
+]

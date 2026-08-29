@@ -1,6 +1,6 @@
 from warehouse_investigator.evaluate import score_outcome
 from warehouse_investigator.models import InvestigationResult
-from warehouse_investigator.sample_data import EVALUATION_CASES
+from warehouse_investigator.evaluation_data import EVALUATION_CASES
 
 
 def make_result(**overrides) -> InvestigationResult:

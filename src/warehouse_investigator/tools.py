@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Callable
 
-from .sample_data import DOCUMENTS, LEDGER_EVENTS, SNAPSHOTS, TICKETS
+from .warehouse_data import DOCUMENTS, LEDGER_EVENTS, SNAPSHOTS, TICKETS
 
 
 def get_ticket(ticket_id: str) -> dict[str, Any]:
@@ -14,15 +14,15 @@ def get_ticket(ticket_id: str) -> dict[str, Any]:
 
 
 def query_ledger(ticket_id: str | None = None, sku: str | None = None, location: str | None = None) -> list[dict[str, Any]]:
-    """Return every event for a ticket, or filter by SKU/location when no ticket ID is supplied."""
+    """Return ledger events newest first; ticket results can contain unrelated activity that must be reconciled."""
     result = LEDGER_EVENTS
     if ticket_id:
-        return [event for event in result if event["ticket_id"] == ticket_id]
-    if sku:
+        result = [event for event in result if event["ticket_id"] == ticket_id]
+    elif sku:
         result = [event for event in result if event["sku"] == sku]
     if location:
         result = [event for event in result if event["location"] == location]
-    return result
+    return sorted(result, key=lambda event: event.get("timestamp", ""), reverse=True)
 
 
 def get_document(document_id: str) -> dict[str, Any]:
@@ -34,10 +34,18 @@ def get_document(document_id: str) -> dict[str, Any]:
 
 
 def get_snapshot(sku: str, location: str) -> dict[str, Any]:
-    """Return the latest physical, reserved, and available quantities."""
-    for snapshot in SNAPSHOTS:
-        if snapshot["sku"] == sku and snapshot["location"] == location:
-            return snapshot
+    """Return the latest quantities plus older snapshots for the same SKU and location."""
+    matches = sorted(
+        (
+            snapshot
+            for snapshot in SNAPSHOTS
+            if snapshot["sku"] == sku and snapshot["location"] == location
+        ),
+        key=lambda snapshot: snapshot.get("captured_at", ""),
+        reverse=True,
+    )
+    if matches:
+        return {**matches[0], "history": matches[1:]}
     return {"error": f"No stock snapshot found for {sku} at {location}"}
 
 

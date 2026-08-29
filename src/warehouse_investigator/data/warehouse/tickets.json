@@ -1,0 +1,171 @@
+[
+  {
+    "id": "INC-001",
+    "title": "Inventory reconciliation alert for SKU-RED-CHAIR at SEA-01",
+    "sku": "SKU-RED-CHAIR",
+    "location": "SEA-01",
+    "reported_at": "2026-08-27T15:00:00Z",
+    "expected_quantity": 100,
+    "observed_quantity": 94,
+    "document_refs": [
+      "TR-100"
+    ],
+    "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+    "investigation_window_start": "2026-08-26T15:00:00Z"
+  },
+  {
+    "id": "INC-002",
+    "title": "Inventory reconciliation alert for SKU-BLUE-LAMP at SEA-01",
+    "sku": "SKU-BLUE-LAMP",
+    "location": "SEA-01",
+    "reported_at": "2026-08-27T18:00:00Z",
+    "expected_quantity": 50,
+    "observed_quantity": 41,
+    "document_refs": [
+      "SO-900"
+    ],
+    "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+    "investigation_window_start": "2026-08-26T18:00:00Z"
+  },
+  {
+    "id": "INC-003",
+    "title": "Inventory reconciliation alert for SKU-GREEN-DESK at PDX-01",
+    "sku": "SKU-GREEN-DESK",
+    "location": "PDX-01",
+    "reported_at": "2026-08-27T11:00:00Z",
+    "expected_quantity": 97,
+    "observed_quantity": 100,
+    "document_refs": [
+      "CC-300"
+    ],
+    "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+    "investigation_window_start": "2026-08-26T11:00:00Z"
+  },
+  {
+    "id": "INC-004",
+    "title": "Inventory reconciliation alert for SKU-WHITE-SHELF at SEA-01",
+    "sku": "SKU-WHITE-SHELF",
+    "location": "SEA-01",
+    "reported_at": "2026-08-27T16:00:00Z",
+    "expected_quantity": 100,
+    "observed_quantity": 98,
+    "document_refs": [
+      "TR-200"
+    ],
+    "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+    "investigation_window_start": "2026-08-26T16:00:00Z"
+  },
+  {
+    "id": "INC-005",
+    "title": "Inventory reconciliation alert for SKU-BLACK-CABINET at SEA-01",
+    "sku": "SKU-BLACK-CABINET",
+    "location": "SEA-01",
+    "reported_at": "2026-08-27T17:00:00Z",
+    "expected_quantity": 100,
+    "observed_quantity": 106,
+    "document_refs": [
+      "TR-201"
+    ],
+    "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+    "investigation_window_start": "2026-08-26T17:00:00Z"
+  },
+  {
+    "id": "INC-006",
+    "title": "Inventory reconciliation alert for SKU-YELLOW-BENCH at SEA-01",
+    "sku": "SKU-YELLOW-BENCH",
+    "location": "SEA-01",
+    "reported_at": "2026-08-27T19:00:00Z",
+    "expected_quantity": 80,
+    "observed_quantity": 74,
+    "document_refs": [
+      "TR-MISSING"
+    ],
+    "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+    "investigation_window_start": "2026-08-26T19:00:00Z"
+  },
+  {
+    "id": "INC-007",
+    "title": "Inventory reconciliation alert for SKU-PURPLE-RUG at SEA-01",
+    "sku": "SKU-PURPLE-RUG",
+    "location": "SEA-01",
+    "reported_at": "2026-08-27T20:00:00Z",
+    "expected_quantity": 50,
+    "observed_quantity": 50,
+    "document_refs": [
+      "SO-901"
+    ],
+    "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+    "investigation_window_start": "2026-08-26T20:00:00Z"
+  },
+  {
+    "id": "INC-008",
+    "title": "Inventory reconciliation alert for SKU-ORANGE-STOOL at SEA-01",
+    "sku": "SKU-ORANGE-STOOL",
+    "location": "SEA-01",
+    "reported_at": "2026-08-27T21:00:00Z",
+    "expected_quantity": 50,
+    "observed_quantity": 41,
+    "document_refs": [
+      "SO-902"
+    ],
+    "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+    "investigation_window_start": "2026-08-26T21:00:00Z"
+  },
+  {
+    "id": "INC-009",
+    "title": "Inventory reconciliation alert for SKU-SILVER-RACK at PDX-01",
+    "sku": "SKU-SILVER-RACK",
+    "location": "PDX-01",
+    "reported_at": "2026-08-27T13:00:00Z",
+    "expected_quantity": 97,
+    "observed_quantity": 94,
+    "document_refs": [
+      "CC-301"
+    ],
+    "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+    "investigation_window_start": "2026-08-26T13:00:00Z"
+  },
+  {
+    "id": "INC-010",
+    "title": "Inventory reconciliation alert for SKU-BROWN-TABLE at PDX-01",
+    "sku": "SKU-BROWN-TABLE",
+    "location": "PDX-01",
+    "reported_at": "2026-08-27T14:00:00Z",
+    "expected_quantity": 97,
+    "observed_quantity": 100,
+    "document_refs": [
+      "CC-302"
+    ],
+    "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+    "investigation_window_start": "2026-08-26T14:00:00Z"
+  },
+  {
+    "id": "INC-011",
+    "title": "Inventory reconciliation alert for SKU-TEAL-OTTOMAN at SEA-01",
+    "sku": "SKU-TEAL-OTTOMAN",
+    "location": "SEA-01",
+    "reported_at": "2026-08-27T22:00:00Z",
+    "expected_quantity": 50,
+    "observed_quantity": 41,
+    "document_refs": [
+      "SO-903",
+      "TR-202"
+    ],
+    "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+    "investigation_window_start": "2026-08-26T22:00:00Z"
+  },
+  {
+    "id": "INC-012",
+    "title": "Inventory reconciliation alert for SKU-GRAY-SOFA at SEA-01",
+    "sku": "SKU-GRAY-SOFA",
+    "location": "SEA-01",
+    "reported_at": "2026-08-27T23:00:00Z",
+    "expected_quantity": 100,
+    "observed_quantity": 94,
+    "document_refs": [
+      "TR-203"
+    ],
+    "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+    "investigation_window_start": "2026-08-26T23:00:00Z"
+  }
+]

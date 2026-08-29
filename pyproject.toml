@@ -25,7 +25,7 @@ package-dir = {"" = "src"}
 where = ["src"]
 
 [tool.setuptools.package-data]
-warehouse_investigator = ["data/cases/*.json"]
+warehouse_investigator = ["data/warehouse/*.json", "data/evaluation/*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

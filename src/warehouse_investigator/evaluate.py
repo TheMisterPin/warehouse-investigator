@@ -13,7 +13,7 @@ from .agent import Investigator
 from .factory import create_investigator
 from .models import InvestigationResult
 from .routing import RoutedInvestigator
-from .sample_data import EVALUATION_CASES
+from .evaluation_data import EVALUATION_CASES
 
 
 def score_outcome(ticket_id: str, result: InvestigationResult, expected: dict[str, Any]) -> dict[str, Any]:

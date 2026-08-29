@@ -73,12 +73,13 @@ This runs the 12-case challenge and writes a JSON report under `reports/`. Use `
 
 ```text
 instructions/                 Investigator operating procedure
-src/warehouse_investigator/data/cases/  Individual JSON challenge fixtures
+src/warehouse_investigator/data/warehouse/  Separated model-visible operational records
+src/warehouse_investigator/data/evaluation/ Evaluator-only ground truth
 src/warehouse_investigator/   Runtime, data tools, CLI, and evaluator
 tests/                        Fast checks that need no model runtime
 ```
 
-The warehouse data is deliberately a small deterministic fixture. Replace `sample_data.py` with a database adapter later; the agent contract and tool interface stay the same.
+The warehouse data is deliberately deterministic but no longer case-shaped: tickets, ledger events, documents, and snapshot history live in separate datasets with distractor activity. Replace `warehouse_data.py` with database adapters later; the agent contract and tool interface stay the same. Evaluation labels are stored separately and are never returned by model tools.
 
 ## Development notes
 
@@ -93,3 +94,5 @@ The 12-case data-driven challenge, safety checks, expanded run, evaluator calibr
 The measured model-routing policy, escalation triggers, evidence reuse, and representative benchmarks are captured in [docs/model-routing.md](docs/model-routing.md).
 
 The decision to retire the 4B economy tier and standardize the supported route on 8B with selective 27B review is captured in [docs/fourth-pass-development.md](docs/fourth-pass-development.md).
+
+The separated operational datasets, buried-evidence challenge, and resulting 5/12 strict versus 11/12 diagnostic baseline are captured in [docs/fifth-pass-development.md](docs/fifth-pass-development.md).

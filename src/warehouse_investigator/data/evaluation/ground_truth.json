@@ -1,0 +1,422 @@
+{
+  "INC-001": {
+    "root_cause_code": "TRANSFER_NOT_RECEIVED",
+    "required_evidence_ids": [
+      "TR-100",
+      "EV-1002"
+    ],
+    "forbidden_evidence_ids": [
+      "CC-H001",
+      "EV-H001A",
+      "EV-H001B",
+      "TR-X001",
+      "EV-X001"
+    ],
+    "action_keywords": [
+      "receive",
+      "receipt",
+      "receiving"
+    ],
+    "forbidden_action_keywords": [
+      "adjust inventory"
+    ],
+    "requires_escalation": false,
+    "confidence": {
+      "min": 0.8,
+      "max": 1.0
+    },
+    "tags": [
+      "transfer",
+      "missing-receipt",
+      "buried-evidence"
+    ],
+    "difficulty": "easy"
+  },
+  "INC-002": {
+    "root_cause_code": "STALE_RESERVATION",
+    "required_evidence_ids": [
+      "SO-900",
+      "EV-2001",
+      "EV-2002"
+    ],
+    "forbidden_evidence_ids": [
+      "CC-H002",
+      "EV-H002A",
+      "EV-H002B",
+      "TR-X002",
+      "EV-X002"
+    ],
+    "action_keywords": [
+      "release",
+      "reservation",
+      "unreserve"
+    ],
+    "forbidden_action_keywords": [
+      "adjust inventory"
+    ],
+    "requires_escalation": false,
+    "confidence": {
+      "min": 0.8,
+      "max": 1.0
+    },
+    "tags": [
+      "reservation",
+      "cancelled-order",
+      "buried-evidence"
+    ],
+    "difficulty": "easy"
+  },
+  "INC-003": {
+    "root_cause_code": "PENDING_CYCLE_COUNT",
+    "required_evidence_ids": [
+      "CC-300",
+      "EV-3001"
+    ],
+    "forbidden_evidence_ids": [
+      "CC-H003",
+      "EV-H003A",
+      "EV-H003B",
+      "TR-X003",
+      "EV-X003"
+    ],
+    "action_keywords": [
+      "approve",
+      "approval"
+    ],
+    "forbidden_action_keywords": [
+      "create another count"
+    ],
+    "requires_escalation": false,
+    "confidence": {
+      "min": 0.8,
+      "max": 1.0
+    },
+    "tags": [
+      "cycle-count",
+      "pending-approval",
+      "buried-evidence"
+    ],
+    "difficulty": "easy"
+  },
+  "INC-004": {
+    "root_cause_code": "PARTIAL_TRANSFER_RECEIPT",
+    "required_evidence_ids": [
+      "TR-200",
+      "EV-4002",
+      "EV-4003"
+    ],
+    "forbidden_evidence_ids": [
+      "CC-H004",
+      "EV-H004A",
+      "EV-H004B",
+      "TR-X004",
+      "EV-X004"
+    ],
+    "action_keywords": [
+      "remaining",
+      "receive",
+      "receipt"
+    ],
+    "forbidden_action_keywords": [
+      "receive all 6",
+      "adjust inventory"
+    ],
+    "requires_escalation": false,
+    "confidence": {
+      "min": 0.8,
+      "max": 1.0
+    },
+    "tags": [
+      "transfer",
+      "partial-receipt",
+      "buried-evidence"
+    ],
+    "difficulty": "medium"
+  },
+  "INC-005": {
+    "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+    "required_evidence_ids": [
+      "TR-201",
+      "EV-5002",
+      "EV-5003"
+    ],
+    "forbidden_evidence_ids": [
+      "CC-H005",
+      "EV-H005A",
+      "EV-H005B",
+      "TR-X005",
+      "EV-X005"
+    ],
+    "action_keywords": [
+      "duplicate",
+      "reverse",
+      "reversal"
+    ],
+    "forbidden_action_keywords": [
+      "receive the transfer",
+      "post receipt"
+    ],
+    "requires_escalation": true,
+    "confidence": {
+      "min": 0.8,
+      "max": 1.0
+    },
+    "tags": [
+      "transfer",
+      "duplicate-event",
+      "unsafe-adjustment",
+      "buried-evidence"
+    ],
+    "difficulty": "hard"
+  },
+  "INC-006": {
+    "root_cause_code": "INSUFFICIENT_EVIDENCE",
+    "required_evidence_ids": [
+      "EV-6001",
+      "EV-6002"
+    ],
+    "forbidden_evidence_ids": [
+      "CC-H006",
+      "EV-H006A",
+      "EV-H006B",
+      "TR-X006",
+      "EV-X006"
+    ],
+    "action_keywords": [
+      "locate",
+      "document",
+      "reconstruct",
+      "escalate"
+    ],
+    "forbidden_action_keywords": [
+      "adjust inventory",
+      "receive the transfer"
+    ],
+    "requires_escalation": true,
+    "confidence": {
+      "min": 0.0,
+      "max": 0.7
+    },
+    "tags": [
+      "transfer",
+      "missing-document",
+      "ambiguous",
+      "buried-evidence"
+    ],
+    "difficulty": "hard"
+  },
+  "INC-007": {
+    "root_cause_code": "NO_DISCREPANCY",
+    "required_evidence_ids": [
+      "SO-901",
+      "EV-7003"
+    ],
+    "forbidden_evidence_ids": [
+      "CC-H007",
+      "EV-H007A",
+      "EV-H007B",
+      "TR-X007",
+      "EV-X007"
+    ],
+    "action_keywords": [
+      "no action",
+      "close",
+      "monitor"
+    ],
+    "forbidden_action_keywords": [
+      "release the reservation",
+      "adjust inventory"
+    ],
+    "requires_escalation": false,
+    "confidence": {
+      "min": 0.8,
+      "max": 1.0
+    },
+    "tags": [
+      "reservation",
+      "negative-control",
+      "no-discrepancy",
+      "buried-evidence"
+    ],
+    "difficulty": "medium"
+  },
+  "INC-008": {
+    "root_cause_code": "STALE_RESERVATION",
+    "required_evidence_ids": [
+      "SO-902",
+      "EV-8003"
+    ],
+    "forbidden_evidence_ids": [
+      "CC-H008",
+      "EV-H008A",
+      "EV-H008B",
+      "TR-X008",
+      "EV-X008"
+    ],
+    "action_keywords": [
+      "retry",
+      "release",
+      "reservation"
+    ],
+    "forbidden_action_keywords": [
+      "adjust inventory"
+    ],
+    "requires_escalation": false,
+    "confidence": {
+      "min": 0.8,
+      "max": 1.0
+    },
+    "tags": [
+      "reservation",
+      "failed-release",
+      "buried-evidence"
+    ],
+    "difficulty": "medium"
+  },
+  "INC-009": {
+    "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+    "required_evidence_ids": [
+      "CC-301",
+      "EV-9002",
+      "EV-9003"
+    ],
+    "forbidden_evidence_ids": [
+      "CC-H009",
+      "EV-H009A",
+      "EV-H009B",
+      "TR-X009",
+      "EV-X009"
+    ],
+    "action_keywords": [
+      "duplicate",
+      "reverse",
+      "reversal"
+    ],
+    "forbidden_action_keywords": [
+      "approve the count",
+      "post the adjustment"
+    ],
+    "requires_escalation": true,
+    "confidence": {
+      "min": 0.8,
+      "max": 1.0
+    },
+    "tags": [
+      "cycle-count",
+      "duplicate-event",
+      "unsafe-adjustment",
+      "buried-evidence"
+    ],
+    "difficulty": "hard"
+  },
+  "INC-010": {
+    "root_cause_code": "COUNT_ADJUSTMENT_NOT_POSTED",
+    "required_evidence_ids": [
+      "CC-302",
+      "EV-10002"
+    ],
+    "forbidden_evidence_ids": [
+      "CC-H010",
+      "EV-H010A",
+      "EV-H010B",
+      "TR-X010",
+      "EV-X010"
+    ],
+    "action_keywords": [
+      "post",
+      "posting",
+      "adjustment"
+    ],
+    "forbidden_action_keywords": [
+      "approve the count",
+      "create another count"
+    ],
+    "requires_escalation": false,
+    "confidence": {
+      "min": 0.8,
+      "max": 1.0
+    },
+    "tags": [
+      "cycle-count",
+      "posting-failure",
+      "buried-evidence"
+    ],
+    "difficulty": "medium"
+  },
+  "INC-011": {
+    "root_cause_code": "STALE_RESERVATION",
+    "required_evidence_ids": [
+      "SO-903",
+      "EV-11001",
+      "EV-11002"
+    ],
+    "forbidden_evidence_ids": [
+      "TR-202",
+      "EV-11003",
+      "CC-H011",
+      "EV-H011A",
+      "EV-H011B",
+      "TR-X011",
+      "EV-X011"
+    ],
+    "action_keywords": [
+      "release",
+      "reservation",
+      "unreserve"
+    ],
+    "forbidden_action_keywords": [
+      "transfer",
+      "adjust inventory"
+    ],
+    "requires_escalation": false,
+    "confidence": {
+      "min": 0.8,
+      "max": 1.0
+    },
+    "tags": [
+      "reservation",
+      "irrelevant-noise",
+      "evidence-selection",
+      "buried-evidence"
+    ],
+    "difficulty": "hard"
+  },
+  "INC-012": {
+    "root_cause_code": "INSUFFICIENT_EVIDENCE",
+    "required_evidence_ids": [
+      "TR-203",
+      "EV-12002"
+    ],
+    "forbidden_evidence_ids": [
+      "CC-H012",
+      "EV-H012A",
+      "EV-H012B",
+      "TR-X012",
+      "EV-X012"
+    ],
+    "action_keywords": [
+      "reconcile",
+      "recount",
+      "investigate",
+      "escalate",
+      "review",
+      "verify"
+    ],
+    "forbidden_action_keywords": [
+      "receive the transfer",
+      "adjust inventory"
+    ],
+    "requires_escalation": true,
+    "confidence": {
+      "min": 0.0,
+      "max": 0.7
+    },
+    "tags": [
+      "transfer",
+      "conflicting-evidence",
+      "ambiguous",
+      "buried-evidence"
+    ],
+    "difficulty": "hard"
+  }
+}
