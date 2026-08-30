@@ -1,6 +1,9 @@
+import json
+
 from warehouse_investigator.agent import InvestigationRun
 from warehouse_investigator.models import InvestigationResult
 from warehouse_investigator.routing import RoutedInvestigator
+from warehouse_investigator.tools import execute_tool
 
 
 def make_run(
@@ -104,3 +107,75 @@ def test_missing_document_overrides_high_model_confidence() -> None:
 
     assert run.model == "qwen3.5:27b"
     assert run.routing["attempts"][0]["evidence_flags"] == ["missing_document"]
+
+
+class ReviewClient:
+    model = "qwen3.5:27b"
+
+    def __init__(self) -> None:
+        self.calls: list[dict] = []
+
+    def chat(self, messages, tools, response_format):
+        self.calls.append({"messages": messages, "tools": tools, "format": response_format})
+        return {
+            "message": {
+                "role": "assistant",
+                "content": '{"ticket_id":"INC-001","root_cause_code":"TRANSFER_NOT_RECEIVED","summary":"Receipt is still pending.","evidence_ids":["TR-100","EV-1002"],"recommended_action":"Complete receiving.","confidence":0.9,"requires_escalation":false}',
+            },
+            "prompt_eval_count": 50,
+            "eval_count": 10,
+        }
+
+
+class ReviewRouter(RoutedInvestigator):
+    def __init__(self, primary_run: InvestigationRun, client: ReviewClient) -> None:
+        super().__init__(models=("qwen3:8b", "qwen3.5:27b"))
+        self._primary_run = primary_run
+        self._client = client
+
+    def _make_investigator(self, model: str) -> FakeInvestigator:
+        return FakeInvestigator(self._primary_run)
+
+    def _make_client(self, model: str) -> ReviewClient:
+        return self._client
+
+
+def test_deep_review_receives_filtered_ticket_evidence() -> None:
+    ticket = execute_tool("get_ticket", {"ticket_id": "INC-001"})
+    ledger = execute_tool("query_ledger", {"ticket_id": "INC-001"})
+    snapshot = execute_tool("get_snapshot", {"sku": "SKU-RED-CHAIR", "location": "SEA-01"})
+    primary = make_run("qwen3:8b", confidence=0.7)
+    primary.steps.extend(
+        [
+            {"type": "tool", "name": "get_ticket", "arguments": {"ticket_id": "INC-001"}, "result": ticket},
+            {"type": "tool", "name": "query_ledger", "arguments": {"ticket_id": "INC-001"}, "result": ledger},
+            {
+                "type": "tool",
+                "name": "get_snapshot",
+                "arguments": {"sku": "SKU-RED-CHAIR", "location": "SEA-01"},
+                "result": snapshot,
+            },
+            {"type": "tool", "name": "get_document", "arguments": {"document_id": "TR-100"}, "result": {"id": "TR-100"}},
+            {
+                "type": "tool",
+                "name": "get_document",
+                "arguments": {"document_id": "TR-X001"},
+                "result": {"id": "TR-X001", "sku": "SKU-NOISE-001"},
+            },
+        ]
+    )
+    client = ReviewClient()
+    router = ReviewRouter(primary, client)
+
+    run = router.investigate_with_trace("INC-001", trajectory_dir=None)
+    payload = json.loads(client.calls[0]["messages"][1]["content"])
+    ledger_ids = [event["id"] for item in payload["evidence"] if item["tool"] == "query_ledger" for event in item["result"]]
+    document_ids = [item["arguments"]["document_id"] for item in payload["evidence"] if item["tool"] == "get_document"]
+
+    assert run.model == "qwen3.5:27b"
+    assert "EV-1001" in ledger_ids
+    assert "EV-1002" in ledger_ids
+    assert "EV-X001" not in ledger_ids
+    assert "EV-H001A" not in ledger_ids
+    assert document_ids == ["TR-100"]
+    assert "already filtered" in client.calls[0]["messages"][0]["content"]

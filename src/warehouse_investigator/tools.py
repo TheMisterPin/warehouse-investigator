@@ -13,8 +13,12 @@ def get_ticket(ticket_id: str) -> dict[str, Any]:
     return ticket
 
 
-def query_ledger(ticket_id: str | None = None, sku: str | None = None, location: str | None = None) -> list[dict[str, Any]]:
+def query_ledger(
+    ticket_id: str | None = None, sku: str | None = None, location: str | None = None
+) -> list[dict[str, Any]] | dict[str, str]:
     """Return ledger events newest first; ticket results can contain unrelated activity that must be reconciled."""
+    if not ticket_id and not sku and not location:
+        return {"error": "query_ledger requires ticket_id, sku, or location"}
     result = LEDGER_EVENTS
     if ticket_id:
         result = [event for event in result if event["ticket_id"] == ticket_id]

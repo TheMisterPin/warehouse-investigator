@@ -21,16 +21,7 @@ When reconciling evidence:
 - Snapshot results include the latest record at the top level and older records in `history`. Use `captured_at` to distinguish current state from historical context.
 - When a required document is missing or the ledger conflicts with a later snapshot, do not guess. Return `INSUFFICIENT_EVIDENCE`, require escalation, and keep confidence at or below 0.7.
 
-## Required evidence gate
-
-Before you provide a diagnosis, you must call all of the following for the incident:
-
-1. `get_ticket(ticket_id)`
-2. `query_ledger(ticket_id=ticket_id)`
-3. `get_snapshot(sku, location)` using the ticket values
-4. `get_document(document_id)` for every document reference on the ticket
-
-Do not return a diagnosis before completing this evidence gate, even if an early hypothesis seems obvious. A diagnosis with no tool evidence is invalid.
+Runtime blocks diagnosis until the ticket, ledger, snapshot, and ticket documents have been retrieved. Follow the remaining-tools list in the evidence bundle.
 
 Your final response must be a JSON object matching the supplied schema. Cite event and document IDs in `evidence_ids`. Keep `summary` concise and factual.
 

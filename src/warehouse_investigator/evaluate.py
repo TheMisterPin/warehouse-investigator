@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import UTC, datetime
 from pathlib import Path
 from statistics import mean
@@ -80,12 +81,14 @@ def run_evaluation(
     max_turns: int,
     trajectory_dir: Path,
     case_ids: list[str] | None = None,
+    workers: int = 4,
 ) -> dict[str, Any]:
     if runs_per_case < 1:
         raise ValueError("runs_per_case must be at least 1")
+    if workers < 1:
+        raise ValueError("workers must be at least 1")
     started_at = datetime.now(UTC)
     started_perf = perf_counter()
-    results: list[dict[str, Any]] = []
     selected_cases = EVALUATION_CASES
     if case_ids:
         unknown = sorted(set(case_ids) - set(EVALUATION_CASES))
@@ -93,49 +96,71 @@ def run_evaluation(
             raise ValueError(f"Unknown case IDs: {', '.join(unknown)}")
         selected_cases = {ticket_id: EVALUATION_CASES[ticket_id] for ticket_id in dict.fromkeys(case_ids)}
 
-    for ticket_id, expected in selected_cases.items():
-        for repetition in range(1, runs_per_case + 1):
-            try:
-                run = investigator.investigate_with_trace(ticket_id, max_turns, trajectory_dir)
-                score = score_outcome(ticket_id, run.outcome, expected)
-                record = {
-                    "ticket_id": ticket_id,
-                    "repetition": repetition,
-                    "tags": expected.get("tags", []),
-                    "difficulty": expected.get("difficulty", "unclassified"),
-                    "passed": score["passed"],
-                    "checks": score["checks"],
-                    "model": run.model,
-                    "elapsed_ms": run.elapsed_ms,
-                    "tokens": run.tokens,
-                    "outcome": run.outcome.to_dict(),
-                    "step_count": len(run.steps),
-                    "trajectory_path": run.trajectory_path,
-                    "error": None,
-                }
-            except Exception as error:
-                record = {
-                    "ticket_id": ticket_id,
-                    "repetition": repetition,
-                    "tags": expected.get("tags", []),
-                    "difficulty": expected.get("difficulty", "unclassified"),
-                    "passed": False,
-                    "checks": {},
-                    "model": investigator.model,
-                    "elapsed_ms": None,
-                    "tokens": {"prompt": 0, "completion": 0, "total": 0},
-                    "outcome": None,
-                    "step_count": 0,
-                    "trajectory_path": None,
-                    "error": str(error),
-                }
-            results.append(record)
+    jobs = [
+        (ticket_id, expected, repetition)
+        for ticket_id, expected in selected_cases.items()
+        for repetition in range(1, runs_per_case + 1)
+    ]
+    results: list[dict[str, Any] | None] = [None] * len(jobs)
+
+    def run_job(index: int, ticket_id: str, expected: dict[str, Any], repetition: int) -> tuple[int, dict[str, Any]]:
+        try:
+            run = investigator.investigate_with_trace(ticket_id, max_turns, trajectory_dir)
+            score = score_outcome(ticket_id, run.outcome, expected)
+            record = {
+                "ticket_id": ticket_id,
+                "repetition": repetition,
+                "tags": expected.get("tags", []),
+                "difficulty": expected.get("difficulty", "unclassified"),
+                "passed": score["passed"],
+                "checks": score["checks"],
+                "model": run.model,
+                "elapsed_ms": run.elapsed_ms,
+                "tokens": run.tokens,
+                "outcome": run.outcome.to_dict(),
+                "step_count": len(run.steps),
+                "trajectory_path": run.trajectory_path,
+                "error": None,
+            }
+        except Exception as error:
+            record = {
+                "ticket_id": ticket_id,
+                "repetition": repetition,
+                "tags": expected.get("tags", []),
+                "difficulty": expected.get("difficulty", "unclassified"),
+                "passed": False,
+                "checks": {},
+                "model": investigator.model,
+                "elapsed_ms": None,
+                "tokens": {"prompt": 0, "completion": 0, "total": 0},
+                "outcome": None,
+                "step_count": 0,
+                "trajectory_path": None,
+                "error": str(error),
+            }
+        return index, record
+
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        futures = [
+            pool.submit(run_job, index, ticket_id, expected, repetition)
+            for index, (ticket_id, expected, repetition) in enumerate(jobs)
+        ]
+        for future in as_completed(futures):
+            index, record = future.result()
+            results[index] = record
             status = "PASS" if record["passed"] else "FAIL"
             detail = record["error"] or _failed_check_names(record["checks"]) or "all checks"
-            print(f"{status} {ticket_id} run {repetition}/{runs_per_case}: {detail}", flush=True)
+            print(f"{status} {record['ticket_id']} run {record['repetition']}/{runs_per_case}: {detail}", flush=True)
 
     return _build_report(
-        investigator.model, runs_per_case, max_turns, started_at, started_perf, results, selected_cases
+        investigator.model,
+        runs_per_case,
+        max_turns,
+        started_at,
+        started_perf,
+        [record for record in results if record is not None],
+        selected_cases,
+        workers,
     )
 
 
@@ -188,6 +213,7 @@ def _build_report(
     started_perf: float,
     results: list[dict[str, Any]],
     selected_cases: dict[str, dict[str, Any]],
+    workers: int = 4,
 ) -> dict[str, Any]:
     completed = [record for record in results if record["elapsed_ms"] is not None]
     passed = sum(record["passed"] for record in results)
@@ -204,6 +230,7 @@ def _build_report(
         "configuration": {
             "runs_per_case": runs_per_case,
             "max_turns": max_turns,
+            "workers": workers,
             "case_count": len(selected_cases),
             "case_ids": list(selected_cases),
         },
@@ -268,6 +295,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--host", help="Ollama host")
     parser.add_argument("--runs", type=int, default=1, help="Repetitions per case (default: 1)")
     parser.add_argument("--max-turns", type=int, default=12)
+    parser.add_argument("--workers", type=int, default=4, help="Concurrent ticket investigations (default: 4)")
     parser.add_argument("--trajectory-dir", type=Path, default=Path("trajectories/evaluation"))
     parser.add_argument("--report-dir", type=Path, default=Path("reports"))
     parser.add_argument("--compare-to", type=Path, help="Previous JSON report to compare against")
@@ -284,7 +312,9 @@ def main() -> None:
         deep_model=args.deep_model,
     )
     try:
-        report = run_evaluation(investigator, args.runs, args.max_turns, args.trajectory_dir, args.case_ids)
+        report = run_evaluation(
+            investigator, args.runs, args.max_turns, args.trajectory_dir, args.case_ids, args.workers
+        )
         if args.compare_to:
             report["comparison"] = compare_reports(report, load_report(args.compare_to), args.compare_to)
     except (OSError, json.JSONDecodeError, ValueError) as error:

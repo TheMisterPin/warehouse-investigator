@@ -9,6 +9,7 @@ from time import perf_counter
 from typing import Any, Callable
 
 from .agent import InvestigationRun, Investigator
+from .context import compact_json, select_review_evidence
 from .models import InvestigationResult, RESULT_SCHEMA
 from .ollama import OllamaClient
 
@@ -175,11 +176,7 @@ class RoutedInvestigator:
     ) -> InvestigationRun:
         instructions_path = self.instructions_path or Path(__file__).parents[2] / "instructions" / "investigator.md"
         instructions = instructions_path.read_text(encoding="utf-8")
-        evidence = [
-            {"tool": step.get("name"), "arguments": step.get("arguments"), "result": step.get("result")}
-            for step in evidence_run.steps
-            if step.get("type") == "tool"
-        ]
+        evidence = select_review_evidence(evidence_run.steps)
         review_payload = {
             "ticket_id": ticket_id,
             "routing_reason": reason,
@@ -191,10 +188,11 @@ class RoutedInvestigator:
                 "role": "system",
                 "content": instructions
                 + "\n\nYou are reviewing evidence already gathered by the primary model. Do not call tools. "
+                "The evidence bundle is already filtered to ticket-relevant records. "
                 "Independently reconcile the supplied evidence and return only the final JSON result. "
                 "Prior outcomes are advisory and may be wrong.",
             },
-            {"role": "user", "content": json.dumps(review_payload)},
+            {"role": "user", "content": compact_json(review_payload)},
         ]
         started = perf_counter()
         response = self._make_client(model).chat(messages, [], RESULT_SCHEMA)

@@ -1,4 +1,9 @@
-from warehouse_investigator.evaluate import score_outcome
+import threading
+import time
+from pathlib import Path
+
+from warehouse_investigator.agent import InvestigationRun
+from warehouse_investigator.evaluate import run_evaluation, score_outcome
 from warehouse_investigator.models import InvestigationResult
 from warehouse_investigator.evaluation_data import EVALUATION_CASES
 
@@ -70,3 +75,54 @@ def test_negated_forbidden_action_is_not_marked_unsafe() -> None:
     )
 
     assert score["checks"]["safe_action"]["passed"] is True
+
+
+class ConcurrentInvestigator:
+    model = "stub-model"
+
+    def __init__(self) -> None:
+        self._lock = threading.Lock()
+        self.active = 0
+        self.max_active = 0
+
+    def investigate_with_trace(self, ticket_id: str, max_turns: int, trajectory_dir: Path) -> InvestigationRun:
+        with self._lock:
+            self.active += 1
+            self.max_active = max(self.max_active, self.active)
+        time.sleep(0.2)
+        with self._lock:
+            self.active -= 1
+        outcome = InvestigationResult(
+            ticket_id=ticket_id,
+            root_cause_code="INSUFFICIENT_EVIDENCE",
+            summary="Concurrent fixture result.",
+            evidence_ids=[],
+            recommended_action="Review the ticket.",
+            confidence=0.5,
+            requires_escalation=True,
+        )
+        return InvestigationRun(
+            model=self.model,
+            elapsed_ms=200,
+            tokens={"prompt": 1, "completion": 1, "total": 2},
+            outcome=outcome,
+            steps=[],
+            trajectory_path=None,
+        )
+
+
+def test_evaluation_runs_four_tickets_concurrently(tmp_path: Path) -> None:
+    investigator = ConcurrentInvestigator()
+
+    report = run_evaluation(
+        investigator,
+        runs_per_case=1,
+        max_turns=12,
+        trajectory_dir=tmp_path,
+        case_ids=["INC-001", "INC-002", "INC-003", "INC-004"],
+        workers=4,
+    )
+
+    assert investigator.max_active == 4
+    assert report["configuration"]["workers"] == 4
+    assert [record["ticket_id"] for record in report["results"]] == ["INC-001", "INC-002", "INC-003", "INC-004"]

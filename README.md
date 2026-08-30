@@ -48,7 +48,7 @@ investigate INC-001 --no-log
 ```
 
 Each run writes a JSON trajectory under `trajectories/` unless `--no-log` is used.
-The CLI also prints a complete run record with the final model, elapsed time, aggregate prompt/completion token counts, final outcome, routing reasons, and each observable model/tool step. Higher model tiers reuse the evidence gathered by the primary model rather than repeating tool calls.
+The CLI also prints a complete run record with the final model, elapsed time, aggregate prompt/completion token counts, final outcome, routing reasons, and each observable model/tool step. The primary model sees a compact evidence bundle on each turn. Higher model tiers reuse ticket-relevant evidence rather than repeating tool calls or receiving buried distractors.
 
 ### Model routing
 
@@ -65,9 +65,10 @@ Auto routing escalates on objective evidence complexity, low confidence, explici
 evaluate --runs 1
 evaluate --case INC-012
 evaluate --model qwen3.5:27b --case INC-012
+evaluate --workers 1
 ```
 
-This runs the 12-case challenge and writes a JSON report under `reports/`. Use `--runs` for repetition and `--case` for targeted reruns. A run passes only when its ticket ID, root-cause code, required and forbidden evidence, recommended-action relevance and safety, confidence, and escalation behavior all meet the case definition. The report includes per-run trajectories plus aggregate accuracy, latency, and token usage. It requires Ollama and a pulled model.
+This runs the 12-case challenge four tickets at a time and writes a JSON report under `reports/`. Use `--runs` for repetition, `--case` for targeted reruns, and `--workers` to change concurrency (default 4). A run passes only when its ticket ID, root-cause code, required and forbidden evidence, recommended-action relevance and safety, confidence, and escalation behavior all meet the case definition. The report includes per-run trajectories plus aggregate accuracy, latency, and token usage. It requires Ollama and a pulled model.
 
 ## Project layout
 
@@ -96,3 +97,5 @@ The measured model-routing policy, escalation triggers, evidence reuse, and repr
 The decision to retire the 4B economy tier and standardize the supported route on 8B with selective 27B review is captured in [docs/fourth-pass-development.md](docs/fourth-pass-development.md).
 
 The separated operational datasets, buried-evidence challenge, and resulting 5/12 strict versus 11/12 diagnostic baseline are captured in [docs/fifth-pass-development.md](docs/fifth-pass-development.md).
+
+The compact evidence bundle, shortened evidence-gate prompt, filtered 27B review payload, and four-wide concurrent evaluation are captured in [docs/sixth-pass-development.md](docs/sixth-pass-development.md).

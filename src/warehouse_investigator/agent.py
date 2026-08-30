@@ -5,6 +5,15 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from .context import (
+    ALREADY_FETCHED,
+    already_fetched,
+    build_model_messages,
+    evidence_gate_complete,
+    missing_evidence,
+    new_evidence,
+    record_evidence,
+)
 from .models import InvestigationResult, RESULT_SCHEMA
 from .ollama import OllamaClient
 from .tools import TOOL_DEFINITIONS, execute_tool
@@ -52,19 +61,18 @@ class Investigator:
         self, ticket_id: str, max_turns: int = 12, trajectory_dir: Path | None = Path("trajectories")
     ) -> InvestigationRun:
         instructions = self.instructions_path.read_text(encoding="utf-8")
-        messages: list[dict[str, Any]] = [
-            {"role": "system", "content": instructions},
-            {"role": "user", "content": f"Investigate warehouse incident {ticket_id}."},
-        ]
         logger = TrajectoryLogger(ticket_id, trajectory_dir)
         logger.add("run_started", model=self.client.model, max_turns=max_turns)
         tokens = {"prompt": 0, "completion": 0, "total": 0}
         steps: list[dict[str, Any]] = []
-        evidence: dict[str, Any] = {"ticket": None, "ledger": False, "snapshot": False, "document_attempts": set()}
+        evidence = new_evidence()
         try:
             for turn in range(1, max_turns + 1):
-                response_format = RESULT_SCHEMA if _evidence_gate_complete(evidence) else None
-                response = self.client.chat(messages, TOOL_DEFINITIONS, response_format)
+                gate_complete = evidence_gate_complete(evidence)
+                tools = [] if gate_complete else TOOL_DEFINITIONS
+                response_format = RESULT_SCHEMA if gate_complete else None
+                messages = build_model_messages(ticket_id, instructions, evidence)
+                response = self.client.chat(messages, tools, response_format)
                 message = response.get("message", {})
                 observable_message = _observable_message(message, final_result_allowed=response_format is not None)
                 prompt_tokens = _as_token_count(response.get("prompt_eval_count"))
@@ -80,7 +88,6 @@ class Investigator:
                     prompt_tokens=prompt_tokens,
                     completion_tokens=completion_tokens,
                 )
-                messages.append(message)
                 tool_calls = message.get("tool_calls") or []
                 steps.append(
                     {
@@ -101,8 +108,11 @@ class Investigator:
                         arguments = function.get("arguments", {})
                         if isinstance(arguments, str):
                             arguments = json.loads(arguments)
-                        result = execute_tool(name, arguments)
-                        _record_evidence(evidence, name, arguments, result, ticket_id)
+                        if already_fetched(evidence, name, arguments):
+                            result = ALREADY_FETCHED
+                        else:
+                            result = execute_tool(name, arguments)
+                            record_evidence(evidence, name, arguments, result, ticket_id)
                         logger.add("tool_call", turn=turn, name=name, arguments=arguments, result=result)
                         steps.append(
                             {
@@ -115,10 +125,9 @@ class Investigator:
                                 "result": result,
                             }
                         )
-                        messages.append({"role": "tool", "content": json.dumps(result), "tool_name": name})
                     continue
-                if not _evidence_gate_complete(evidence):
-                    missing = _missing_evidence(evidence)
+                if not evidence_gate_complete(evidence):
+                    missing = missing_evidence(evidence)
                     logger.add("evidence_gate_retry", turn=turn, missing=missing)
                     steps.append(
                         {
@@ -127,12 +136,6 @@ class Investigator:
                             "turn": turn,
                             "elapsed_ms": logger.elapsed_ms,
                             "message": f"Evidence gate incomplete; continue with tools: {', '.join(missing)}",
-                        }
-                    )
-                    messages.append(
-                        {
-                            "role": "user",
-                            "content": f"Evidence gate is incomplete. Call the remaining tools before diagnosing: {', '.join(missing)}.",
                         }
                     )
                     continue
@@ -185,36 +188,3 @@ def _observable_message(message: dict[str, Any], final_result_allowed: bool) -> 
     observable["content"] = content
     return observable
 
-
-def _record_evidence(evidence: dict[str, Any], name: str, arguments: dict[str, Any], result: Any, ticket_id: str) -> None:
-    if not isinstance(result, dict) and name != "query_ledger":
-        return
-    if name == "get_ticket" and isinstance(result, dict) and result.get("id") == ticket_id:
-        evidence["ticket"] = result
-    elif name == "query_ledger" and arguments.get("ticket_id") == ticket_id:
-        evidence["ledger"] = True
-    elif name == "get_snapshot" and evidence["ticket"] and (
-        arguments.get("sku") == evidence["ticket"].get("sku") and arguments.get("location") == evidence["ticket"].get("location")
-    ):
-        evidence["snapshot"] = True
-    elif name == "get_document" and arguments.get("document_id"):
-        evidence["document_attempts"].add(arguments["document_id"])
-
-
-def _missing_evidence(evidence: dict[str, Any]) -> list[str]:
-    missing: list[str] = []
-    ticket = evidence["ticket"]
-    if ticket is None:
-        return ["get_ticket(ticket_id)"]
-    if not evidence["ledger"]:
-        missing.append("query_ledger(ticket_id)")
-    if not evidence["snapshot"]:
-        missing.append("get_snapshot(ticket.sku, ticket.location)")
-    for document_id in ticket.get("document_refs", []):
-        if document_id not in evidence["document_attempts"]:
-            missing.append(f"get_document({document_id})")
-    return missing
-
-
-def _evidence_gate_complete(evidence: dict[str, Any]) -> bool:
-    return evidence["ticket"] is not None and not _missing_evidence(evidence)
