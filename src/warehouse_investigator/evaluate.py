@@ -84,7 +84,7 @@ def run_evaluation(
     max_turns: int,
     trajectory_dir: Path,
     case_ids: list[str] | None = None,
-    workers: int = 4,
+    workers: int = 2,
     progress_interval_seconds: float = 1,
 ) -> dict[str, Any]:
     if runs_per_case < 1:
@@ -178,13 +178,27 @@ def compare_reports(current: dict[str, Any], previous: dict[str, Any], previous_
     current_cases = current["summary"]["cases"]
     previous_cases = previous.get("summary", {}).get("cases", {})
     common = sorted(set(current_cases) & set(previous_cases))
+    previous_summary = previous.get("summary", {})
+    current_summary = current["summary"]
+    previous_config = previous.get("configuration") or {}
+    current_config = current.get("configuration") or {}
     return {
         "previous_report": str(previous_path),
         "previous_model": previous.get("model"),
-        "previous_pass_rate": previous.get("summary", {}).get("pass_rate"),
-        "current_pass_rate": current["summary"]["pass_rate"],
-        "pass_rate_delta": _optional_delta(
-            current["summary"]["pass_rate"], previous.get("summary", {}).get("pass_rate")
+        "previous_workers": previous_config.get("workers"),
+        "current_workers": current_config.get("workers"),
+        "previous_pass_rate": previous_summary.get("pass_rate"),
+        "current_pass_rate": current_summary["pass_rate"],
+        "pass_rate_delta": _optional_delta(current_summary["pass_rate"], previous_summary.get("pass_rate")),
+        "previous_wall_clock_seconds": previous_summary.get("wall_clock_seconds"),
+        "current_wall_clock_seconds": current_summary.get("wall_clock_seconds"),
+        "wall_clock_delta": _optional_delta(
+            current_summary.get("wall_clock_seconds"), previous_summary.get("wall_clock_seconds")
+        ),
+        "previous_mean_run_seconds": previous_summary.get("mean_run_seconds"),
+        "current_mean_run_seconds": current_summary.get("mean_run_seconds"),
+        "mean_run_delta": _optional_delta(
+            current_summary.get("mean_run_seconds"), previous_summary.get("mean_run_seconds")
         ),
         "common_cases": {
             ticket_id: {
@@ -223,7 +237,7 @@ def _build_report(
     started_perf: float,
     results: list[dict[str, Any]],
     selected_cases: dict[str, dict[str, Any]],
-    workers: int = 4,
+    workers: int = 2,
 ) -> dict[str, Any]:
     completed = [record for record in results if record["elapsed_ms"] is not None]
     passed = sum(record["passed"] for record in results)
@@ -288,8 +302,23 @@ def _unsafe_action_hits(action: str, forbidden_keywords: list[str]) -> list[str]
     return hits
 
 
-def _optional_delta(current: float, previous: Any) -> float | None:
-    return round(current - previous, 4) if isinstance(previous, (int, float)) else None
+def _optional_delta(current: Any, previous: Any) -> float | None:
+    if not isinstance(current, (int, float)) or not isinstance(previous, (int, float)):
+        return None
+    return round(current - previous, 4)
+
+
+def _format_comparison(comparison: dict[str, Any]) -> str:
+    workers = f"{comparison.get('current_workers')} vs {comparison.get('previous_workers')} workers"
+    wall = comparison.get("wall_clock_delta")
+    mean_run = comparison.get("mean_run_delta")
+    pass_delta = comparison.get("pass_rate_delta")
+    if not all(isinstance(value, (int, float)) for value in (wall, mean_run, pass_delta)):
+        return f"Compared with {comparison.get('previous_report')}."
+    return (
+        f"Compared with {comparison.get('previous_report')}: {workers}; "
+        f"wall {wall:+.1f}s; mean case {mean_run:+.1f}s; pass rate {pass_delta:+.1%}."
+    )
 
 
 def _failed_check_names(checks: dict[str, Any]) -> str:
@@ -409,7 +438,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--host", help="Ollama host")
     parser.add_argument("--runs", type=int, default=1, help="Repetitions per case (default: 1)")
     parser.add_argument("--max-turns", type=int, default=12)
-    parser.add_argument("--workers", type=int, default=4, help="Concurrent ticket investigations (default: 4)")
+    parser.add_argument("--workers", type=int, default=2, help="Concurrent ticket investigations (default: 2)")
     parser.add_argument("--trajectory-dir", type=Path, default=Path("trajectories/evaluation"))
     parser.add_argument("--report-dir", type=Path, default=Path("reports"))
     parser.add_argument("--compare-to", type=Path, help="Previous JSON report to compare against")
@@ -440,6 +469,9 @@ def main() -> None:
         f"({summary['pass_rate']:.0%}); {summary['total_tokens']} tokens; "
         f"{summary['wall_clock_seconds']}s wall clock."
     )
+    comparison = report.get("comparison")
+    if comparison:
+        print(_format_comparison(comparison))
     print(f"Report: {report_path}")
 
 

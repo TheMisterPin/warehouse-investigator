@@ -5,6 +5,8 @@ from pathlib import Path
 from warehouse_investigator.agent import InvestigationRun
 from warehouse_investigator.evaluate import (
     ProgressRow,
+    build_parser,
+    compare_reports,
     format_progress_row,
     run_evaluation,
     score_outcome,
@@ -114,6 +116,46 @@ class ConcurrentInvestigator:
             steps=[],
             trajectory_path=None,
         )
+
+
+def test_evaluate_defaults_to_two_workers() -> None:
+    args = build_parser().parse_args([])
+
+    assert args.workers == 2
+
+
+def test_compare_reports_includes_time_and_worker_deltas() -> None:
+    previous = {
+        "model": "auto:qwen3:8b->qwen3.5:27b",
+        "configuration": {"workers": 2},
+        "summary": {
+            "pass_rate": 0.5833,
+            "wall_clock_seconds": 768.228,
+            "mean_run_seconds": 123.536,
+            "cases": {"INC-001": {"pass_rate": 1.0}, "INC-002": {"pass_rate": 0.0}},
+        },
+    }
+    current = {
+        "model": "auto:qwen3:8b->qwen3.5:27b",
+        "configuration": {"workers": 1},
+        "summary": {
+            "pass_rate": 0.75,
+            "wall_clock_seconds": 1482.0,
+            "mean_run_seconds": 110.0,
+            "cases": {"INC-001": {"pass_rate": 1.0}, "INC-002": {"pass_rate": 1.0}},
+        },
+    }
+
+    comparison = compare_reports(current, previous, Path("reports/previous.json"))
+
+    assert comparison["previous_workers"] == 2
+    assert comparison["current_workers"] == 1
+    assert comparison["previous_wall_clock_seconds"] == 768.228
+    assert comparison["current_wall_clock_seconds"] == 1482.0
+    assert comparison["wall_clock_delta"] == 713.772
+    assert comparison["previous_mean_run_seconds"] == 123.536
+    assert comparison["current_mean_run_seconds"] == 110.0
+    assert comparison["mean_run_delta"] == -13.536
 
 
 def test_evaluation_runs_four_tickets_concurrently(tmp_path: Path) -> None:

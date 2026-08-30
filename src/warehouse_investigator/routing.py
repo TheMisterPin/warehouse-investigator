@@ -11,12 +11,15 @@ from typing import Any, Callable
 from .agent import InvestigationRun, Investigator
 from .context import compact_json, select_review_evidence
 from .models import InvestigationResult, RESULT_SCHEMA
-from .ollama import OllamaClient
+from .ollama import OllamaClient, OllamaError
 
 
 DEFAULT_ROUTING_MODELS = ("qwen3:8b", "qwen3.5:27b")
 DEEP_REVIEW_CODES = {"DUPLICATE_LEDGER_EVENT", "INSUFFICIENT_EVIDENCE"}
-DEEP_REVIEW_FLAGS = {"missing_document", "duplicate_event", "conflicting_stock"}
+DEEP_REVIEW_FLAGS = {"missing_document", "duplicate_event", "conflicting_stock", "pending_post"}
+PRIMARY_TIMEOUT_SECONDS = 180
+DEEP_REVIEW_TIMEOUT_SECONDS = 300
+DEEP_REVIEW_TIMEOUT_RETRIES = 1
 
 
 @dataclass(frozen=True)
@@ -160,10 +163,18 @@ class RoutedInvestigator:
 
     def _make_client(self, model: str) -> OllamaClient:
         if model.endswith(":8b"):
-            max_output_tokens = 768
-        else:
-            max_output_tokens = 1024
-        return OllamaClient(model=model, host=self.host, max_output_tokens=max_output_tokens)
+            return OllamaClient(
+                model=model,
+                host=self.host,
+                timeout_seconds=PRIMARY_TIMEOUT_SECONDS,
+                max_output_tokens=768,
+            )
+        return OllamaClient(
+            model=model,
+            host=self.host,
+            timeout_seconds=DEEP_REVIEW_TIMEOUT_SECONDS,
+            max_output_tokens=1024,
+        )
 
     def _review_evidence(
         self,
@@ -195,7 +206,16 @@ class RoutedInvestigator:
             {"role": "user", "content": compact_json(review_payload)},
         ]
         started = perf_counter()
-        response = self._make_client(model).chat(messages, [], RESULT_SCHEMA)
+        response = None
+        timeout_attempts = 0
+        while response is None:
+            try:
+                response = self._make_client(model).chat(messages, [], RESULT_SCHEMA)
+            except (TimeoutError, OllamaError) as error:
+                timeout_attempts += 1
+                if timeout_attempts <= DEEP_REVIEW_TIMEOUT_RETRIES and _is_timeout(error):
+                    continue
+                raise
         elapsed_ms = round((perf_counter() - started) * 1000)
         message = response.get("message", {})
         public_content = _strip_thinking(message.get("content", ""))
@@ -230,6 +250,12 @@ class RoutedInvestigator:
             steps=steps,
             trajectory_path=str(trajectory_path) if trajectory_path else None,
         )
+
+
+def _is_timeout(error: BaseException) -> bool:
+    if isinstance(error, TimeoutError):
+        return True
+    return "timed out" in str(error).lower()
 
 
 def _escalation_reason(index: int, runs: list[InvestigationRun], tier_count: int) -> str | None:

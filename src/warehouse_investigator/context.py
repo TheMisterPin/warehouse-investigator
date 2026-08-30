@@ -18,6 +18,7 @@ def new_evidence() -> dict[str, Any]:
         "documents": {},
         "document_attempts": set(),
         "seen_calls": set(),
+        "searches": [],
     }
 
 
@@ -43,7 +44,7 @@ def record_evidence(
     evidence: dict[str, Any], name: str, arguments: dict[str, Any], result: Any, ticket_id: str
 ) -> None:
     evidence["seen_calls"].add(tool_call_key(name, arguments))
-    if not isinstance(result, dict) and name != "query_ledger":
+    if not isinstance(result, dict) and name not in {"query_ledger", "search_records"}:
         return
     if name == "get_ticket" and isinstance(result, dict) and result.get("id") == ticket_id:
         evidence["ticket"] = result
@@ -60,6 +61,15 @@ def record_evidence(
         document_id = arguments["document_id"]
         evidence["document_attempts"].add(document_id)
         evidence["documents"][document_id] = result
+    elif name == "search_records":
+        evidence["searches"].append(
+            {
+                "query": arguments.get("query"),
+                "record_type": arguments.get("record_type"),
+                "n": arguments.get("n"),
+                "results": result if isinstance(result, list) else [],
+            }
+        )
 
 
 def missing_evidence(evidence: dict[str, Any]) -> list[str]:
@@ -103,6 +113,7 @@ def build_model_messages(ticket_id: str, instructions: str, evidence: dict[str, 
                 document_id: compact_tool_result("get_document", result)
                 for document_id, result in evidence["documents"].items()
             },
+            "search": evidence.get("searches") or [],
         },
         "evidence_gate": {
             "complete": not missing,
@@ -176,7 +187,22 @@ def _filter_review_result(name: str, arguments: dict[str, Any], result: Any, tic
     if name == "query_ledger" and isinstance(result, list):
         events = [event for event in result if isinstance(event, dict) and _relevant_ledger_event(event, ticket)]
         return events
+    if name == "search_records" and isinstance(result, list):
+        return [hit for hit in result if isinstance(hit, dict) and _relevant_search_hit(hit, ticket)]
     return None
+
+
+def _relevant_search_hit(hit: dict[str, Any], ticket: dict[str, Any]) -> bool:
+    record = hit.get("record") if isinstance(hit.get("record"), dict) else {}
+    if record.get("id") == ticket.get("id"):
+        return True
+    if record.get("id") in set(ticket.get("document_refs") or []):
+        return True
+    sku_match = record.get("sku") == ticket.get("sku")
+    location = record.get("location") or record.get("destination_location")
+    if sku_match and (not location or location == ticket.get("location")):
+        return True
+    return False
 
 
 def _relevant_ledger_event(event: dict[str, Any], ticket: dict[str, Any]) -> bool:

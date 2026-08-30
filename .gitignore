@@ -5,6 +5,8 @@ __pycache__/
 trajectories/
 reports/
 .pytest_cache/
+warehouse.db
+chroma/
 *.egg-info/
 build/
 dist/

@@ -24,10 +24,30 @@ class OllamaClient:
         self.timeout_seconds = timeout_seconds
         self.max_output_tokens = max_output_tokens
 
+    def _post(self, path: str, payload: dict[str, Any]) -> dict[str, Any]:
+        request = Request(
+            f"{self.host}{path}",
+            data=json.dumps(payload).encode("utf-8"),
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        try:
+            with urlopen(request, timeout=self.timeout_seconds) as response:
+                return json.loads(response.read().decode("utf-8"))
+        except TimeoutError as error:
+            raise OllamaError(f"Ollama request timed out after {self.timeout_seconds}s") from error
+        except HTTPError as error:
+            detail = error.read().decode("utf-8", errors="replace")
+            raise OllamaError(f"Ollama returned HTTP {error.code}: {detail}") from error
+        except URLError as error:
+            raise OllamaError(
+                f"Could not reach Ollama at {self.host}. Start it with `ollama serve`. ({error.reason})"
+            ) from error
+
     def chat(
         self, messages: list[dict[str, Any]], tools: list[dict[str, Any]], response_format: dict[str, Any] | None
     ) -> dict[str, Any]:
-        payload = {
+        payload: dict[str, Any] = {
             "model": self.model,
             "messages": messages,
             "tools": tools,
@@ -37,19 +57,17 @@ class OllamaClient:
         }
         if response_format is not None:
             payload["format"] = response_format
-        request = Request(
-            f"{self.host}/api/chat",
-            data=json.dumps(payload).encode("utf-8"),
-            headers={"Content-Type": "application/json"},
-            method="POST",
+        return self._post("/api/chat", payload)
+
+    def embed(self, texts: str | list[str], model: str | None = None) -> list[list[float]]:
+        inputs = [texts] if isinstance(texts, str) else list(texts)
+        if not inputs:
+            return []
+        data = self._post(
+            "/api/embed",
+            {"model": model or os.getenv("OLLAMA_EMBED_MODEL", "nomic-embed-text"), "input": inputs},
         )
-        try:
-            with urlopen(request, timeout=self.timeout_seconds) as response:
-                return json.loads(response.read().decode("utf-8"))
-        except HTTPError as error:
-            detail = error.read().decode("utf-8", errors="replace")
-            raise OllamaError(f"Ollama returned HTTP {error.code}: {detail}") from error
-        except URLError as error:
-            raise OllamaError(
-                f"Could not reach Ollama at {self.host}. Start it with `ollama serve`. ({error.reason})"
-            ) from error
+        embeddings = data.get("embeddings")
+        if not isinstance(embeddings, list) or len(embeddings) != len(inputs):
+            raise OllamaError("Ollama embed response did not include embeddings")
+        return embeddings

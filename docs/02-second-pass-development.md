@@ -69,7 +69,7 @@ The complete baseline used `qwen3.5:27b`, temperature 0, a maximum of eight turn
 | Mean tokens per run | 4,026.7 |
 | Offline tests | 5 passed |
 
-The detailed analysis is in `docs/baseline-evaluation.md`; the machine-readable report is `reports/baseline_qwen3.5-27b_20260828T222732Z.json`.
+The detailed analysis is in `docs/02-baseline-evaluation.md`; the machine-readable report is `reports/baseline_qwen3.5-27b_20260828T222732Z.json`.
 
 ## Decisions from this pass
 

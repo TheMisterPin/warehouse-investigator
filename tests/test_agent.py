@@ -6,6 +6,21 @@ from warehouse_investigator.models import RESULT_SCHEMA
 from warehouse_investigator.tools import TOOL_DEFINITIONS
 
 
+PROCEDURE_PATH = Path(__file__).parents[1] / "instructions" / "investigator.md"
+
+
+def test_procedure_calibrates_escalation_citations_and_count_states() -> None:
+    text = PROCEDURE_PATH.read_text(encoding="utf-8")
+
+    assert "STALE_RESERVATION" in text
+    assert "requires_escalation` to false" in text
+    assert "outbound shipment event" in text
+    assert "pending or absent destination receipt" in text
+    assert "PENDING_CYCLE_COUNT` applies only" in text
+    assert "pending_post" in text
+    assert "COUNT_ADJUSTMENT_NOT_POSTED" in text
+
+
 class RecordingClient:
     model = "stub-model"
 

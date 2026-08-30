@@ -109,6 +109,32 @@ def test_missing_document_overrides_high_model_confidence() -> None:
     assert run.routing["attempts"][0]["evidence_flags"] == ["missing_document"]
 
 
+def test_pending_post_receives_deep_review() -> None:
+    runs = {model: make_run(model) for model in ("qwen3:8b", "qwen3.5:27b")}
+    for run in runs.values():
+        run.steps.append(
+            {
+                "step": 2,
+                "type": "tool",
+                "name": "query_ledger",
+                "result": [
+                    {
+                        "id": "EV-10002",
+                        "event_type": "count_adjustment",
+                        "state": "pending_post",
+                        "document_id": "CC-302",
+                    }
+                ],
+            }
+        )
+    router = make_router(runs)
+
+    run = router.investigate_with_trace("INC-001", trajectory_dir=None)
+
+    assert run.model == "qwen3.5:27b"
+    assert run.routing["attempts"][0]["evidence_flags"] == ["pending_post"]
+
+
 class ReviewClient:
     model = "qwen3.5:27b"
 
@@ -179,3 +205,57 @@ def test_deep_review_receives_filtered_ticket_evidence() -> None:
     assert "EV-H001A" not in ledger_ids
     assert document_ids == ["TR-100"]
     assert "already filtered" in client.calls[0]["messages"][0]["content"]
+
+
+def test_deep_review_client_uses_extended_timeout() -> None:
+    router = RoutedInvestigator()
+
+    assert router._make_client("qwen3:8b").timeout_seconds == 180
+    assert router._make_client("qwen3.5:27b").timeout_seconds == 300
+
+
+class TimeoutThenSuccessClient(ReviewClient):
+    def __init__(self) -> None:
+        super().__init__()
+        self.chat_calls = 0
+
+    def chat(self, messages, tools, response_format):
+        self.chat_calls += 1
+        if self.chat_calls == 1:
+            raise TimeoutError("timed out")
+        return super().chat(messages, tools, response_format)
+
+
+class AlwaysTimeoutClient(ReviewClient):
+    def __init__(self) -> None:
+        super().__init__()
+        self.chat_calls = 0
+
+    def chat(self, messages, tools, response_format):
+        self.chat_calls += 1
+        raise TimeoutError("timed out")
+
+
+def test_deep_review_retries_once_after_timeout() -> None:
+    primary = make_run("qwen3:8b", confidence=0.7)
+    client = TimeoutThenSuccessClient()
+    router = ReviewRouter(primary, client)
+
+    run = router.investigate_with_trace("INC-001", trajectory_dir=None)
+
+    assert client.chat_calls == 2
+    assert run.model == "qwen3.5:27b"
+    assert run.routing["attempts"][-1]["status"] == "completed"
+
+
+def test_deep_review_falls_back_after_retry_timeout() -> None:
+    primary = make_run("qwen3:8b", confidence=0.7)
+    client = AlwaysTimeoutClient()
+    router = ReviewRouter(primary, client)
+
+    run = router.investigate_with_trace("INC-001", trajectory_dir=None)
+
+    assert client.chat_calls == 2
+    assert run.model == "qwen3:8b"
+    assert run.routing["attempts"][-1]["status"] == "error"
+    assert "timed out" in run.routing["attempts"][-1]["error"]

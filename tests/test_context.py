@@ -69,6 +69,8 @@ def test_model_messages_use_one_evidence_bundle_and_gate_status() -> None:
     assert any(event["id"] == "EV-X001" for event in bundle["retrieved"]["ledger"])
     assert bundle["evidence_gate"]["complete"] is False
     assert "get_snapshot(ticket.sku, ticket.location)" in bundle["evidence_gate"]["missing"]
+    assert "search_records" not in " ".join(bundle["evidence_gate"]["missing"])
+    assert bundle["retrieved"]["search"] == []
     assert "Evidence gate is incomplete" not in json.dumps(messages)
 
 
@@ -120,3 +122,18 @@ def test_review_filter_keeps_missing_ticket_document_errors() -> None:
     filtered = select_review_evidence(steps)
 
     assert filtered[-1]["result"] == {"error": "No document found for TR-MISSING"}
+
+
+def test_search_results_are_included_in_the_evidence_bundle() -> None:
+    evidence = new_evidence()
+    ticket = execute_tool("get_ticket", {"ticket_id": "INC-001"})
+    hits = execute_tool("search_records", {"query": "TR-100", "record_type": "document", "n": 3})
+    record_evidence(evidence, "get_ticket", {"ticket_id": "INC-001"}, ticket, "INC-001")
+    record_evidence(evidence, "search_records", {"query": "TR-100", "record_type": "document", "n": 3}, hits, "INC-001")
+
+    bundle = json.loads(build_model_messages("INC-001", "Investigate carefully.", evidence)[-1]["content"])
+
+    assert bundle["retrieved"]["search"]
+    assert bundle["retrieved"]["search"][0]["query"] == "TR-100"
+    assert any(hit["record"]["id"] == "TR-100" for hit in bundle["retrieved"]["search"][0]["results"])
+    assert "search_records" not in " ".join(bundle["evidence_gate"]["missing"])
