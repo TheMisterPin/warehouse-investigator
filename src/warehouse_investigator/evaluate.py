@@ -3,12 +3,15 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import sys
+import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
 from statistics import mean
 from time import perf_counter
-from typing import Any
+from typing import Any, TextIO
 
 from .agent import Investigator
 from .factory import create_investigator
@@ -82,6 +85,7 @@ def run_evaluation(
     trajectory_dir: Path,
     case_ids: list[str] | None = None,
     workers: int = 4,
+    progress_interval_seconds: float = 1,
 ) -> dict[str, Any]:
     if runs_per_case < 1:
         raise ValueError("runs_per_case must be at least 1")
@@ -102,8 +106,12 @@ def run_evaluation(
         for repetition in range(1, runs_per_case + 1)
     ]
     results: list[dict[str, Any] | None] = [None] * len(jobs)
+    labels = [_job_label(ticket_id, repetition, runs_per_case) for ticket_id, _, repetition in jobs]
+    board = EvaluationBoard(labels, interval_seconds=progress_interval_seconds)
 
     def run_job(index: int, ticket_id: str, expected: dict[str, Any], repetition: int) -> tuple[int, dict[str, Any]]:
+        label = labels[index]
+        board.mark_working(label)
         try:
             run = investigator.investigate_with_trace(ticket_id, max_turns, trajectory_dir)
             score = score_outcome(ticket_id, run.outcome, expected)
@@ -138,19 +146,21 @@ def run_evaluation(
                 "trajectory_path": None,
                 "error": str(error),
             }
+        board.mark_finished(label, record)
         return index, record
 
-    with ThreadPoolExecutor(max_workers=workers) as pool:
-        futures = [
-            pool.submit(run_job, index, ticket_id, expected, repetition)
-            for index, (ticket_id, expected, repetition) in enumerate(jobs)
-        ]
-        for future in as_completed(futures):
-            index, record = future.result()
-            results[index] = record
-            status = "PASS" if record["passed"] else "FAIL"
-            detail = record["error"] or _failed_check_names(record["checks"]) or "all checks"
-            print(f"{status} {record['ticket_id']} run {record['repetition']}/{runs_per_case}: {detail}", flush=True)
+    board.start()
+    try:
+        with ThreadPoolExecutor(max_workers=workers) as pool:
+            futures = [
+                pool.submit(run_job, index, ticket_id, expected, repetition)
+                for index, (ticket_id, expected, repetition) in enumerate(jobs)
+            ]
+            for future in as_completed(futures):
+                index, record = future.result()
+                results[index] = record
+    finally:
+        board.close()
 
     return _build_report(
         investigator.model,
@@ -285,6 +295,110 @@ def _optional_delta(current: float, previous: Any) -> float | None:
 def _failed_check_names(checks: dict[str, Any]) -> str:
     failed = [name for name, check in checks.items() if not check["passed"]]
     return f"failed checks: {', '.join(failed)}" if failed else ""
+
+
+def _job_label(ticket_id: str, repetition: int, runs_per_case: int) -> str:
+    if runs_per_case == 1:
+        return ticket_id
+    return f"{ticket_id} run {repetition}/{runs_per_case}"
+
+
+@dataclass
+class ProgressRow:
+    label: str
+    status: str
+    started_at: float | None = None
+    elapsed_s: float | None = None
+    tokens: int | None = None
+    outcome: str = ""
+
+
+_COLOR = {"pass": "\x1b[32m", "fail": "\x1b[31m"}
+_RESET = "\x1b[0m"
+
+
+def format_progress_row(row: ProgressRow, now: float, color: bool = False) -> str:
+    if row.status == "working" and row.started_at is not None:
+        elapsed = f"{now - row.started_at:.1f}s"
+    elif row.elapsed_s is not None:
+        elapsed = f"{row.elapsed_s:.1f}s"
+    else:
+        elapsed = "—"
+    tokens = "—" if row.tokens is None else str(row.tokens)
+    line = f"{row.label:<16} {row.status:<8} {elapsed:>7} {tokens:>8} tokens  {row.outcome}".rstrip()
+    if color and row.status in _COLOR:
+        return f"{_COLOR[row.status]}{line}{_RESET}"
+    return line
+
+
+class EvaluationBoard:
+    def __init__(
+        self,
+        labels: list[str],
+        stream: TextIO | None = None,
+        live: bool | None = None,
+        interval_seconds: float = 1,
+    ) -> None:
+        self.order = labels
+        self.rows = {label: ProgressRow(label, "queued") for label in labels}
+        self.stream = stream or sys.stdout
+        self.live = self.stream.isatty() if live is None else live
+        self.interval_seconds = interval_seconds
+        self.drawn = False
+        self.lock = threading.Lock()
+        self._stop = threading.Event()
+        self._ticker: threading.Thread | None = None
+
+    def start(self) -> None:
+        self.render()
+        if self.live and self.interval_seconds > 0:
+            self._ticker = threading.Thread(target=self._tick, name="evaluation-board", daemon=True)
+            self._ticker.start()
+
+    def mark_working(self, label: str) -> None:
+        with self.lock:
+            row = self.rows[label]
+            row.status = "working"
+            row.started_at = perf_counter()
+        self.render()
+
+    def mark_finished(self, label: str, record: dict[str, Any]) -> None:
+        elapsed_ms = record.get("elapsed_ms")
+        with self.lock:
+            row = self.rows[label]
+            row.status = "pass" if record.get("passed") else "fail"
+            row.elapsed_s = None if elapsed_ms is None else elapsed_ms / 1000
+            row.tokens = (record.get("tokens") or {}).get("total")
+            row.outcome = (record.get("outcome") or {}).get("root_cause_code") or record.get("error") or ""
+        self.render()
+
+    def close(self) -> None:
+        self._stop.set()
+        if self._ticker is not None:
+            self._ticker.join(timeout=0.2)
+        self.render()
+        if self.live and self.drawn:
+            self.stream.write("\x1b[?25h")
+            self.stream.flush()
+
+    def render(self) -> None:
+        if not self.live:
+            return
+        now = perf_counter()
+        with self.lock:
+            lines = [format_progress_row(self.rows[label], now, color=True) for label in self.order]
+        if self.drawn:
+            self.stream.write(f"\x1b[{len(lines)}A")
+        else:
+            self.stream.write("\x1b[?25l")
+        for line in lines:
+            self.stream.write(f"\x1b[2K{line}\n")
+        self.stream.flush()
+        self.drawn = True
+
+    def _tick(self) -> None:
+        while not self._stop.wait(self.interval_seconds):
+            self.render()
 
 
 def build_parser() -> argparse.ArgumentParser:

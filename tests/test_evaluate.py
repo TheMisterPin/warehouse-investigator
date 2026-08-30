@@ -3,7 +3,12 @@ import time
 from pathlib import Path
 
 from warehouse_investigator.agent import InvestigationRun
-from warehouse_investigator.evaluate import run_evaluation, score_outcome
+from warehouse_investigator.evaluate import (
+    ProgressRow,
+    format_progress_row,
+    run_evaluation,
+    score_outcome,
+)
 from warehouse_investigator.models import InvestigationResult
 from warehouse_investigator.evaluation_data import EVALUATION_CASES
 
@@ -126,3 +131,44 @@ def test_evaluation_runs_four_tickets_concurrently(tmp_path: Path) -> None:
     assert investigator.max_active == 4
     assert report["configuration"]["workers"] == 4
     assert [record["ticket_id"] for record in report["results"]] == ["INC-001", "INC-002", "INC-003", "INC-004"]
+
+
+def test_progress_row_shows_ticket_status_time_and_tokens() -> None:
+    queued = format_progress_row(ProgressRow("INC-001", "queued"), now=0)
+    working = format_progress_row(ProgressRow("INC-002", "working", started_at=10.0), now=22.3)
+    passed = format_progress_row(
+        ProgressRow(
+            "INC-003",
+            "pass",
+            elapsed_s=8.2,
+            tokens=4210,
+            outcome="PENDING_CYCLE_COUNT",
+        ),
+        now=0,
+    )
+
+    assert queued.startswith("INC-001")
+    assert "queued" in queued
+    assert "—" in queued
+    assert "working" in working
+    assert "12.3s" in working
+    assert "4210" in passed
+    assert "PENDING_CYCLE_COUNT" in passed
+
+
+def test_finished_progress_rows_use_green_and_red() -> None:
+    passed = format_progress_row(
+        ProgressRow("INC-001", "pass", elapsed_s=18.2, tokens=8559, outcome="TRANSFER_NOT_RECEIVED"),
+        now=0,
+        color=True,
+    )
+    failed = format_progress_row(
+        ProgressRow("INC-006", "fail", elapsed_s=45.1, tokens=8900, outcome="INSUFFICIENT_EVIDENCE"),
+        now=0,
+        color=True,
+    )
+
+    assert passed.startswith("\x1b[32m")
+    assert "8559" in passed
+    assert failed.startswith("\x1b[31m")
+    assert "INSUFFICIENT_EVIDENCE" in failed
