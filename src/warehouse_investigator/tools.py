@@ -17,7 +17,7 @@ def get_ticket(ticket_id: str) -> dict[str, Any]:
 def query_ledger(
     ticket_id: str | None = None, sku: str | None = None, location: str | None = None
 ) -> list[dict[str, Any]] | dict[str, str]:
-    """Return ledger events newest first; ticket results can contain unrelated activity that must be reconciled."""
+    """Return ledger events newest first. A ticket_id query returns the full ticket ledger and ignores sku/location; results can contain unrelated activity that must be reconciled."""
     if not ticket_id and not sku and not location:
         return {"error": "query_ledger requires ticket_id, sku, or location"}
     return warehouse_data.query_ledger(ticket_id=ticket_id, sku=sku, location=location)

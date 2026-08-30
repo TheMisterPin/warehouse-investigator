@@ -17,7 +17,7 @@ from .agent import Investigator
 from .factory import create_investigator
 from .models import InvestigationResult
 from .routing import RoutedInvestigator
-from .evaluation_data import EVALUATION_CASES
+from .evaluation_data import EVALUATION_CASES, load_evaluation_cases
 
 
 def score_outcome(ticket_id: str, result: InvestigationResult, expected: dict[str, Any]) -> dict[str, Any]:
@@ -84,8 +84,9 @@ def run_evaluation(
     max_turns: int,
     trajectory_dir: Path,
     case_ids: list[str] | None = None,
-    workers: int = 2,
+    workers: int = 1,
     progress_interval_seconds: float = 1,
+    cases: dict[str, dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     if runs_per_case < 1:
         raise ValueError("runs_per_case must be at least 1")
@@ -93,9 +94,9 @@ def run_evaluation(
         raise ValueError("workers must be at least 1")
     started_at = datetime.now(UTC)
     started_perf = perf_counter()
-    selected_cases = EVALUATION_CASES
+    selected_cases = cases or EVALUATION_CASES
     if case_ids:
-        unknown = sorted(set(case_ids) - set(EVALUATION_CASES))
+        unknown = sorted(set(case_ids) - set(selected_cases))
         if unknown:
             raise ValueError(f"Unknown case IDs: {', '.join(unknown)}")
         selected_cases = {ticket_id: EVALUATION_CASES[ticket_id] for ticket_id in dict.fromkeys(case_ids)}
@@ -237,7 +238,7 @@ def _build_report(
     started_perf: float,
     results: list[dict[str, Any]],
     selected_cases: dict[str, dict[str, Any]],
-    workers: int = 2,
+    workers: int = 1,
 ) -> dict[str, Any]:
     completed = [record for record in results if record["elapsed_ms"] is not None]
     passed = sum(record["passed"] for record in results)
@@ -438,11 +439,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--host", help="Ollama host")
     parser.add_argument("--runs", type=int, default=1, help="Repetitions per case (default: 1)")
     parser.add_argument("--max-turns", type=int, default=12)
-    parser.add_argument("--workers", type=int, default=2, help="Concurrent ticket investigations (default: 2)")
+    parser.add_argument("--workers", type=int, default=1, help="Concurrent ticket investigations (default: 1)")
     parser.add_argument("--trajectory-dir", type=Path, default=Path("trajectories/evaluation"))
     parser.add_argument("--report-dir", type=Path, default=Path("reports"))
     parser.add_argument("--compare-to", type=Path, help="Previous JSON report to compare against")
     parser.add_argument("--case", dest="case_ids", action="append", help="Run only this case ID; may be repeated")
+    parser.add_argument("--case-file", type=Path, help="Evaluator JSON file for held-out or regression cases")
     return parser
 
 
@@ -455,8 +457,9 @@ def main() -> None:
         deep_model=args.deep_model,
     )
     try:
+        cases = load_evaluation_cases(args.case_file) if args.case_file else None
         report = run_evaluation(
-            investigator, args.runs, args.max_turns, args.trajectory_dir, args.case_ids, args.workers
+            investigator, args.runs, args.max_turns, args.trajectory_dir, args.case_ids, args.workers, cases=cases
         )
         if args.compare_to:
             report["comparison"] = compare_reports(report, load_report(args.compare_to), args.compare_to)

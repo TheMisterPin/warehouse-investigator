@@ -118,10 +118,10 @@ class ConcurrentInvestigator:
         )
 
 
-def test_evaluate_defaults_to_two_workers() -> None:
+def test_evaluate_defaults_to_one_worker() -> None:
     args = build_parser().parse_args([])
 
-    assert args.workers == 2
+    assert args.workers == 1
 
 
 def test_compare_reports_includes_time_and_worker_deltas() -> None:

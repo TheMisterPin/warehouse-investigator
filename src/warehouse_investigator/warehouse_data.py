@@ -57,6 +57,20 @@ CREATE INDEX idx_ledger_ticket ON ledger_events(ticket_id);
 CREATE INDEX idx_ledger_sku ON ledger_events(sku);
 CREATE INDEX idx_ledger_location ON ledger_events(location);
 CREATE INDEX idx_snapshots_sku_location ON snapshots(sku, location);
+
+CREATE TABLE IF NOT EXISTS feedback (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    ticket_id TEXT NOT NULL,
+    original_result TEXT NOT NULL,
+    corrected_result TEXT NOT NULL,
+    reason TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
+    created_at TEXT NOT NULL,
+    reviewed_at TEXT,
+    trajectory_path TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_feedback_ticket_status ON feedback(ticket_id, status);
 """
 
 _override_db_path: Path | None = None
@@ -210,6 +224,21 @@ def connect(db_path: Path | None = None) -> sqlite3.Connection:
         seed(path)
     connection = sqlite3.connect(path)
     connection.row_factory = sqlite3.Row
+    connection.executescript("""
+        CREATE TABLE IF NOT EXISTS feedback (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            ticket_id TEXT NOT NULL,
+            original_result TEXT NOT NULL,
+            corrected_result TEXT NOT NULL,
+            reason TEXT NOT NULL,
+            status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
+            created_at TEXT NOT NULL,
+            reviewed_at TEXT,
+            trajectory_path TEXT
+        );
+        CREATE INDEX IF NOT EXISTS idx_feedback_ticket_status ON feedback(ticket_id, status);
+    """)
+    connection.commit()
     return connection
 
 
@@ -278,12 +307,13 @@ def query_ledger(
     if ticket_id:
         clauses.append("ticket_id = ?")
         params.append(ticket_id)
-    elif sku:
-        clauses.append("sku = ?")
-        params.append(sku)
-    if location:
-        clauses.append("location = ?")
-        params.append(location)
+    else:
+        if sku:
+            clauses.append("sku = ?")
+            params.append(sku)
+        if location:
+            clauses.append("location = ?")
+            params.append(location)
     sql = "SELECT * FROM ledger_events"
     if clauses:
         sql += " WHERE " + " AND ".join(clauses)

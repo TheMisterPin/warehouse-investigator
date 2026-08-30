@@ -17,6 +17,7 @@ dev = ["pytest>=8"]
 [project.scripts]
 investigate = "warehouse_investigator.cli:main"
 evaluate = "warehouse_investigator.evaluate:main"
+feedback = "warehouse_investigator.feedback_cli:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

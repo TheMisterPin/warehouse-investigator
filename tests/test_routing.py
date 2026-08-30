@@ -90,7 +90,7 @@ def test_high_risk_outcome_receives_deep_review() -> None:
     assert run.routing["models_used"] == ["qwen3:8b", "qwen3.5:27b"]
 
 
-def test_missing_document_overrides_high_model_confidence() -> None:
+def test_missing_document_is_finalized_without_deep_review() -> None:
     runs = {model: make_run(model) for model in ("qwen3:8b", "qwen3.5:27b")}
     for run in runs.values():
         run.steps.append(
@@ -105,11 +105,13 @@ def test_missing_document_overrides_high_model_confidence() -> None:
 
     run = router.investigate_with_trace("INC-001", trajectory_dir=None)
 
-    assert run.model == "qwen3.5:27b"
+    assert run.model == "qwen3:8b"
+    assert run.outcome.root_cause_code == "INSUFFICIENT_EVIDENCE"
     assert run.routing["attempts"][0]["evidence_flags"] == ["missing_document"]
+    assert run.routing["models_used"] == ["qwen3:8b"]
 
 
-def test_pending_post_receives_deep_review() -> None:
+def test_pending_post_is_finalized_without_deep_review() -> None:
     runs = {model: make_run(model) for model in ("qwen3:8b", "qwen3.5:27b")}
     for run in runs.values():
         run.steps.append(
@@ -131,8 +133,102 @@ def test_pending_post_receives_deep_review() -> None:
 
     run = router.investigate_with_trace("INC-001", trajectory_dir=None)
 
-    assert run.model == "qwen3.5:27b"
+    assert run.model == "qwen3:8b"
+    assert run.outcome.root_cause_code == "COUNT_ADJUSTMENT_NOT_POSTED"
     assert run.routing["attempts"][0]["evidence_flags"] == ["pending_post"]
+
+
+def test_partial_transfer_is_finalized_without_deep_review() -> None:
+    runs = {model: make_run(model) for model in ("qwen3:8b", "qwen3.5:27b")}
+    for run in runs.values():
+        run.steps.append(
+            {
+                "step": 2,
+                "type": "tool",
+                "name": "get_document",
+                "result": {"id": "TR-200", "type": "transfer", "status": "partially_received"},
+            }
+        )
+    router = make_router(runs)
+
+    run = router.investigate_with_trace("INC-001", trajectory_dir=None)
+
+    assert run.model == "qwen3:8b"
+    assert run.outcome.root_cause_code == "PARTIAL_TRANSFER_RECEIPT"
+    assert run.routing["attempts"][0]["evidence_flags"] == ["partial_transfer"]
+
+
+def test_posted_release_is_finalized_without_deep_review() -> None:
+    runs = {
+        model: make_run(model, code="STALE_RESERVATION")
+        for model in ("qwen3:8b", "qwen3.5:27b")
+    }
+    for run in runs.values():
+        run.steps.extend(
+            [
+                {
+                    "step": 2,
+                    "type": "tool",
+                    "name": "query_ledger",
+                    "result": [
+                        {
+                            "id": "EV-7003",
+                            "event_type": "reservation_released",
+                            "state": "posted",
+                        }
+                    ],
+                },
+                {
+                    "step": 3,
+                    "type": "tool",
+                    "name": "get_snapshot",
+                    "result": {"reserved_quantity": 0, "physical_quantity": 50},
+                },
+            ]
+        )
+    router = make_router(runs)
+
+    run = router.investigate_with_trace("INC-001", trajectory_dir=None)
+
+    assert run.model == "qwen3:8b"
+    assert run.outcome.root_cause_code == "NO_DISCREPANCY"
+    assert "posted_release" in run.routing["attempts"][0]["evidence_flags"]
+
+
+def test_failed_release_with_remaining_reserved_does_not_force_review() -> None:
+    runs = {
+        model: make_run(model, code="STALE_RESERVATION")
+        for model in ("qwen3:8b", "qwen3.5:27b")
+    }
+    for run in runs.values():
+        run.steps.extend(
+            [
+                {
+                    "step": 2,
+                    "type": "tool",
+                    "name": "query_ledger",
+                    "result": [
+                        {
+                            "id": "EV-8003",
+                            "event_type": "reservation_released",
+                            "state": "failed",
+                        }
+                    ],
+                },
+                {
+                    "step": 3,
+                    "type": "tool",
+                    "name": "get_snapshot",
+                    "result": {"reserved_quantity": 9, "physical_quantity": 50},
+                },
+            ]
+        )
+    router = make_router(runs)
+
+    run = router.investigate_with_trace("INC-001", trajectory_dir=None)
+
+    assert run.model == "qwen3:8b"
+    assert "posted_release" not in run.routing["attempts"][0]["evidence_flags"]
 
 
 class ReviewClient:

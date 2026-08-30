@@ -56,6 +56,23 @@ def test_query_ledger_filters_and_sorts_newest_first(tmp_path: Path) -> None:
     assert any(event["sku"] != "SKU-RED-CHAIR" for event in events)
 
 
+def test_ticket_ledger_query_ignores_sku_and_location(tmp_path: Path) -> None:
+    db_path = tmp_path / "warehouse.db"
+    seed(db_path)
+
+    events = query_ledger(
+        ticket_id="INC-006",
+        sku="SKU-YELLOW-BENCH",
+        location="SEA-01",
+        db_path=db_path,
+    )
+    ids = {event["id"] for event in events}
+
+    assert "EV-6001" in ids
+    assert "EV-6002" in ids
+    assert any(event["location"] == "PDX-01" for event in events)
+
+
 def test_get_document_preserves_heterogeneous_fields(tmp_path: Path) -> None:
     db_path = tmp_path / "warehouse.db"
     seed(db_path)

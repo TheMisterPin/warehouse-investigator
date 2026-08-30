@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any
 
@@ -14,6 +14,8 @@ from .context import (
     new_evidence,
     record_evidence,
 )
+from .finalize import finalize_outcome
+from .feedback import build_feedback_context
 from .models import InvestigationResult, RESULT_SCHEMA
 from .ollama import OllamaClient
 from .tools import TOOL_DEFINITIONS, execute_tool
@@ -66,12 +68,16 @@ class Investigator:
         tokens = {"prompt": 0, "completion": 0, "total": 0}
         steps: list[dict[str, Any]] = []
         evidence = new_evidence()
+        reviewed_feedback = build_feedback_context(ticket_id)
+        if reviewed_feedback:
+            logger.add("feedback_context", feedback=reviewed_feedback)
+            steps.append({"step": len(steps) + 1, "type": "feedback", "feedback": reviewed_feedback})
         try:
             for turn in range(1, max_turns + 1):
                 gate_complete = evidence_gate_complete(evidence)
                 tools = [] if gate_complete else TOOL_DEFINITIONS
                 response_format = RESULT_SCHEMA if gate_complete else None
-                messages = build_model_messages(ticket_id, instructions, evidence)
+                messages = build_model_messages(ticket_id, instructions, evidence, reviewed_feedback)
                 response = self.client.chat(messages, tools, response_format)
                 message = response.get("message", {})
                 observable_message = _observable_message(message, final_result_allowed=response_format is not None)
@@ -142,15 +148,20 @@ class Investigator:
                 result = InvestigationResult.from_dict(_parse_json_content(message.get("content", "")))
                 if result.ticket_id != ticket_id:
                     raise ValueError(f"Final result ticket_id {result.ticket_id!r} does not match {ticket_id!r}")
-                trajectory_path = logger.save(result=result.to_dict())
-                return InvestigationRun(
+                outcome, pinned, reasons = finalize_outcome(result, steps)
+                if pinned or reasons:
+                    logger.add("verifier_adjustment", pinned=pinned, reasons=reasons, outcome=outcome.to_dict())
+                    steps.append({"step": len(steps) + 1, "type": "verifier", "pinned": pinned, "reasons": reasons})
+                run = InvestigationRun(
                     model=self.client.model,
                     elapsed_ms=logger.elapsed_ms,
                     tokens=tokens,
-                    outcome=result,
+                    outcome=outcome,
                     steps=steps,
-                    trajectory_path=str(trajectory_path) if trajectory_path else None,
+                    trajectory_path=None,
                 )
+                trajectory_path = logger.save(result=run.outcome.to_dict())
+                return replace(run, trajectory_path=str(trajectory_path) if trajectory_path else None)
             raise RuntimeError(f"Investigation exceeded the {max_turns}-turn limit without a final result")
         except Exception as error:
             logger.save(error=str(error))
@@ -187,4 +198,3 @@ def _observable_message(message: dict[str, Any], final_result_allowed: bool) -> 
         content = "No tool call produced; the evidence gate requested the remaining tools."
     observable["content"] = content
     return observable
-

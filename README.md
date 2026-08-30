@@ -61,7 +61,7 @@ The CLI also prints a complete run record with the final model, elapsed time, ag
 | Automatic (default) | `qwen3:8b` → `qwen3.5:27b` when needed | Lowest measured time-to-answer with deep review for risk and ambiguity |
 | Fixed model | `--model <name>` | Reproducible model comparisons and evaluation baselines |
 
-Auto routing escalates on objective evidence complexity (including a `pending_post` adjustment), low confidence, explicit escalation, or high-review outcomes such as duplicate ledger events and insufficient evidence.
+Auto routing applies a runtime finalizer to citations and procedure-implied causes, then escalates to 27B only for remaining risk such as duplicate ledger events, low confidence, or unpinned insufficient evidence.
 
 ## Evaluate the fixed cases
 
@@ -69,10 +69,10 @@ Auto routing escalates on objective evidence complexity (including a `pending_po
 evaluate --runs 1
 evaluate --case INC-012
 evaluate --model qwen3.5:27b --case INC-012
-evaluate --workers 1
+evaluate --workers 2
 ```
 
-This runs the 12-case challenge two tickets at a time and writes a JSON report under `reports/`. Use `--runs` for repetition, `--case` for targeted reruns, and `--workers` to change concurrency (default 2, so a local 27B review is less likely to time out). A run passes only when its ticket ID, root-cause code, required and forbidden evidence, recommended-action relevance and safety, confidence, and escalation behavior all meet the case definition. The report includes per-run trajectories plus aggregate accuracy, latency, and token usage. It requires Ollama and a pulled model.
+This runs the 12-case challenge one ticket at a time and writes a JSON report under `reports/`. Use `--runs` for repetition, `--case` for targeted reruns, and `--workers` to change concurrency (default 1, so a local 27B review does not share the GPU). A run passes only when its ticket ID, root-cause code, required and forbidden evidence, recommended-action relevance and safety, confidence, and escalation behavior all meet the case definition. The report includes per-run trajectories plus aggregate accuracy, latency, and token usage. It requires Ollama and a pulled model.
 
 ## Project layout
 
@@ -107,3 +107,7 @@ The separated operational datasets, buried-evidence challenge, and resulting 5/1
 The compact evidence bundle, shortened evidence-gate prompt, filtered 27B review payload, and four-wide concurrent evaluation are captured in [docs/06-sixth-pass-development.md](docs/06-sixth-pass-development.md).
 
 The SQLite warehouse adapters, Ollama/Chroma embeddings, and additive `search_records` tool are captured in [docs/07-seventh-pass-development.md](docs/07-seventh-pass-development.md).
+
+The reliability work, ticket-scoped ledger, runtime finalizer, and 12/12 routed eval are captured in [docs/08-eighth-pass-development.md](docs/08-eighth-pass-development.md).
+
+The reviewed feedback loop, verifier hardening, and evaluator regression export are captured in [docs/09-ninth-pass-development.md](docs/09-ninth-pass-development.md).

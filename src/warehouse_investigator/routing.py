@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import UTC, datetime
 from pathlib import Path
 from time import perf_counter
@@ -10,13 +10,14 @@ from typing import Any, Callable
 
 from .agent import InvestigationRun, Investigator
 from .context import compact_json, select_review_evidence
+from .finalize import evidence_flags_from_steps, finalize_outcome
 from .models import InvestigationResult, RESULT_SCHEMA
 from .ollama import OllamaClient, OllamaError
 
 
 DEFAULT_ROUTING_MODELS = ("qwen3:8b", "qwen3.5:27b")
 DEEP_REVIEW_CODES = {"DUPLICATE_LEDGER_EVENT", "INSUFFICIENT_EVIDENCE"}
-DEEP_REVIEW_FLAGS = {"missing_document", "duplicate_event", "conflicting_stock", "pending_post"}
+DEEP_REVIEW_FLAGS = {"duplicate_event"}
 PRIMARY_TIMEOUT_SECONDS = 180
 DEEP_REVIEW_TIMEOUT_SECONDS = 300
 DEEP_REVIEW_TIMEOUT_RETRIES = 1
@@ -86,6 +87,9 @@ class RoutedInvestigator:
                     run = self._review_evidence(
                         model, ticket_id, successful_runs[0], successful_runs, next_reason, attempt_dir
                     )
+                evidence_steps = successful_runs[0].steps if successful_runs else run.steps
+                outcome, pinned, finalizer_reasons = finalize_outcome(run.outcome, evidence_steps)
+                run = replace(run, outcome=outcome)
                 successful_runs.append(run)
                 evidence_flags = sorted(_combined_evidence_flags(successful_runs))
                 attempts.append(
@@ -99,11 +103,12 @@ class RoutedInvestigator:
                         "confidence": run.outcome.confidence,
                         "requires_escalation": run.outcome.requires_escalation,
                         "evidence_flags": evidence_flags,
+                        "finalizer": {"pinned": pinned, "reasons": finalizer_reasons},
                         "trajectory_path": run.trajectory_path,
                         "error": None,
                     }
                 )
-                next_reason = _escalation_reason(index, successful_runs, len(self.models))
+                next_reason = None if pinned else _escalation_reason(index, successful_runs, len(self.models))
                 if next_reason is None:
                     break
             except Exception as error:
@@ -276,69 +281,7 @@ def _escalation_reason(index: int, runs: list[InvestigationRun], tier_count: int
 
 
 def _evidence_flags(run: InvestigationRun) -> set[str]:
-    flags: set[str] = set()
-    ticket: dict[str, Any] | None = None
-    snapshot: dict[str, Any] | None = None
-    documents: list[dict[str, Any]] = []
-    ledger_events: list[dict[str, Any]] = []
-    for step in run.steps:
-        if step.get("type") != "tool":
-            continue
-        name = step.get("name")
-        result = step.get("result")
-        if name == "get_ticket" and isinstance(result, dict) and "error" not in result:
-            ticket = result
-        elif name == "get_snapshot" and isinstance(result, dict) and "error" not in result:
-            snapshot = result
-        elif name == "get_document" and isinstance(result, dict):
-            if "error" in result:
-                flags.add("missing_document")
-            else:
-                documents.append(result)
-        elif name == "query_ledger" and isinstance(result, list):
-            ledger_events.extend(event for event in result if isinstance(event, dict))
-
-    if ticket and len(ticket.get("document_refs", [])) > 1:
-        flags.add("multiple_documents")
-    if any(document.get("status") == "partially_received" for document in documents):
-        flags.add("partial_transfer")
-    if any(event.get("state") == "failed" for event in ledger_events) or any(
-        document.get("reservation_release_status") == "failed" for document in documents
-    ):
-        flags.add("failed_workflow")
-    if any(event.get("state") == "pending_post" for event in ledger_events):
-        flags.add("pending_post")
-    if any(event.get("retry_of") for event in ledger_events) or _has_duplicate_effect(ledger_events):
-        flags.add("duplicate_event")
-
-    completed_transfer_ids = {
-        document.get("id")
-        for document in documents
-        if document.get("type") == "transfer"
-        and document.get("status") == "received"
-        and ticket
-        and document.get("sku") == ticket.get("sku")
-        and document.get("destination_location") == ticket.get("location")
-    }
-    posted_receipt = any(
-        event.get("event_type") == "transfer_received"
-        and event.get("state") == "posted"
-        and event.get("quantity_delta", 0) > 0
-        and event.get("document_id") in completed_transfer_ids
-        and ticket
-        and event.get("sku") == ticket.get("sku")
-        and event.get("location") == ticket.get("location")
-        for event in ledger_events
-    )
-    if (
-        ticket
-        and snapshot
-        and completed_transfer_ids
-        and posted_receipt
-        and ticket.get("expected_quantity") != snapshot.get("physical_quantity")
-    ):
-        flags.add("conflicting_stock")
-    return flags
+    return evidence_flags_from_steps(run.steps)
 
 
 def _combined_evidence_flags(runs: list[InvestigationRun]) -> set[str]:
@@ -346,23 +289,6 @@ def _combined_evidence_flags(runs: list[InvestigationRun]) -> set[str]:
     for run in runs:
         flags.update(_evidence_flags(run))
     return flags
-
-
-def _has_duplicate_effect(events: list[dict[str, Any]]) -> bool:
-    seen: set[tuple[Any, ...]] = set()
-    for event in events:
-        if event.get("state") != "posted" or event.get("quantity_delta") in (None, 0):
-            continue
-        signature = (
-            event.get("event_type"),
-            event.get("document_id"),
-            event.get("location"),
-            event.get("quantity_delta"),
-        )
-        if signature in seen:
-            return True
-        seen.add(signature)
-    return False
 
 
 def _combine_steps(attempts: list[dict[str, Any]], successful_runs: list[InvestigationRun]) -> list[dict[str, Any]]:

@@ -91,7 +91,12 @@ def evidence_gate_complete(evidence: dict[str, Any]) -> bool:
     return evidence["ticket"] is not None and not missing_evidence(evidence)
 
 
-def build_model_messages(ticket_id: str, instructions: str, evidence: dict[str, Any]) -> list[dict[str, Any]]:
+def build_model_messages(
+    ticket_id: str,
+    instructions: str,
+    evidence: dict[str, Any],
+    feedback: list[dict[str, Any]] | None = None,
+) -> list[dict[str, Any]]:
     messages = [
         {"role": "system", "content": instructions},
         {"role": "user", "content": f"Investigate warehouse incident {ticket_id}."},
@@ -101,6 +106,7 @@ def build_model_messages(ticket_id: str, instructions: str, evidence: dict[str, 
     missing = missing_evidence(evidence)
     bundle = {
         "ticket_id": ticket_id,
+        "reviewed_feedback": feedback or [],
         "retrieved": {
             "ticket": compact_tool_result("get_ticket", evidence["ticket"]) if evidence["ticket"] else None,
             "ledger": compact_tool_result("query_ledger", evidence["ledger_result"])
