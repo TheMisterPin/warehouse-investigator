@@ -1,0 +1,290 @@
+{
+  "duration_ms": 10147,
+  "error": null,
+  "events": [
+    {
+      "elapsed_ms": 0,
+      "max_turns": 12,
+      "model": "qwen3:8b",
+      "type": "run_started"
+    },
+    {
+      "completion_tokens": 25,
+      "done_reason": "stop",
+      "elapsed_ms": 1516,
+      "message": {
+        "content": "Requested tool call(s): get_ticket",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-004"
+              },
+              "index": 0,
+              "name": "get_ticket"
+            },
+            "id": "call_6bkonw3n"
+          }
+        ]
+      },
+      "prompt_tokens": 1291,
+      "turn": 1,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-004"
+      },
+      "elapsed_ms": 1517,
+      "name": "get_ticket",
+      "result": {
+        "document_refs": [
+          "TR-200"
+        ],
+        "expected_quantity": 100,
+        "id": "INC-004",
+        "investigation_window_start": "2026-08-26T16:00:00Z",
+        "location": "SEA-01",
+        "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+        "observed_quantity": 98,
+        "reported_at": "2026-08-27T16:00:00Z",
+        "sku": "SKU-WHITE-SHELF",
+        "title": "Inventory reconciliation alert for SKU-WHITE-SHELF at SEA-01"
+      },
+      "turn": 1,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 85,
+      "done_reason": "stop",
+      "elapsed_ms": 3998,
+      "message": {
+        "content": "Requested tool call(s): query_ledger, get_snapshot, get_document",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-004"
+              },
+              "index": 0,
+              "name": "query_ledger"
+            },
+            "id": "call_gs70t3g0"
+          },
+          {
+            "function": {
+              "arguments": {
+                "location": "SEA-01",
+                "sku": "SKU-WHITE-SHELF"
+              },
+              "index": 1,
+              "name": "get_snapshot"
+            },
+            "id": "call_v242jvfc"
+          },
+          {
+            "function": {
+              "arguments": {
+                "document_id": "TR-200"
+              },
+              "index": 2,
+              "name": "get_document"
+            },
+            "id": "call_3ofi279m"
+          }
+        ]
+      },
+      "prompt_tokens": 1495,
+      "turn": 2,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-004"
+      },
+      "elapsed_ms": 3999,
+      "name": "query_ledger",
+      "result": [
+        {
+          "document_id": "TR-X004",
+          "event_type": "transfer_received",
+          "id": "EV-X004",
+          "location": "SEA-01",
+          "quantity_delta": 5,
+          "sku": "SKU-NOISE-004",
+          "state": "posted",
+          "ticket_id": "INC-004",
+          "timestamp": "2026-08-27T15:30:00Z"
+        },
+        {
+          "document_id": "TR-200",
+          "event_type": "transfer_received",
+          "id": "EV-4002",
+          "location": "SEA-01",
+          "quantity_delta": 4,
+          "sku": "SKU-WHITE-SHELF",
+          "state": "posted",
+          "ticket_id": "INC-004",
+          "timestamp": "2026-08-27T14:00:00Z"
+        },
+        {
+          "document_id": "TR-200",
+          "event_type": "transfer_received",
+          "id": "EV-4003",
+          "location": "SEA-01",
+          "quantity_delta": 0,
+          "sku": "SKU-WHITE-SHELF",
+          "state": "pending",
+          "ticket_id": "INC-004",
+          "timestamp": "2026-08-27T14:00:00Z"
+        },
+        {
+          "document_id": "TR-200",
+          "event_type": "transfer_shipped",
+          "id": "EV-4001",
+          "location": "PDX-01",
+          "quantity_delta": -6,
+          "sku": "SKU-WHITE-SHELF",
+          "state": "posted",
+          "ticket_id": "INC-004",
+          "timestamp": "2026-08-27T12:00:00Z"
+        },
+        {
+          "document_id": "CC-H004",
+          "event_type": "count_adjustment_posted",
+          "id": "EV-H004B",
+          "location": "SEA-01",
+          "quantity_delta": 1,
+          "sku": "SKU-WHITE-SHELF",
+          "state": "posted",
+          "ticket_id": "INC-004",
+          "timestamp": "2026-08-20T16:05:00Z"
+        },
+        {
+          "document_id": "CC-H004",
+          "event_type": "cycle_count_completed",
+          "id": "EV-H004A",
+          "location": "SEA-01",
+          "quantity_delta": 1,
+          "sku": "SKU-WHITE-SHELF",
+          "state": "approved",
+          "ticket_id": "INC-004",
+          "timestamp": "2026-08-20T16:00:00Z"
+        }
+      ],
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-WHITE-SHELF"
+      },
+      "elapsed_ms": 4000,
+      "name": "get_snapshot",
+      "result": {
+        "available_quantity": 98,
+        "captured_at": "2026-08-27T15:55:00Z",
+        "history": [
+          {
+            "available_quantity": 98,
+            "captured_at": "2026-08-25T16:00:00Z",
+            "location": "SEA-01",
+            "physical_quantity": 98,
+            "reserved_quantity": 0,
+            "sku": "SKU-WHITE-SHELF",
+            "snapshot_id": "SNAP-004-PREVIOUS"
+          },
+          {
+            "available_quantity": 98,
+            "captured_at": "2026-08-20T16:00:00Z",
+            "location": "SEA-01",
+            "physical_quantity": 98,
+            "reserved_quantity": 0,
+            "sku": "SKU-WHITE-SHELF",
+            "snapshot_id": "SNAP-004-HISTORICAL"
+          }
+        ],
+        "location": "SEA-01",
+        "physical_quantity": 98,
+        "reserved_quantity": 0,
+        "sku": "SKU-WHITE-SHELF",
+        "snapshot_id": "SNAP-004-LATEST"
+      },
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "arguments": {
+        "document_id": "TR-200"
+      },
+      "elapsed_ms": 4001,
+      "name": "get_document",
+      "result": {
+        "destination_location": "SEA-01",
+        "id": "TR-200",
+        "quantity": 6,
+        "received_quantity": 4,
+        "remaining_quantity": 2,
+        "sku": "SKU-WHITE-SHELF",
+        "source_location": "PDX-01",
+        "status": "partially_received",
+        "type": "transfer"
+      },
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 179,
+      "done_reason": "stop",
+      "elapsed_ms": 10146,
+      "message": {
+        "content": "{\n  \"ticket_id\": \"INC-004\",\n  \"root_cause_code\": \"TRANSFER_NOT_RECEIVED\",\n  \"summary\": \"The transfer document TR-200 shows a remaining quantity of 2, indicating that not all shipped items have been received at SEA-01. The partial receipt is evidenced by the posted transfer_received event with quantity_delta 4 and the pending transfer_received event with quantity_delta 0.\",\n  \"evidence_ids\": [\"TR-200\", \"EV-4001\", \"EV-4002\", \"EV-4003\"],\n  \"recommended_action\": \"Verify the receipt of the remaining 2 units from TR-200 and update the status of the transfer document.\",\n  \"confidence\": 0.95,\n  \"requires_escalation\": false\n}",
+        "role": "assistant"
+      },
+      "prompt_tokens": 1718,
+      "turn": 3,
+      "type": "model_response"
+    },
+    {
+      "elapsed_ms": 10147,
+      "outcome": {
+        "confidence": 0.95,
+        "evidence_ids": [
+          "TR-200",
+          "EV-4001",
+          "EV-4002",
+          "EV-4003"
+        ],
+        "recommended_action": "Verify the receipt of the remaining 2 units from TR-200 and update the status of the transfer document.",
+        "requires_escalation": false,
+        "root_cause_code": "PARTIAL_TRANSFER_RECEIPT",
+        "summary": "The transfer document TR-200 shows a remaining quantity of 2, indicating that not all shipped items have been received at SEA-01. The partial receipt is evidenced by the posted transfer_received event with quantity_delta 4 and the pending transfer_received event with quantity_delta 0.",
+        "ticket_id": "INC-004"
+      },
+      "pinned": true,
+      "reasons": [
+        "partial_transfer"
+      ],
+      "type": "verifier_adjustment"
+    }
+  ],
+  "result": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "TR-200",
+      "EV-4001",
+      "EV-4002",
+      "EV-4003"
+    ],
+    "recommended_action": "Verify the receipt of the remaining 2 units from TR-200 and update the status of the transfer document.",
+    "requires_escalation": false,
+    "root_cause_code": "PARTIAL_TRANSFER_RECEIPT",
+    "summary": "The transfer document TR-200 shows a remaining quantity of 2, indicating that not all shipped items have been received at SEA-01. The partial receipt is evidenced by the posted transfer_received event with quantity_delta 4 and the pending transfer_received event with quantity_delta 0.",
+    "ticket_id": "INC-004"
+  },
+  "started_at": "2026-08-31T03:03:49.146158+00:00",
+  "ticket_id": "INC-004"
+}

@@ -1,0 +1,61 @@
+{
+  "elapsed_ms": 9568,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-10002",
+      "EV-10001",
+      "CC-302"
+    ],
+    "recommended_action": "Post the count adjustment for document CC-302 to reconcile the inventory discrepancy.",
+    "requires_escalation": false,
+    "root_cause_code": "COUNT_ADJUSTMENT_NOT_POSTED",
+    "summary": "The cycle count adjustment for SKU-BROWN-TABLE at PDX-01 is pending post despite the count being approved. The adjustment quantity of -3 has not been posted to the inventory.",
+    "ticket_id": "INC-010"
+  },
+  "routing": {
+    "attempt_count": 1,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 9568,
+        "error": null,
+        "evidence_flags": [
+          "pending_post"
+        ],
+        "finalizer": {
+          "pinned": true,
+          "reasons": [
+            "pending_post"
+          ]
+        },
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "COUNT_ADJUSTMENT_NOT_POSTED",
+        "status": "completed",
+        "tokens": {
+          "completion": 260,
+          "prompt": 4424,
+          "total": 4684
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-010_20260831T030621Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3:8b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b"
+    ]
+  },
+  "ticket_id": "INC-010",
+  "tokens": {
+    "completion": 260,
+    "prompt": 4424,
+    "total": 4684
+  }
+}

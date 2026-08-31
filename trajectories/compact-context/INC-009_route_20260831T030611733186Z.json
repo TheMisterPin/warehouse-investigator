@@ -1,0 +1,83 @@
+{
+  "elapsed_ms": 43242,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-9002",
+      "EV-9003",
+      "CC-301"
+    ],
+    "recommended_action": "Escalate to the inventory control team to review and reverse one of the duplicate count adjustment events (EV-9002 or EV-9003) to correct the inventory balance.",
+    "requires_escalation": true,
+    "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+    "summary": "The cycle count document CC-301 was approved and resulted in a -3 adjustment. However, the ledger shows two distinct posted events (EV-9002 and EV-9003) with identical timestamps, quantities (-3), and document references for the same adjustment. This duplicate posting reduced the physical quantity by 6 instead of 3, causing the observed discrepancy between the expected (97) and actual (94) quantities.",
+    "ticket_id": "INC-009"
+  },
+  "routing": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 10121,
+        "error": null,
+        "evidence_flags": [
+          "duplicate_event"
+        ],
+        "finalizer": {
+          "pinned": false,
+          "reasons": []
+        },
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "COUNT_ADJUSTMENT_NOT_POSTED",
+        "status": "completed",
+        "tokens": {
+          "completion": 270,
+          "prompt": 4514,
+          "total": 4784
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-009_20260831T030538Z.json"
+      },
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 33119,
+        "error": null,
+        "evidence_flags": [
+          "duplicate_event"
+        ],
+        "finalizer": {
+          "pinned": false,
+          "reasons": []
+        },
+        "model": "qwen3.5:27b",
+        "reason": "evidence requires deep review: duplicate_event",
+        "requires_escalation": true,
+        "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+        "status": "completed",
+        "tokens": {
+          "completion": 228,
+          "prompt": 1727,
+          "total": 1955
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3.5-27b/INC-009_review_20260831T030611731532Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3.5:27b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-009",
+  "tokens": {
+    "completion": 498,
+    "prompt": 6241,
+    "total": 6739
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "elapsed_ms": 15177,
+  "outcome": {
+    "confidence": 0.7,
+    "evidence_ids": [
+      "EV-6001",
+      "EV-6002",
+      "TR-MISSING"
+    ],
+    "recommended_action": "Escalate to locate the missing document and reconstruct the movement; do not post a receipt from incomplete records.",
+    "requires_escalation": true,
+    "root_cause_code": "INSUFFICIENT_EVIDENCE",
+    "summary": "A transfer shipment of 6 units from PDX-01 to SEA-01 (document TR-MISSING) was posted, but the receipt at SEA-01 is pending. The observed quantity (74) is 2 units less than the expected quantity (76) based on the transfer shipment. The transfer receipt is still pending, which explains the discrepancy.",
+    "ticket_id": "INC-006"
+  },
+  "routing": {
+    "attempt_count": 1,
+    "attempts": [
+      {
+        "confidence": 0.7,
+        "elapsed_ms": 15172,
+        "error": null,
+        "evidence_flags": [
+          "missing_document"
+        ],
+        "finalizer": {
+          "pinned": true,
+          "reasons": [
+            "missing_document"
+          ]
+        },
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": true,
+        "root_cause_code": "INSUFFICIENT_EVIDENCE",
+        "status": "completed",
+        "tokens": {
+          "completion": 294,
+          "prompt": 4359,
+          "total": 4653
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-006_20260831T030508Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3:8b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b"
+    ]
+  },
+  "ticket_id": "INC-006",
+  "tokens": {
+    "completion": 294,
+    "prompt": 4359,
+    "total": 4653
+  }
+}
