@@ -5,6 +5,7 @@ from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any
 
+from . import warehouse_data
 from .context import (
     ALREADY_FETCHED,
     already_fetched,
@@ -62,6 +63,8 @@ class Investigator:
     def investigate_with_trace(
         self, ticket_id: str, max_turns: int = 12, trajectory_dir: Path | None = Path("trajectories")
     ) -> InvestigationRun:
+        if warehouse_data.get_ticket(ticket_id) is None:
+            raise ValueError(f"No ticket found for '{ticket_id}'. Check the ticket ID and try again.")
         instructions = self.instructions_path.read_text(encoding="utf-8")
         logger = TrajectoryLogger(ticket_id, trajectory_dir)
         logger.add("run_started", model=self.client.model, max_turns=max_turns)

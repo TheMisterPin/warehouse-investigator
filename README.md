@@ -16,7 +16,7 @@ A small, local-first warehouse incident investigator. A Python runner sends an i
 
 ## What is included
 
-- `investigate`: CLI for one incident
+- `investigate`: CLI for one incident or a queue of them, printing a human-readable incident note by default (full JSON on request)
 - automatic local-model routing with a fast primary and deep-review tier
 - local Ollama chat client with tool calling and JSON-schema final output
 - read-only tools over a SQLite warehouse database and a Chroma index seeded from deterministic sample data
@@ -56,16 +56,24 @@ Or, without installing the command:
 PYTHONPATH=src python -m warehouse_investigator INC-001
 ```
 
+By default the CLI prints a short incident note — diagnosis, cited evidence, recommended action, confidence, and escalation — the kind of thing an analyst could paste straight into a ticket. Pass more than one ticket ID to work a queue instead of one incident:
+
+```bash
+investigate INC-001 INC-002 INC-003
+```
+
+This prints a one-line-per-ticket summary table instead, and a bad ticket ID among the batch shows as a failed row rather than aborting the run.
+
 Useful options:
 
 ```bash
 investigate INC-001 --model qwen3:8b
 investigate INC-001 --primary-model qwen3:8b --deep-model qwen3.5:27b
 investigate INC-001 --no-log
+investigate INC-001 --format json   # full run record: model, timing, tokens, routing reasons, every observable step
 ```
 
-Each run writes a JSON trajectory under `trajectories/` unless `--no-log` is used.
-The CLI also prints a complete run record with the final model, elapsed time, aggregate prompt/completion token counts, final outcome, routing reasons, and each observable model/tool step. The primary model sees a compact evidence bundle on each turn. Higher model tiers reuse ticket-relevant evidence rather than repeating tool calls or receiving buried distractors.
+Each run writes a JSON trajectory under `trajectories/` unless `--no-log` is used. `--format json` prints the complete run record instead of the incident note — the same shape saved to the trajectory, useful for scripting or for inspecting routing decisions. The primary model sees a compact evidence bundle on each turn. Higher model tiers reuse ticket-relevant evidence rather than repeating tool calls or receiving buried distractors. An unknown ticket ID fails immediately with a clear message instead of exhausting the turn budget.
 
 ### Model routing
 
