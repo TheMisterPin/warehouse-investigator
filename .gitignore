@@ -2,6 +2,10 @@ __pycache__/
 *.py[cod]
 .venv/
 .env
+trajectories/*
+!trajectories/samples/
+reports/*
+!reports/samples/
 .pytest_cache/
 warehouse.db
 chroma/
