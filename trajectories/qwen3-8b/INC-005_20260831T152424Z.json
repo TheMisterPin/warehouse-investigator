@@ -1,0 +1,289 @@
+{
+  "duration_ms": 14417,
+  "error": null,
+  "events": [
+    {
+      "elapsed_ms": 0,
+      "max_turns": 12,
+      "model": "qwen3:8b",
+      "type": "run_started"
+    },
+    {
+      "completion_tokens": 25,
+      "done_reason": "stop",
+      "elapsed_ms": 4572,
+      "message": {
+        "content": "Requested tool call(s): get_ticket",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-005"
+              },
+              "index": 0,
+              "name": "get_ticket"
+            },
+            "id": "call_j0l3wzqf"
+          }
+        ]
+      },
+      "prompt_tokens": 1291,
+      "turn": 1,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-005"
+      },
+      "elapsed_ms": 4574,
+      "name": "get_ticket",
+      "result": {
+        "document_refs": [
+          "TR-201"
+        ],
+        "expected_quantity": 100,
+        "id": "INC-005",
+        "investigation_window_start": "2026-08-26T17:00:00Z",
+        "location": "SEA-01",
+        "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+        "observed_quantity": 106,
+        "reported_at": "2026-08-27T17:00:00Z",
+        "sku": "SKU-BLACK-CABINET",
+        "title": "Inventory reconciliation alert for SKU-BLACK-CABINET at SEA-01"
+      },
+      "turn": 1,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 86,
+      "done_reason": "stop",
+      "elapsed_ms": 7060,
+      "message": {
+        "content": "Requested tool call(s): query_ledger, get_snapshot, get_document",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-005"
+              },
+              "index": 0,
+              "name": "query_ledger"
+            },
+            "id": "call_ti825vcx"
+          },
+          {
+            "function": {
+              "arguments": {
+                "location": "SEA-01",
+                "sku": "SKU-BLACK-CABINET"
+              },
+              "index": 1,
+              "name": "get_snapshot"
+            },
+            "id": "call_f61gytlg"
+          },
+          {
+            "function": {
+              "arguments": {
+                "document_id": "TR-201"
+              },
+              "index": 2,
+              "name": "get_document"
+            },
+            "id": "call_ot5yq8u8"
+          }
+        ]
+      },
+      "prompt_tokens": 1498,
+      "turn": 2,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-005"
+      },
+      "elapsed_ms": 7064,
+      "name": "query_ledger",
+      "result": [
+        {
+          "document_id": "TR-X005",
+          "event_type": "transfer_received",
+          "id": "EV-X005",
+          "location": "SEA-01",
+          "quantity_delta": 5,
+          "sku": "SKU-NOISE-005",
+          "state": "posted",
+          "ticket_id": "INC-005",
+          "timestamp": "2026-08-27T16:30:00Z"
+        },
+        {
+          "document_id": "TR-201",
+          "event_type": "transfer_received",
+          "id": "EV-5003",
+          "location": "SEA-01",
+          "quantity_delta": 6,
+          "sku": "SKU-BLACK-CABINET",
+          "state": "posted",
+          "ticket_id": "INC-005",
+          "timestamp": "2026-08-27T13:01:00Z"
+        },
+        {
+          "document_id": "TR-201",
+          "event_type": "transfer_received",
+          "id": "EV-5002",
+          "location": "SEA-01",
+          "quantity_delta": 6,
+          "sku": "SKU-BLACK-CABINET",
+          "state": "posted",
+          "ticket_id": "INC-005",
+          "timestamp": "2026-08-27T13:00:00Z"
+        },
+        {
+          "document_id": "TR-201",
+          "event_type": "transfer_shipped",
+          "id": "EV-5001",
+          "location": "PDX-01",
+          "quantity_delta": -6,
+          "sku": "SKU-BLACK-CABINET",
+          "state": "posted",
+          "ticket_id": "INC-005",
+          "timestamp": "2026-08-27T11:00:00Z"
+        },
+        {
+          "document_id": "CC-H005",
+          "event_type": "count_adjustment_posted",
+          "id": "EV-H005B",
+          "location": "SEA-01",
+          "quantity_delta": 1,
+          "sku": "SKU-BLACK-CABINET",
+          "state": "posted",
+          "ticket_id": "INC-005",
+          "timestamp": "2026-08-20T17:05:00Z"
+        },
+        {
+          "document_id": "CC-H005",
+          "event_type": "cycle_count_completed",
+          "id": "EV-H005A",
+          "location": "SEA-01",
+          "quantity_delta": 1,
+          "sku": "SKU-BLACK-CABINET",
+          "state": "approved",
+          "ticket_id": "INC-005",
+          "timestamp": "2026-08-20T17:00:00Z"
+        }
+      ],
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-BLACK-CABINET"
+      },
+      "elapsed_ms": 7065,
+      "name": "get_snapshot",
+      "result": {
+        "available_quantity": 106,
+        "captured_at": "2026-08-27T16:55:00Z",
+        "history": [
+          {
+            "available_quantity": 106,
+            "captured_at": "2026-08-25T17:00:00Z",
+            "location": "SEA-01",
+            "physical_quantity": 106,
+            "reserved_quantity": 0,
+            "sku": "SKU-BLACK-CABINET",
+            "snapshot_id": "SNAP-005-PREVIOUS"
+          },
+          {
+            "available_quantity": 106,
+            "captured_at": "2026-08-20T17:00:00Z",
+            "location": "SEA-01",
+            "physical_quantity": 106,
+            "reserved_quantity": 0,
+            "sku": "SKU-BLACK-CABINET",
+            "snapshot_id": "SNAP-005-HISTORICAL"
+          }
+        ],
+        "location": "SEA-01",
+        "physical_quantity": 106,
+        "reserved_quantity": 0,
+        "sku": "SKU-BLACK-CABINET",
+        "snapshot_id": "SNAP-005-LATEST"
+      },
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "arguments": {
+        "document_id": "TR-201"
+      },
+      "elapsed_ms": 7065,
+      "name": "get_document",
+      "result": {
+        "destination_location": "SEA-01",
+        "id": "TR-201",
+        "quantity": 6,
+        "received_quantity": 6,
+        "sku": "SKU-BLACK-CABINET",
+        "source_location": "PDX-01",
+        "status": "received",
+        "type": "transfer"
+      },
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 232,
+      "done_reason": "stop",
+      "elapsed_ms": 14416,
+      "message": {
+        "content": "{\n  \"ticket_id\": \"INC-005\",\n  \"root_cause_code\": \"NO_DISCREPANCY\",\n  \"summary\": \"The observed quantity of 106 matches the physical quantity in the snapshot. The discrepancy between the expected quantity (100) and observed quantity (106) is due to the transfer received events (EV-5001, EV-5002, EV-5003) which added 6 units to the inventory. The count adjustment (EV-H005A, EV-H005B) also contributed to the inventory. No corrective action is needed.\",\n  \"evidence_ids\": [\"EV-5001\", \"EV-5002\", \"EV-5003\", \"EV-H005A\", \"EV-H005B\", \"TR-201\"],\n  \"recommended_action\": \"No action required. The inventory is reconciled and matches the physical count.\",\n  \"confidence\": 1.0,\n  \"requires_escalation\": false\n}",
+        "role": "assistant"
+      },
+      "prompt_tokens": 1723,
+      "turn": 3,
+      "type": "model_response"
+    },
+    {
+      "elapsed_ms": 14416,
+      "outcome": {
+        "confidence": 1.0,
+        "evidence_ids": [
+          "EV-5001",
+          "EV-5002",
+          "EV-5003",
+          "TR-201"
+        ],
+        "recommended_action": "No action required. The inventory is reconciled and matches the physical count.",
+        "requires_escalation": false,
+        "root_cause_code": "NO_DISCREPANCY",
+        "summary": "The observed quantity of 106 matches the physical quantity in the snapshot. The discrepancy between the expected quantity (100) and observed quantity (106) is due to the transfer received events (EV-5001, EV-5002, EV-5003) which added 6 units to the inventory. The count adjustment (EV-H005A, EV-H005B) also contributed to the inventory. No corrective action is needed.",
+        "ticket_id": "INC-005"
+      },
+      "pinned": false,
+      "reasons": [
+        "citations"
+      ],
+      "type": "verifier_adjustment"
+    }
+  ],
+  "result": {
+    "confidence": 1.0,
+    "evidence_ids": [
+      "EV-5001",
+      "EV-5002",
+      "EV-5003",
+      "TR-201"
+    ],
+    "recommended_action": "No action required. The inventory is reconciled and matches the physical count.",
+    "requires_escalation": false,
+    "root_cause_code": "NO_DISCREPANCY",
+    "summary": "The observed quantity of 106 matches the physical quantity in the snapshot. The discrepancy between the expected quantity (100) and observed quantity (106) is due to the transfer received events (EV-5001, EV-5002, EV-5003) which added 6 units to the inventory. The count adjustment (EV-H005A, EV-H005B) also contributed to the inventory. No corrective action is needed.",
+    "ticket_id": "INC-005"
+  },
+  "started_at": "2026-08-31T15:24:09.664234+00:00",
+  "ticket_id": "INC-005"
+}

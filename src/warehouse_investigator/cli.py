@@ -6,6 +6,7 @@ from pathlib import Path
 
 from .factory import create_investigator
 from .ollama import OllamaError
+from .progress import InvestigationProgress
 from .report import format_batch_text, format_result_text
 
 
@@ -33,16 +34,22 @@ def main() -> None:
     )
 
     results: list[dict] = []
-    for ticket_id in args.ticket_ids:
-        try:
-            run = investigator.investigate_with_trace(
-                ticket_id,
-                max_turns=args.max_turns,
-                trajectory_dir=None if args.no_log else args.trajectory_dir,
-            )
-            results.append({"ticket_id": ticket_id, "run": run.to_dict(), "error": None})
-        except (OllamaError, RuntimeError, ValueError) as error:
-            results.append({"ticket_id": ticket_id, "run": None, "error": str(error)})
+    progress = InvestigationProgress(args.ticket_ids)
+    progress.start()
+    try:
+        for ticket_id in args.ticket_ids:
+            progress.mark_working(ticket_id)
+            try:
+                run = investigator.investigate_with_trace(
+                    ticket_id,
+                    max_turns=args.max_turns,
+                    trajectory_dir=None if args.no_log else args.trajectory_dir,
+                )
+                results.append({"ticket_id": ticket_id, "run": run.to_dict(), "error": None})
+            except (OllamaError, RuntimeError, ValueError) as error:
+                results.append({"ticket_id": ticket_id, "run": None, "error": str(error)})
+    finally:
+        progress.close()
 
     single = len(results) == 1
     failures = [entry for entry in results if entry["error"] is not None]

@@ -1,0 +1,279 @@
+{
+  "duration_ms": 10763,
+  "error": null,
+  "events": [
+    {
+      "elapsed_ms": 0,
+      "max_turns": 12,
+      "model": "qwen3:8b",
+      "type": "run_started"
+    },
+    {
+      "completion_tokens": 25,
+      "done_reason": "stop",
+      "elapsed_ms": 1594,
+      "message": {
+        "content": "Requested tool call(s): get_ticket",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-001"
+              },
+              "index": 0,
+              "name": "get_ticket"
+            },
+            "id": "call_vhq14dzo"
+          }
+        ]
+      },
+      "prompt_tokens": 1291,
+      "turn": 1,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-001"
+      },
+      "elapsed_ms": 1596,
+      "name": "get_ticket",
+      "result": {
+        "document_refs": [
+          "TR-100"
+        ],
+        "expected_quantity": 100,
+        "id": "INC-001",
+        "investigation_window_start": "2026-08-26T15:00:00Z",
+        "location": "SEA-01",
+        "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+        "observed_quantity": 94,
+        "reported_at": "2026-08-27T15:00:00Z",
+        "sku": "SKU-RED-CHAIR",
+        "title": "Inventory reconciliation alert for SKU-RED-CHAIR at SEA-01"
+      },
+      "turn": 1,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 85,
+      "done_reason": "stop",
+      "elapsed_ms": 4077,
+      "message": {
+        "content": "Requested tool call(s): query_ledger, get_snapshot, get_document",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-001"
+              },
+              "index": 0,
+              "name": "query_ledger"
+            },
+            "id": "call_14ndlnm6"
+          },
+          {
+            "function": {
+              "arguments": {
+                "location": "SEA-01",
+                "sku": "SKU-RED-CHAIR"
+              },
+              "index": 1,
+              "name": "get_snapshot"
+            },
+            "id": "call_7pefyd1e"
+          },
+          {
+            "function": {
+              "arguments": {
+                "document_id": "TR-100"
+              },
+              "index": 2,
+              "name": "get_document"
+            },
+            "id": "call_f4ocsqtw"
+          }
+        ]
+      },
+      "prompt_tokens": 1495,
+      "turn": 2,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-001"
+      },
+      "elapsed_ms": 4080,
+      "name": "query_ledger",
+      "result": [
+        {
+          "document_id": "TR-X001",
+          "event_type": "transfer_received",
+          "id": "EV-X001",
+          "location": "SEA-01",
+          "quantity_delta": 5,
+          "sku": "SKU-NOISE-001",
+          "state": "posted",
+          "ticket_id": "INC-001",
+          "timestamp": "2026-08-27T14:30:00Z"
+        },
+        {
+          "document_id": "TR-100",
+          "event_type": "transfer_shipped",
+          "id": "EV-1001",
+          "location": "PDX-01",
+          "quantity_delta": -6,
+          "sku": "SKU-RED-CHAIR",
+          "state": "posted",
+          "ticket_id": "INC-001",
+          "timestamp": "2026-08-27T12:00:00Z"
+        },
+        {
+          "document_id": "TR-100",
+          "event_type": "transfer_received",
+          "id": "EV-1002",
+          "location": "SEA-01",
+          "quantity_delta": 0,
+          "sku": "SKU-RED-CHAIR",
+          "state": "pending",
+          "ticket_id": "INC-001",
+          "timestamp": "2026-08-27T12:00:00Z"
+        },
+        {
+          "document_id": "CC-H001",
+          "event_type": "count_adjustment_posted",
+          "id": "EV-H001B",
+          "location": "SEA-01",
+          "quantity_delta": 1,
+          "sku": "SKU-RED-CHAIR",
+          "state": "posted",
+          "ticket_id": "INC-001",
+          "timestamp": "2026-08-20T15:05:00Z"
+        },
+        {
+          "document_id": "CC-H001",
+          "event_type": "cycle_count_completed",
+          "id": "EV-H001A",
+          "location": "SEA-01",
+          "quantity_delta": 1,
+          "sku": "SKU-RED-CHAIR",
+          "state": "approved",
+          "ticket_id": "INC-001",
+          "timestamp": "2026-08-20T15:00:00Z"
+        }
+      ],
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-RED-CHAIR"
+      },
+      "elapsed_ms": 4082,
+      "name": "get_snapshot",
+      "result": {
+        "available_quantity": 94,
+        "captured_at": "2026-08-27T14:55:00Z",
+        "history": [
+          {
+            "available_quantity": 94,
+            "captured_at": "2026-08-25T15:00:00Z",
+            "location": "SEA-01",
+            "physical_quantity": 94,
+            "reserved_quantity": 0,
+            "sku": "SKU-RED-CHAIR",
+            "snapshot_id": "SNAP-001-PREVIOUS"
+          },
+          {
+            "available_quantity": 94,
+            "captured_at": "2026-08-20T15:00:00Z",
+            "location": "SEA-01",
+            "physical_quantity": 94,
+            "reserved_quantity": 0,
+            "sku": "SKU-RED-CHAIR",
+            "snapshot_id": "SNAP-001-HISTORICAL"
+          }
+        ],
+        "location": "SEA-01",
+        "physical_quantity": 94,
+        "reserved_quantity": 0,
+        "sku": "SKU-RED-CHAIR",
+        "snapshot_id": "SNAP-001-LATEST"
+      },
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "arguments": {
+        "document_id": "TR-100"
+      },
+      "elapsed_ms": 4083,
+      "name": "get_document",
+      "result": {
+        "destination_location": "SEA-01",
+        "id": "TR-100",
+        "quantity": 6,
+        "received_at": null,
+        "shipped_at": "2026-08-27T12:00:00Z",
+        "sku": "SKU-RED-CHAIR",
+        "source_location": "PDX-01",
+        "status": "in_transit",
+        "type": "transfer"
+      },
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 208,
+      "done_reason": "stop",
+      "elapsed_ms": 10763,
+      "message": {
+        "content": "{\n  \"ticket_id\": \"INC-001\",\n  \"root_cause_code\": \"TRANSFER_NOT_RECEIVED\",\n  \"summary\": \"A transfer shipment (TR-100) of 6 units of SKU-RED-CHAIR from PDX-01 to SEA-01 was posted as shipped but not yet received. The pending transfer receipt (EV-1002) indicates the destination receipt is not posted, leading to a discrepancy between expected and observed quantities.\",\n  \"evidence_ids\": [\"TR-100\", \"EV-1001\", \"EV-1002\", \"EV-1001\", \"EV-H001A\", \"EV-H001B\"],\n  \"recommended_action\": \"Verify the receipt of the transfer shipment (TR-100) and post the destination receipt to reconcile the inventory discrepancy.\",\n  \"confidence\": 0.95,\n  \"requires_escalation\": false\n}",
+        "role": "assistant"
+      },
+      "prompt_tokens": 1657,
+      "turn": 3,
+      "type": "model_response"
+    },
+    {
+      "elapsed_ms": 10763,
+      "outcome": {
+        "confidence": 0.95,
+        "evidence_ids": [
+          "TR-100",
+          "EV-1001",
+          "EV-1002",
+          "EV-1001"
+        ],
+        "recommended_action": "Verify the receipt of the transfer shipment (TR-100) and post the destination receipt to reconcile the inventory discrepancy.",
+        "requires_escalation": false,
+        "root_cause_code": "TRANSFER_NOT_RECEIVED",
+        "summary": "A transfer shipment (TR-100) of 6 units of SKU-RED-CHAIR from PDX-01 to SEA-01 was posted as shipped but not yet received. The pending transfer receipt (EV-1002) indicates the destination receipt is not posted, leading to a discrepancy between expected and observed quantities.",
+        "ticket_id": "INC-001"
+      },
+      "pinned": false,
+      "reasons": [
+        "citations"
+      ],
+      "type": "verifier_adjustment"
+    }
+  ],
+  "result": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "TR-100",
+      "EV-1001",
+      "EV-1002",
+      "EV-1001"
+    ],
+    "recommended_action": "Verify the receipt of the transfer shipment (TR-100) and post the destination receipt to reconcile the inventory discrepancy.",
+    "requires_escalation": false,
+    "root_cause_code": "TRANSFER_NOT_RECEIVED",
+    "summary": "A transfer shipment (TR-100) of 6 units of SKU-RED-CHAIR from PDX-01 to SEA-01 was posted as shipped but not yet received. The pending transfer receipt (EV-1002) indicates the destination receipt is not posted, leading to a discrepancy between expected and observed quantities.",
+    "ticket_id": "INC-001"
+  },
+  "started_at": "2026-08-31T16:10:35.369520+00:00",
+  "ticket_id": "INC-001"
+}

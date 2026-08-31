@@ -1,0 +1,62 @@
+{
+  "elapsed_ms": 10182,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "TR-200",
+      "EV-4001",
+      "EV-4002",
+      "EV-4003"
+    ],
+    "recommended_action": "Verify the receipt of the remaining 2 units from TR-200 and update the status of the transfer document.",
+    "requires_escalation": false,
+    "root_cause_code": "PARTIAL_TRANSFER_RECEIPT",
+    "summary": "The transfer document TR-200 shows a remaining quantity of 2, indicating that not all shipped items have been received at SEA-01. The partial receipt is evidenced by the posted transfer_received event with quantity_delta 4 and the pending transfer_received event with quantity_delta 0.",
+    "ticket_id": "INC-004"
+  },
+  "routing": {
+    "attempt_count": 1,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 10180,
+        "error": null,
+        "evidence_flags": [
+          "partial_transfer"
+        ],
+        "finalizer": {
+          "pinned": true,
+          "reasons": [
+            "partial_transfer"
+          ]
+        },
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "PARTIAL_TRANSFER_RECEIPT",
+        "status": "completed",
+        "tokens": {
+          "completion": 289,
+          "prompt": 4504,
+          "total": 4793
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-004_20260831T150840Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3:8b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b"
+    ]
+  },
+  "ticket_id": "INC-004",
+  "tokens": {
+    "completion": 289,
+    "prompt": 4504,
+    "total": 4793
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "elapsed_ms": 13450,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "TR-100",
+      "EV-1001",
+      "EV-1002",
+      "EV-1001"
+    ],
+    "recommended_action": "Verify the receipt of the transfer shipment (TR-100) and post the destination receipt to reconcile the inventory discrepancy.",
+    "requires_escalation": false,
+    "root_cause_code": "TRANSFER_NOT_RECEIVED",
+    "summary": "A transfer shipment (TR-100) of 6 units of SKU-RED-CHAIR from PDX-01 to SEA-01 was posted as shipped but not yet received. The pending transfer receipt (EV-1002) indicates the destination receipt is not posted, leading to a discrepancy between expected and observed quantities.",
+    "ticket_id": "INC-001"
+  },
+  "routing": {
+    "attempt_count": 1,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 13446,
+        "error": null,
+        "evidence_flags": [],
+        "finalizer": {
+          "pinned": false,
+          "reasons": []
+        },
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "TRANSFER_NOT_RECEIVED",
+        "status": "completed",
+        "tokens": {
+          "completion": 318,
+          "prompt": 4443,
+          "total": 4761
+        },
+        "trajectory_path": "trajectories/qwen3-8b/INC-001_20260831T164201Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3:8b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b"
+    ]
+  },
+  "ticket_id": "INC-001",
+  "tokens": {
+    "completion": 318,
+    "prompt": 4443,
+    "total": 4761
+  }
+}

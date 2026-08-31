@@ -1,0 +1,57 @@
+{
+  "elapsed_ms": 10120,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-2001",
+      "EV-2002",
+      "SO-900"
+    ],
+    "recommended_action": "Release the reservation for SKU-BLUE-LAMP at SEA-01 to resolve the stale reservation.",
+    "requires_escalation": false,
+    "root_cause_code": "STALE_RESERVATION",
+    "summary": "A reservation for SKU-BLUE-LAMP at SEA-01 remains active despite the associated sales order (SO-900) being cancelled. The reservation was created (EV-2001) and the order was cancelled (EV-2002), but the reservation was not released. The physical quantity matches the expected quantity, but the reservation is still active.",
+    "ticket_id": "INC-002"
+  },
+  "routing": {
+    "attempt_count": 1,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 10117,
+        "error": null,
+        "evidence_flags": [],
+        "finalizer": {
+          "pinned": false,
+          "reasons": []
+        },
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "STALE_RESERVATION",
+        "status": "completed",
+        "tokens": {
+          "completion": 299,
+          "prompt": 4430,
+          "total": 4729
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-002_20260831T150821Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3:8b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b"
+    ]
+  },
+  "ticket_id": "INC-002",
+  "tokens": {
+    "completion": 299,
+    "prompt": 4430,
+    "total": 4729
+  }
+}

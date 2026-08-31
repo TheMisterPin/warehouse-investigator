@@ -1,0 +1,135 @@
+{
+  "elapsed_ms": 41217,
+  "evidence": [
+    {
+      "arguments": {
+        "ticket_id": "INC-005"
+      },
+      "result": {
+        "document_refs": [
+          "TR-201"
+        ],
+        "expected_quantity": 100,
+        "id": "INC-005",
+        "investigation_window_start": "2026-08-26T17:00:00Z",
+        "location": "SEA-01",
+        "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+        "observed_quantity": 106,
+        "reported_at": "2026-08-27T17:00:00Z",
+        "sku": "SKU-BLACK-CABINET",
+        "title": "Inventory reconciliation alert for SKU-BLACK-CABINET at SEA-01"
+      },
+      "tool": "get_ticket"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-005"
+      },
+      "result": [
+        {
+          "document_id": "TR-201",
+          "event_type": "transfer_received",
+          "id": "EV-5003",
+          "location": "SEA-01",
+          "quantity_delta": 6,
+          "sku": "SKU-BLACK-CABINET",
+          "state": "posted",
+          "ticket_id": "INC-005",
+          "timestamp": "2026-08-27T13:01:00Z"
+        },
+        {
+          "document_id": "TR-201",
+          "event_type": "transfer_received",
+          "id": "EV-5002",
+          "location": "SEA-01",
+          "quantity_delta": 6,
+          "sku": "SKU-BLACK-CABINET",
+          "state": "posted",
+          "ticket_id": "INC-005",
+          "timestamp": "2026-08-27T13:00:00Z"
+        },
+        {
+          "document_id": "TR-201",
+          "event_type": "transfer_shipped",
+          "id": "EV-5001",
+          "location": "PDX-01",
+          "quantity_delta": -6,
+          "sku": "SKU-BLACK-CABINET",
+          "state": "posted",
+          "ticket_id": "INC-005",
+          "timestamp": "2026-08-27T11:00:00Z"
+        }
+      ],
+      "tool": "query_ledger"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-BLACK-CABINET"
+      },
+      "result": {
+        "available_quantity": 106,
+        "captured_at": "2026-08-27T16:55:00Z",
+        "location": "SEA-01",
+        "physical_quantity": 106,
+        "reserved_quantity": 0,
+        "sku": "SKU-BLACK-CABINET",
+        "snapshot_id": "SNAP-005-LATEST"
+      },
+      "tool": "get_snapshot"
+    },
+    {
+      "arguments": {
+        "document_id": "TR-201"
+      },
+      "result": {
+        "destination_location": "SEA-01",
+        "id": "TR-201",
+        "quantity": 6,
+        "received_quantity": 6,
+        "sku": "SKU-BLACK-CABINET",
+        "source_location": "PDX-01",
+        "status": "received",
+        "type": "transfer"
+      },
+      "tool": "get_document"
+    }
+  ],
+  "model": "qwen3.5:27b",
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-5002",
+      "EV-5003",
+      "TR-201"
+    ],
+    "recommended_action": "Escalate to inventory control for a controlled review and reversal of the duplicate ledger event (EV-5003) to correct the inventory balance.",
+    "requires_escalation": true,
+    "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+    "summary": "The inventory discrepancy (expected 100, observed 106) is caused by a duplicate posting of the transfer receipt for document TR-201. Ledger events EV-5002 and EV-5003 both record a 'transfer_received' of +6 units for the same document at nearly identical timestamps (13:00:00Z and 13:01:00Z), resulting in an erroneous addition of 12 units instead of the intended 6. The physical snapshot confirms 106 units, indicating the system state reflects the double-posted receipt.",
+    "ticket_id": "INC-005"
+  },
+  "prior_outcomes": [
+    {
+      "confidence": 1.0,
+      "evidence_ids": [
+        "EV-5001",
+        "EV-5002",
+        "EV-5003",
+        "TR-201"
+      ],
+      "recommended_action": "No action required. The inventory is reconciled and matches the physical count.",
+      "requires_escalation": false,
+      "root_cause_code": "NO_DISCREPANCY",
+      "summary": "The observed quantity of 106 matches the physical quantity in the snapshot. The discrepancy between the expected quantity (100) and observed quantity (106) is due to the transfer received events (EV-5001, EV-5002, EV-5003) which added 6 units to the inventory. The count adjustment (EV-H005A, EV-H005B) also contributed to the inventory. No corrective action is needed.",
+      "ticket_id": "INC-005"
+    }
+  ],
+  "reason": "evidence requires deep review: duplicate_event",
+  "ticket_id": "INC-005",
+  "tokens": {
+    "completion": 264,
+    "prompt": 1781,
+    "total": 2045
+  }
+}

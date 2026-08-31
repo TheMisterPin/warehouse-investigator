@@ -1,0 +1,85 @@
+{
+  "elapsed_ms": 52413,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-5002",
+      "EV-5003",
+      "TR-201"
+    ],
+    "recommended_action": "Escalate to inventory control for a controlled review and reversal of the duplicate ledger event (EV-5003 or EV-5002) to correct the inventory balance.",
+    "requires_escalation": true,
+    "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+    "summary": "The inventory discrepancy (expected 100, observed 106) is caused by a duplicate posting of the transfer receipt for document TR-201. Ledger events EV-5002 and EV-5003 both record a 'transfer_received' of +6 units for the same document at nearly identical timestamps (13:00:00Z and 13:01:00Z), resulting in an erroneous addition of 12 units instead of the intended 6. The physical snapshot confirms 106 units, indicating the system state reflects the double-posted receipt.",
+    "ticket_id": "INC-005"
+  },
+  "routing": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "confidence": 1.0,
+        "elapsed_ms": 11457,
+        "error": null,
+        "evidence_flags": [
+          "conflicting_stock",
+          "duplicate_event"
+        ],
+        "finalizer": {
+          "pinned": false,
+          "reasons": []
+        },
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "NO_DISCREPANCY",
+        "status": "completed",
+        "tokens": {
+          "completion": 343,
+          "prompt": 4512,
+          "total": 4855
+        },
+        "trajectory_path": "trajectories/qwen3-8b/INC-005_20260831T164237Z.json"
+      },
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 40951,
+        "error": null,
+        "evidence_flags": [
+          "conflicting_stock",
+          "duplicate_event"
+        ],
+        "finalizer": {
+          "pinned": false,
+          "reasons": []
+        },
+        "model": "qwen3.5:27b",
+        "reason": "evidence requires deep review: duplicate_event",
+        "requires_escalation": true,
+        "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+        "status": "completed",
+        "tokens": {
+          "completion": 271,
+          "prompt": 1781,
+          "total": 2052
+        },
+        "trajectory_path": "trajectories/qwen3.5-27b/INC-005_review_20260831T164318789215Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3.5:27b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-005",
+  "tokens": {
+    "completion": 614,
+    "prompt": 6293,
+    "total": 6907
+  }
+}
