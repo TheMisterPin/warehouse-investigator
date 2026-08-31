@@ -1,0 +1,5 @@
+# Runtime. Chroma is the only third-party library the investigator imports.
+chromadb==1.5.9
+
+# Tests. The suite uses a hash embedder and a temp warehouse, so it does not need Ollama.
+pytest==9.1.1

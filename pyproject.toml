@@ -9,7 +9,7 @@ description = "A local, tool-using warehouse incident investigator powered by Ol
 readme = "README.md"
 requires-python = ">=3.11"
 authors = [{name = "Warehouse Investigator"}]
-dependencies = ["chromadb"]
+dependencies = ["chromadb==1.5.9"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8"]

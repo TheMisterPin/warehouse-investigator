@@ -10,7 +10,7 @@ A small, local-first warehouse incident investigator. A Python runner sends an i
 
 **Does the agent solve it well:** given a ticket ID, the investigator retrieves and reconciles the same four sources, returns one of eight defined root-cause codes with cited evidence IDs, a concrete recommended action, a calibrated confidence score, and an explicit escalation flag. A runtime evidence gate refuses to let it guess before gathering that evidence. See [Improvement Changelog](#improvement-changelog) below for how well, measured.
 
-**Can another person reproduce the result:** yes — every run and evaluation case is scored against fixed evidence and safety expectations rather than eyeballed. See Setup and Evaluate below.
+**Can another person reproduce the result:** yes — every run and evaluation case is scored against fixed evidence and safety expectations rather than eyeballed. See [REPRODUCE.md](REPRODUCE.md) for the clone-to-eval recipe.
 
 *Ask yourself: who experiences the bottleneck, and why does solving it matter? Here, it's the analyst under ticket-volume pressure — the cost of inconsistency compounds across every ticket they close, not just the hard ones.*
 
@@ -26,14 +26,15 @@ A small, local-first warehouse incident investigator. A Python runner sends an i
 
 ## Setup
 
-Requires Python 3.11+ and a running [Ollama](https://ollama.com/) instance.
+Requires Python 3.11+ and a running [Ollama](https://ollama.com/) instance. For a full clone-to-eval recipe, see [REPRODUCE.md](REPRODUCE.md).
 
 ```bash
 git clone <this-repository-url>
 cd warehouse-investigator
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -e '.[dev]'
+pip install -r requirements.txt
+pip install -e .
 python -m warehouse_investigator.seed
 ollama pull nomic-embed-text
 ollama pull qwen3:8b
