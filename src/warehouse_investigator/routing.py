@@ -8,6 +8,7 @@ from pathlib import Path
 from time import perf_counter
 from typing import Any, Callable
 
+from . import warehouse_data
 from .agent import InvestigationRun, Investigator
 from .context import compact_json, select_review_evidence
 from .finalize import evidence_flags_from_steps, finalize_outcome
@@ -73,6 +74,8 @@ class RoutedInvestigator:
     def investigate_with_trace(
         self, ticket_id: str, max_turns: int = 12, trajectory_dir: Path | None = Path("trajectories")
     ) -> RoutedInvestigationRun:
+        if warehouse_data.get_ticket(ticket_id) is None:
+            raise ValueError(f"No ticket found for '{ticket_id}'. Check the ticket ID and try again.")
         started = perf_counter()
         attempts: list[dict[str, Any]] = []
         successful_runs: list[InvestigationRun] = []

@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import pytest
+
 from warehouse_investigator.agent import Investigator
 from warehouse_investigator.context import ALREADY_FETCHED
 from warehouse_investigator.models import RESULT_SCHEMA
@@ -95,6 +97,20 @@ class StubClient:
 
     def chat(self, *_args, **_kwargs):
         return self.responses.pop(0)
+
+
+class _FailIfCalledClient:
+    model = "stub-model"
+
+    def chat(self, *_args, **_kwargs):
+        raise AssertionError("the model should never be called for an unknown ticket")
+
+
+def test_unknown_ticket_fails_fast_without_calling_the_model(tmp_path: Path) -> None:
+    investigator = Investigator(_FailIfCalledClient(), Path(__file__).parents[1] / "instructions" / "investigator.md")
+
+    with pytest.raises(ValueError, match="No ticket found for 'INC-999'"):
+        investigator.investigate_with_trace("INC-999", trajectory_dir=tmp_path)
 
 
 def test_trace_contains_usage_outcome_and_tool_steps(tmp_path: Path) -> None:

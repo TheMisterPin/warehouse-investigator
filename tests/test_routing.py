@@ -1,5 +1,7 @@
 import json
 
+import pytest
+
 from warehouse_investigator.agent import InvestigationRun
 from warehouse_investigator.models import InvestigationResult
 from warehouse_investigator.routing import RoutedInvestigator
@@ -44,6 +46,16 @@ def make_router(runs: dict[str, InvestigationRun], models: tuple[str, ...] | Non
         models=models or tuple(runs),
         investigator_factory=lambda model: FakeInvestigator(runs[model]),
     )
+
+
+def test_unknown_ticket_fails_fast_without_trying_any_tier() -> None:
+    def _factory(_model: str):
+        raise AssertionError("no tier should be constructed for an unknown ticket")
+
+    router = RoutedInvestigator(investigator_factory=_factory)
+
+    with pytest.raises(ValueError, match="No ticket found for 'INC-999'"):
+        router.investigate_with_trace("INC-999", trajectory_dir=None)
 
 
 def test_high_confidence_fast_result_stops_at_8b() -> None:
