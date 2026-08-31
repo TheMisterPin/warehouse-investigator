@@ -1,0 +1,341 @@
+{
+  "duration_ms": 12867,
+  "error": null,
+  "events": [
+    {
+      "elapsed_ms": 0,
+      "max_turns": 12,
+      "model": "qwen3:8b",
+      "type": "run_started"
+    },
+    {
+      "completion_tokens": 25,
+      "done_reason": "stop",
+      "elapsed_ms": 786,
+      "message": {
+        "content": "Requested tool call(s): get_ticket",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-011"
+              },
+              "index": 0,
+              "name": "get_ticket"
+            },
+            "id": "call_lkdfk53p"
+          }
+        ]
+      },
+      "prompt_tokens": 1077,
+      "turn": 1,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-011"
+      },
+      "elapsed_ms": 786,
+      "name": "get_ticket",
+      "result": {
+        "document_refs": [
+          "SO-903",
+          "TR-202"
+        ],
+        "expected_quantity": 50,
+        "id": "INC-011",
+        "investigation_window_start": "2026-08-26T22:00:00Z",
+        "location": "SEA-01",
+        "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+        "observed_quantity": 41,
+        "reported_at": "2026-08-27T22:00:00Z",
+        "sku": "SKU-TEAL-OTTOMAN",
+        "title": "Inventory reconciliation alert for SKU-TEAL-OTTOMAN at SEA-01"
+      },
+      "turn": 1,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 47,
+      "done_reason": "stop",
+      "elapsed_ms": 2709,
+      "message": {
+        "content": "Requested tool call(s): query_ledger",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "location": "SEA-01",
+                "sku": "SKU-TEAL-OTTOMAN",
+                "ticket_id": "INC-011"
+              },
+              "index": 0,
+              "name": "query_ledger"
+            },
+            "id": "call_zqeo3s04"
+          }
+        ]
+      },
+      "prompt_tokens": 1273,
+      "turn": 2,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-TEAL-OTTOMAN",
+        "ticket_id": "INC-011"
+      },
+      "elapsed_ms": 2709,
+      "name": "query_ledger",
+      "result": [
+        {
+          "document_id": "TR-X011",
+          "event_type": "transfer_received",
+          "id": "EV-X011",
+          "location": "SEA-01",
+          "quantity_delta": 5,
+          "sku": "SKU-NOISE-011",
+          "state": "posted",
+          "ticket_id": "INC-011",
+          "timestamp": "2026-08-27T21:30:00Z"
+        },
+        {
+          "document_id": "TR-202",
+          "event_type": "transfer_received",
+          "id": "EV-11003",
+          "location": "SEA-01",
+          "quantity_delta": 20,
+          "sku": "SKU-PINK-PILLOW",
+          "state": "posted",
+          "ticket_id": "INC-011",
+          "timestamp": "2026-08-27T09:30:00Z"
+        },
+        {
+          "document_id": "SO-903",
+          "event_type": "order_cancelled",
+          "id": "EV-11002",
+          "location": "SEA-01",
+          "quantity_delta": 0,
+          "sku": "SKU-TEAL-OTTOMAN",
+          "state": "posted",
+          "ticket_id": "INC-011",
+          "timestamp": "2026-08-27T09:00:00Z"
+        },
+        {
+          "document_id": "SO-903",
+          "event_type": "reservation_created",
+          "id": "EV-11001",
+          "location": "SEA-01",
+          "quantity_delta": -9,
+          "sku": "SKU-TEAL-OTTOMAN",
+          "state": "active",
+          "ticket_id": "INC-011",
+          "timestamp": "2026-08-27T08:00:00Z"
+        },
+        {
+          "document_id": "CC-H011",
+          "event_type": "count_adjustment_posted",
+          "id": "EV-H011B",
+          "location": "SEA-01",
+          "quantity_delta": 1,
+          "sku": "SKU-TEAL-OTTOMAN",
+          "state": "posted",
+          "ticket_id": "INC-011",
+          "timestamp": "2026-08-20T22:05:00Z"
+        },
+        {
+          "document_id": "CC-H011",
+          "event_type": "cycle_count_completed",
+          "id": "EV-H011A",
+          "location": "SEA-01",
+          "quantity_delta": 1,
+          "sku": "SKU-TEAL-OTTOMAN",
+          "state": "approved",
+          "ticket_id": "INC-011",
+          "timestamp": "2026-08-20T22:00:00Z"
+        }
+      ],
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 33,
+      "done_reason": "stop",
+      "elapsed_ms": 5707,
+      "message": {
+        "content": "Requested tool call(s): get_snapshot",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "location": "SEA-01",
+                "sku": "SKU-TEAL-OTTOMAN"
+              },
+              "index": 0,
+              "name": "get_snapshot"
+            },
+            "id": "call_cvrf0fw0"
+          }
+        ]
+      },
+      "prompt_tokens": 1937,
+      "turn": 3,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-TEAL-OTTOMAN"
+      },
+      "elapsed_ms": 5707,
+      "name": "get_snapshot",
+      "result": {
+        "available_quantity": 41,
+        "captured_at": "2026-08-27T21:55:00Z",
+        "history": [
+          {
+            "available_quantity": 41,
+            "captured_at": "2026-08-25T22:00:00Z",
+            "location": "SEA-01",
+            "physical_quantity": 50,
+            "reserved_quantity": 9,
+            "sku": "SKU-TEAL-OTTOMAN",
+            "snapshot_id": "SNAP-011-PREVIOUS"
+          },
+          {
+            "available_quantity": 41,
+            "captured_at": "2026-08-20T22:00:00Z",
+            "location": "SEA-01",
+            "physical_quantity": 50,
+            "reserved_quantity": 9,
+            "sku": "SKU-TEAL-OTTOMAN",
+            "snapshot_id": "SNAP-011-HISTORICAL"
+          }
+        ],
+        "location": "SEA-01",
+        "physical_quantity": 50,
+        "reserved_quantity": 9,
+        "sku": "SKU-TEAL-OTTOMAN",
+        "snapshot_id": "SNAP-011-LATEST"
+      },
+      "turn": 3,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 24,
+      "done_reason": "stop",
+      "elapsed_ms": 7142,
+      "message": {
+        "content": "Requested tool call(s): get_document",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "document_id": "SO-903"
+              },
+              "index": 0,
+              "name": "get_document"
+            },
+            "id": "call_q5r7876k"
+          }
+        ]
+      },
+      "prompt_tokens": 2243,
+      "turn": 4,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "document_id": "SO-903"
+      },
+      "elapsed_ms": 7142,
+      "name": "get_document",
+      "result": {
+        "id": "SO-903",
+        "location": "SEA-01",
+        "quantity": 9,
+        "reservation_release_id": null,
+        "sku": "SKU-TEAL-OTTOMAN",
+        "status": "cancelled",
+        "type": "sales_order"
+      },
+      "turn": 4,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 24,
+      "done_reason": "stop",
+      "elapsed_ms": 8078,
+      "message": {
+        "content": "Requested tool call(s): get_document",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "document_id": "TR-202"
+              },
+              "index": 0,
+              "name": "get_document"
+            },
+            "id": "call_finprl9l"
+          }
+        ]
+      },
+      "prompt_tokens": 2336,
+      "turn": 5,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "document_id": "TR-202"
+      },
+      "elapsed_ms": 8078,
+      "name": "get_document",
+      "result": {
+        "destination_location": "SEA-01",
+        "id": "TR-202",
+        "quantity": 20,
+        "received_quantity": 20,
+        "sku": "SKU-PINK-PILLOW",
+        "source_location": "PDX-01",
+        "status": "received",
+        "type": "transfer"
+      },
+      "turn": 5,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 159,
+      "done_reason": "stop",
+      "elapsed_ms": 12867,
+      "message": {
+        "content": "{\n  \"ticket_id\": \"INC-011\",\n  \"root_cause_code\": \"STALE_RESERVATION\",\n  \"summary\": \"A reservation for SKU-TEAL-OTTOMAN remains active in SEA-01 despite the associated sales order (SO-903) being cancelled. The reservation was created when the order was active and has not been released or removed.\",\n  \"evidence_ids\": [\"EV-11001\", \"EV-11002\", \"SO-903\"],\n  \"recommended_action\": \"Investigate the cause of the stale reservation and release or remove it to reconcile the inventory.\",\n  \"confidence\": 0.95,\n  \"requires_escalation\": true\n}",
+        "role": "assistant"
+      },
+      "prompt_tokens": 2441,
+      "turn": 6,
+      "type": "model_response"
+    }
+  ],
+  "result": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-11001",
+      "EV-11002",
+      "SO-903"
+    ],
+    "recommended_action": "Investigate the cause of the stale reservation and release or remove it to reconcile the inventory.",
+    "requires_escalation": true,
+    "root_cause_code": "STALE_RESERVATION",
+    "summary": "A reservation for SKU-TEAL-OTTOMAN remains active in SEA-01 despite the associated sales order (SO-903) being cancelled. The reservation was created when the order was active and has not been released or removed.",
+    "ticket_id": "INC-011"
+  },
+  "started_at": "2026-08-28T23:53:11.736113+00:00",
+  "ticket_id": "INC-011"
+}

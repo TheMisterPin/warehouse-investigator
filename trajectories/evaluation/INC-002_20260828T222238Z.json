@@ -1,0 +1,200 @@
+{
+  "duration_ms": 125658,
+  "error": null,
+  "events": [
+    {
+      "elapsed_ms": 0,
+      "max_turns": 8,
+      "model": "qwen3.5:27b",
+      "type": "run_started"
+    },
+    {
+      "completion_tokens": 51,
+      "done_reason": "stop",
+      "elapsed_ms": 20122,
+      "message": {
+        "content": "I'll start by retrieving the ticket details for INC-002 to understand the incident.",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-002"
+              },
+              "index": 0,
+              "name": "get_ticket"
+            },
+            "id": "call_31m7p1t8"
+          }
+        ]
+      },
+      "prompt_tokens": 872,
+      "turn": 1,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-002"
+      },
+      "elapsed_ms": 20122,
+      "name": "get_ticket",
+      "result": {
+        "document_refs": [
+          "SO-900"
+        ],
+        "expected_quantity": 50,
+        "id": "INC-002",
+        "location": "SEA-01",
+        "notes": "Physical count is 50; the issue is available-to-promise quantity.",
+        "observed_quantity": 41,
+        "reported_at": "2026-08-27T18:00:00Z",
+        "sku": "SKU-BLUE-LAMP",
+        "title": "Available quantity remains low after cancelled order"
+      },
+      "turn": 1,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 225,
+      "done_reason": "stop",
+      "elapsed_ms": 70348,
+      "message": {
+        "content": "Now I have the ticket details. Let me gather all required evidence:\n- SKU: SKU-BLUE-LAMP\n- Location: SEA-01\n- Document reference: SO-900\n- Issue: Available quantity is 41 but expected is 50 (physical count is 50)\n\nI need to call:\n1. query_ledger with ticket_id\n2. get_snapshot for SKU-BLUE-LAMP at SEA-01\n3. get_document for SO-900\n\nLet me make these calls:",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-002"
+              },
+              "index": 0,
+              "name": "query_ledger"
+            },
+            "id": "call_1quz858d"
+          },
+          {
+            "function": {
+              "arguments": {
+                "location": "SEA-01",
+                "sku": "SKU-BLUE-LAMP"
+              },
+              "index": 1,
+              "name": "get_snapshot"
+            },
+            "id": "call_pod7dkaq"
+          },
+          {
+            "function": {
+              "arguments": {
+                "document_id": "SO-900"
+              },
+              "index": 2,
+              "name": "get_document"
+            },
+            "id": "call_1t0hoqp2"
+          }
+        ]
+      },
+      "prompt_tokens": 1053,
+      "turn": 2,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-002"
+      },
+      "elapsed_ms": 70348,
+      "name": "query_ledger",
+      "result": [
+        {
+          "document_id": "SO-900",
+          "event_type": "reservation_created",
+          "id": "EV-2001",
+          "location": "SEA-01",
+          "quantity_delta": -9,
+          "sku": "SKU-BLUE-LAMP",
+          "state": "active",
+          "ticket_id": "INC-002",
+          "timestamp": "2026-08-27T08:00:00Z"
+        },
+        {
+          "document_id": "SO-900",
+          "event_type": "order_cancelled",
+          "id": "EV-2002",
+          "location": "SEA-01",
+          "quantity_delta": 0,
+          "sku": "SKU-BLUE-LAMP",
+          "state": "posted",
+          "ticket_id": "INC-002",
+          "timestamp": "2026-08-27T09:00:00Z"
+        }
+      ],
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-BLUE-LAMP"
+      },
+      "elapsed_ms": 70348,
+      "name": "get_snapshot",
+      "result": {
+        "available_quantity": 41,
+        "location": "SEA-01",
+        "physical_quantity": 50,
+        "reserved_quantity": 9,
+        "sku": "SKU-BLUE-LAMP"
+      },
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "arguments": {
+        "document_id": "SO-900"
+      },
+      "elapsed_ms": 70348,
+      "name": "get_document",
+      "result": {
+        "cancelled_at": "2026-08-27T09:00:00Z",
+        "id": "SO-900",
+        "location": "SEA-01",
+        "quantity": 9,
+        "reservation_release_id": null,
+        "sku": "SKU-BLUE-LAMP",
+        "status": "cancelled",
+        "type": "sales_order"
+      },
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 255,
+      "done_reason": "stop",
+      "elapsed_ms": 125655,
+      "message": {
+        "content": "{\n  \"ticket_id\": \"INC-002\",\n  \"root_cause_code\": \"STALE_RESERVATION\",\n  \"summary\": \"Sales order SO-900 was cancelled at 2026-08-27T09:00:00Z, but the reservation of 9 units created at 08:00:00Z (EV-2001) remains active. The snapshot shows physical_quantity=50, reserved_quantity=9, available_quantity=41. The order_cancelled event (EV-2002) has quantity_delta=0 and no reservation_release_id, indicating the reservation was not released upon cancellation.\",\n  \"evidence_ids\": [\"INC-002\", \"EV-2001\", \"EV-2002\", \"SO-900\"],\n  \"recommended_action\": \"Release the stale reservation of 9 units for SKU-BLUE-LAMP at SEA-01 associated with cancelled order SO-900 to restore available quantity to 50.\",\n  \"confidence\": 0.95,\n  \"requires_escalation\": false\n}",
+        "role": "assistant"
+      },
+      "prompt_tokens": 1627,
+      "turn": 3,
+      "type": "model_response"
+    }
+  ],
+  "result": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "INC-002",
+      "EV-2001",
+      "EV-2002",
+      "SO-900"
+    ],
+    "recommended_action": "Release the stale reservation of 9 units for SKU-BLUE-LAMP at SEA-01 associated with cancelled order SO-900 to restore available quantity to 50.",
+    "requires_escalation": false,
+    "root_cause_code": "STALE_RESERVATION",
+    "summary": "Sales order SO-900 was cancelled at 2026-08-27T09:00:00Z, but the reservation of 9 units created at 08:00:00Z (EV-2001) remains active. The snapshot shows physical_quantity=50, reserved_quantity=9, available_quantity=41. The order_cancelled event (EV-2002) has quantity_delta=0 and no reservation_release_id, indicating the reservation was not released upon cancellation.",
+    "ticket_id": "INC-002"
+  },
+  "started_at": "2026-08-28T22:20:32.931001+00:00",
+  "ticket_id": "INC-002"
+}

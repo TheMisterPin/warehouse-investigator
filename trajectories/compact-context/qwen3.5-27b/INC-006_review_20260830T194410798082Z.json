@@ -1,0 +1,114 @@
+{
+  "elapsed_ms": 86157,
+  "evidence": [
+    {
+      "arguments": {
+        "ticket_id": "INC-006"
+      },
+      "result": {
+        "document_refs": [
+          "TR-MISSING"
+        ],
+        "expected_quantity": 80,
+        "id": "INC-006",
+        "investigation_window_start": "2026-08-26T19:00:00Z",
+        "location": "SEA-01",
+        "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+        "observed_quantity": 74,
+        "reported_at": "2026-08-27T19:00:00Z",
+        "sku": "SKU-YELLOW-BENCH",
+        "title": "Inventory reconciliation alert for SKU-YELLOW-BENCH at SEA-01"
+      },
+      "tool": "get_ticket"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-006"
+      },
+      "result": [
+        {
+          "document_id": "TR-MISSING",
+          "event_type": "transfer_shipped",
+          "id": "EV-6001",
+          "location": "PDX-01",
+          "quantity_delta": -6,
+          "sku": "SKU-YELLOW-BENCH",
+          "state": "posted",
+          "ticket_id": "INC-006",
+          "timestamp": "2026-08-27T12:00:00Z"
+        },
+        {
+          "document_id": "TR-MISSING",
+          "event_type": "transfer_received",
+          "id": "EV-6002",
+          "location": "SEA-01",
+          "quantity_delta": 0,
+          "sku": "SKU-YELLOW-BENCH",
+          "state": "pending",
+          "ticket_id": "INC-006",
+          "timestamp": "2026-08-27T12:00:00Z"
+        }
+      ],
+      "tool": "query_ledger"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-YELLOW-BENCH"
+      },
+      "result": {
+        "available_quantity": 74,
+        "captured_at": "2026-08-27T18:55:00Z",
+        "location": "SEA-01",
+        "physical_quantity": 74,
+        "reserved_quantity": 0,
+        "sku": "SKU-YELLOW-BENCH",
+        "snapshot_id": "SNAP-006-LATEST"
+      },
+      "tool": "get_snapshot"
+    },
+    {
+      "arguments": {
+        "document_id": "TR-MISSING"
+      },
+      "result": {
+        "error": "No document found for TR-MISSING"
+      },
+      "tool": "get_document"
+    }
+  ],
+  "model": "qwen3.5:27b",
+  "outcome": {
+    "confidence": 0.85,
+    "evidence_ids": [
+      "EV-6001",
+      "EV-6002"
+    ],
+    "recommended_action": "Locate and verify the physical receipt of the 6 units for transfer TR-MISSING at SEA-01. Once confirmed, post the transfer_received event to update inventory. If the document cannot be located, escalate to resolve the missing document reference before posting.",
+    "requires_escalation": true,
+    "root_cause_code": "TRANSFER_NOT_RECEIVED",
+    "summary": "A transfer_shipped event (EV-6001) for SKU-YELLOW-BENCH from PDX-01 to SEA-01 under document TR-MISSING reduced source stock by 6 units. The corresponding transfer_received event (EV-6002) at SEA-01 is in 'pending' state with a quantity_delta of 0, meaning the receipt has not been posted. The current physical quantity at SEA-01 is 74, which matches the observed count but falls short of the expected 80 by exactly the 6 units shipped but not yet received. The document TR-MISSING could not be retrieved, confirming a missing or inaccessible document reference.",
+    "ticket_id": "INC-006"
+  },
+  "prior_outcomes": [
+    {
+      "confidence": 0.85,
+      "evidence_ids": [
+        "EV-6001",
+        "EV-6002"
+      ],
+      "recommended_action": "Verify the receipt of the transfer from PDX-01 to SEA-01 (document_id TR-MISSING) and ensure the transfer_received event is posted to reconcile the discrepancy.",
+      "requires_escalation": true,
+      "root_cause_code": "TRANSFER_NOT_RECEIVED",
+      "summary": "A transfer_shipped event for SKU-YELLOW-BENCH from PDX-01 to SEA-01 (document_id TR-MISSING) is posted, but the corresponding transfer_received event is pending. The expected quantity of 80 is not fully accounted for in the observed quantity of 74.",
+      "ticket_id": "INC-006"
+    }
+  ],
+  "reason": "evidence requires deep review: missing_document",
+  "ticket_id": "INC-006",
+  "tokens": {
+    "completion": 282,
+    "prompt": 1413,
+    "total": 1695
+  }
+}

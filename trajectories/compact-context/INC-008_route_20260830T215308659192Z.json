@@ -1,0 +1,56 @@
+{
+  "elapsed_ms": 12300,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-8001",
+      "EV-8002",
+      "EV-8003",
+      "SO-902"
+    ],
+    "recommended_action": "Release the stale reservation or retry the failed reservation release.",
+    "requires_escalation": false,
+    "root_cause_code": "STALE_RESERVATION",
+    "summary": "A reservation remains for SKU-ORANGE-STOOL at SEA-01 after the associated sales order (SO-902) was cancelled. The reservation release (EV-8003) failed, and no subsequent action was taken to clear the reservation.",
+    "ticket_id": "INC-008"
+  },
+  "routing": {
+    "attempt_count": 1,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 12300,
+        "error": null,
+        "evidence_flags": [
+          "failed_workflow"
+        ],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "STALE_RESERVATION",
+        "status": "completed",
+        "tokens": {
+          "completion": 296,
+          "prompt": 4473,
+          "total": 4769
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-008_20260830T215308Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3:8b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b"
+    ]
+  },
+  "ticket_id": "INC-008",
+  "tokens": {
+    "completion": 296,
+    "prompt": 4473,
+    "total": 4769
+  }
+}

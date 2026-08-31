@@ -1,0 +1,271 @@
+{
+  "duration_ms": 105476,
+  "error": null,
+  "events": [
+    {
+      "elapsed_ms": 0,
+      "max_turns": 12,
+      "model": "qwen3:8b",
+      "type": "run_started"
+    },
+    {
+      "completion_tokens": 25,
+      "done_reason": "stop",
+      "elapsed_ms": 51295,
+      "message": {
+        "content": "Requested tool call(s): get_ticket",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-009"
+              },
+              "index": 0,
+              "name": "get_ticket"
+            },
+            "id": "call_r25xg832"
+          }
+        ]
+      },
+      "prompt_tokens": 1135,
+      "turn": 1,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-009"
+      },
+      "elapsed_ms": 51296,
+      "name": "get_ticket",
+      "result": {
+        "document_refs": [
+          "CC-301"
+        ],
+        "expected_quantity": 97,
+        "id": "INC-009",
+        "investigation_window_start": "2026-08-26T13:00:00Z",
+        "location": "PDX-01",
+        "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+        "observed_quantity": 94,
+        "reported_at": "2026-08-27T13:00:00Z",
+        "sku": "SKU-SILVER-RACK",
+        "title": "Inventory reconciliation alert for SKU-SILVER-RACK at PDX-01"
+      },
+      "turn": 1,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 107,
+      "done_reason": "stop",
+      "elapsed_ms": 66481,
+      "message": {
+        "content": "Requested tool call(s): query_ledger, get_snapshot, get_document",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "location": "PDX-01",
+                "sku": "SKU-SILVER-RACK",
+                "ticket_id": "INC-009"
+              },
+              "index": 0,
+              "name": "query_ledger"
+            },
+            "id": "call_9v91vxcl"
+          },
+          {
+            "function": {
+              "arguments": {
+                "location": "PDX-01",
+                "sku": "SKU-SILVER-RACK"
+              },
+              "index": 1,
+              "name": "get_snapshot"
+            },
+            "id": "call_2pdz5g3e"
+          },
+          {
+            "function": {
+              "arguments": {
+                "document_id": "CC-301"
+              },
+              "index": 2,
+              "name": "get_document"
+            },
+            "id": "call_9a9yiats"
+          }
+        ]
+      },
+      "prompt_tokens": 1335,
+      "turn": 2,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "location": "PDX-01",
+        "sku": "SKU-SILVER-RACK",
+        "ticket_id": "INC-009"
+      },
+      "elapsed_ms": 66483,
+      "name": "query_ledger",
+      "result": [
+        {
+          "document_id": "TR-X009",
+          "event_type": "transfer_received",
+          "id": "EV-X009",
+          "location": "PDX-01",
+          "quantity_delta": 5,
+          "sku": "SKU-NOISE-009",
+          "state": "posted",
+          "ticket_id": "INC-009",
+          "timestamp": "2026-08-27T12:30:00Z"
+        },
+        {
+          "document_id": "CC-301",
+          "event_type": "count_adjustment_posted",
+          "id": "EV-9003",
+          "location": "PDX-01",
+          "quantity_delta": -3,
+          "sku": "SKU-SILVER-RACK",
+          "state": "posted",
+          "ticket_id": "INC-009",
+          "timestamp": "2026-08-27T10:11:00Z"
+        },
+        {
+          "document_id": "CC-301",
+          "event_type": "count_adjustment_posted",
+          "id": "EV-9002",
+          "location": "PDX-01",
+          "quantity_delta": -3,
+          "sku": "SKU-SILVER-RACK",
+          "state": "posted",
+          "ticket_id": "INC-009",
+          "timestamp": "2026-08-27T10:10:00Z"
+        },
+        {
+          "document_id": "CC-301",
+          "event_type": "cycle_count_completed",
+          "id": "EV-9001",
+          "location": "PDX-01",
+          "quantity_delta": -3,
+          "sku": "SKU-SILVER-RACK",
+          "state": "approved",
+          "ticket_id": "INC-009",
+          "timestamp": "2026-08-27T10:00:00Z"
+        },
+        {
+          "document_id": "CC-H009",
+          "event_type": "count_adjustment_posted",
+          "id": "EV-H009B",
+          "location": "PDX-01",
+          "quantity_delta": 1,
+          "sku": "SKU-SILVER-RACK",
+          "state": "posted",
+          "ticket_id": "INC-009",
+          "timestamp": "2026-08-20T13:05:00Z"
+        },
+        {
+          "document_id": "CC-H009",
+          "event_type": "cycle_count_completed",
+          "id": "EV-H009A",
+          "location": "PDX-01",
+          "quantity_delta": 1,
+          "sku": "SKU-SILVER-RACK",
+          "state": "approved",
+          "ticket_id": "INC-009",
+          "timestamp": "2026-08-20T13:00:00Z"
+        }
+      ],
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "arguments": {
+        "location": "PDX-01",
+        "sku": "SKU-SILVER-RACK"
+      },
+      "elapsed_ms": 66484,
+      "name": "get_snapshot",
+      "result": {
+        "available_quantity": 94,
+        "captured_at": "2026-08-27T12:55:00Z",
+        "history": [
+          {
+            "available_quantity": 94,
+            "captured_at": "2026-08-25T13:00:00Z",
+            "location": "PDX-01",
+            "physical_quantity": 94,
+            "reserved_quantity": 0,
+            "sku": "SKU-SILVER-RACK",
+            "snapshot_id": "SNAP-009-PREVIOUS"
+          },
+          {
+            "available_quantity": 94,
+            "captured_at": "2026-08-20T13:00:00Z",
+            "location": "PDX-01",
+            "physical_quantity": 94,
+            "reserved_quantity": 0,
+            "sku": "SKU-SILVER-RACK",
+            "snapshot_id": "SNAP-009-HISTORICAL"
+          }
+        ],
+        "location": "PDX-01",
+        "physical_quantity": 94,
+        "reserved_quantity": 0,
+        "sku": "SKU-SILVER-RACK",
+        "snapshot_id": "SNAP-009-LATEST"
+      },
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "arguments": {
+        "document_id": "CC-301"
+      },
+      "elapsed_ms": 66484,
+      "name": "get_document",
+      "result": {
+        "adjustment_quantity": -3,
+        "counted_quantity": 97,
+        "id": "CC-301",
+        "location": "PDX-01",
+        "sku": "SKU-SILVER-RACK",
+        "status": "posted",
+        "system_quantity": 100,
+        "type": "cycle_count"
+      },
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 176,
+      "done_reason": "stop",
+      "elapsed_ms": 105475,
+      "message": {
+        "content": "{\n  \"ticket_id\": \"INC-009\",\n  \"root_cause_code\": \"COUNT_ADJUSTMENT_NOT_POSTED\",\n  \"summary\": \"The cycle count for SKU-SILVER-RACK at PDX-01 was completed and approved (document CC-301), but the count adjustment has not been posted. This results in a discrepancy between the expected quantity (97) and the observed quantity (94).\",\n  \"evidence_ids\": [\"EV-9001\", \"EV-9002\", \"EV-9003\", \"CC-301\"],\n  \"recommended_action\": \"Post the count adjustment for document CC-301 to reconcile the inventory discrepancy.\",\n  \"confidence\": 0.95,\n  \"requires_escalation\": false\n}",
+        "role": "assistant"
+      },
+      "prompt_tokens": 1579,
+      "turn": 3,
+      "type": "model_response"
+    }
+  ],
+  "result": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-9001",
+      "EV-9002",
+      "EV-9003",
+      "CC-301"
+    ],
+    "recommended_action": "Post the count adjustment for document CC-301 to reconcile the inventory discrepancy.",
+    "requires_escalation": false,
+    "root_cause_code": "COUNT_ADJUSTMENT_NOT_POSTED",
+    "summary": "The cycle count for SKU-SILVER-RACK at PDX-01 was completed and approved (document CC-301), but the count adjustment has not been posted. This results in a discrepancy between the expected quantity (97) and the observed quantity (94).",
+    "ticket_id": "INC-009"
+  },
+  "started_at": "2026-08-30T20:11:55.883206+00:00",
+  "ticket_id": "INC-009"
+}

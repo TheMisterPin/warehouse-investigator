@@ -1,0 +1,227 @@
+{
+  "duration_ms": 67324,
+  "error": null,
+  "events": [
+    {
+      "elapsed_ms": 0,
+      "max_turns": 8,
+      "model": "qwen3.5:27b",
+      "type": "run_started"
+    },
+    {
+      "completion_tokens": 51,
+      "done_reason": "stop",
+      "elapsed_ms": 16489,
+      "message": {
+        "content": "I'll start by retrieving the ticket details for INC-004 to understand the incident.",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-004"
+              },
+              "index": 0,
+              "name": "get_ticket"
+            },
+            "id": "call_w6ktzpxq"
+          }
+        ]
+      },
+      "prompt_tokens": 1153,
+      "turn": 1,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-004"
+      },
+      "elapsed_ms": 16489,
+      "name": "get_ticket",
+      "result": {
+        "document_refs": [
+          "TR-200"
+        ],
+        "expected_quantity": 100,
+        "id": "INC-004",
+        "location": "SEA-01",
+        "notes": "Four of six shipped units were received.",
+        "observed_quantity": 98,
+        "reported_at": "2026-08-27T16:00:00Z",
+        "sku": "SKU-WHITE-SHELF",
+        "title": "Replenishment transfer is two units short"
+      },
+      "turn": 1,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 175,
+      "done_reason": "stop",
+      "elapsed_ms": 35448,
+      "message": {
+        "content": "Now I have the ticket details. Let me gather the required evidence:\n- SKU: SKU-WHITE-SHELF\n- Location: SEA-01\n- Document reference: TR-200\n- Expected quantity: 100, Observed quantity: 98 (2 units short)\n- Notes mention \"Four of six shipped units were received\"\n\nLet me query the ledger for this ticket and get the snapshot for the SKU and location.",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-004"
+              },
+              "index": 0,
+              "name": "query_ledger"
+            },
+            "id": "call_mrxwsbfe"
+          },
+          {
+            "function": {
+              "arguments": {
+                "location": "SEA-01",
+                "sku": "SKU-WHITE-SHELF"
+              },
+              "index": 1,
+              "name": "get_snapshot"
+            },
+            "id": "call_osegh62t"
+          }
+        ]
+      },
+      "prompt_tokens": 1328,
+      "turn": 2,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-004"
+      },
+      "elapsed_ms": 35448,
+      "name": "query_ledger",
+      "result": [
+        {
+          "document_id": "TR-200",
+          "event_type": "transfer_shipped",
+          "id": "EV-4001",
+          "location": "PDX-01",
+          "quantity_delta": -6,
+          "sku": "SKU-WHITE-SHELF",
+          "state": "posted",
+          "ticket_id": "INC-004",
+          "timestamp": "2026-08-27T12:00:00Z"
+        },
+        {
+          "document_id": "TR-200",
+          "event_type": "transfer_received",
+          "id": "EV-4002",
+          "location": "SEA-01",
+          "quantity_delta": 4,
+          "sku": "SKU-WHITE-SHELF",
+          "state": "posted",
+          "ticket_id": "INC-004",
+          "timestamp": "2026-08-27T14:00:00Z"
+        },
+        {
+          "document_id": "TR-200",
+          "event_type": "transfer_received",
+          "id": "EV-4003",
+          "location": "SEA-01",
+          "quantity_delta": 0,
+          "remaining_quantity": 2,
+          "sku": "SKU-WHITE-SHELF",
+          "state": "pending",
+          "ticket_id": "INC-004",
+          "timestamp": "2026-08-27T14:00:00Z"
+        }
+      ],
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-WHITE-SHELF"
+      },
+      "elapsed_ms": 35448,
+      "name": "get_snapshot",
+      "result": {
+        "available_quantity": 98,
+        "location": "SEA-01",
+        "physical_quantity": 98,
+        "reserved_quantity": 0,
+        "sku": "SKU-WHITE-SHELF"
+      },
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 51,
+      "done_reason": "stop",
+      "elapsed_ms": 46186,
+      "message": {
+        "content": "Now I need to get the document details for TR-200 to complete the evidence gate.",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "document_id": "TR-200"
+              },
+              "index": 0,
+              "name": "get_document"
+            },
+            "id": "call_dym3aed2"
+          }
+        ]
+      },
+      "prompt_tokens": 1872,
+      "turn": 3,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "document_id": "TR-200"
+      },
+      "elapsed_ms": 46186,
+      "name": "get_document",
+      "result": {
+        "destination_location": "SEA-01",
+        "id": "TR-200",
+        "quantity": 6,
+        "received_quantity": 4,
+        "remaining_quantity": 2,
+        "sku": "SKU-WHITE-SHELF",
+        "source_location": "PDX-01",
+        "status": "partially_received",
+        "type": "transfer"
+      },
+      "turn": 3,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 203,
+      "done_reason": "stop",
+      "elapsed_ms": 67323,
+      "message": {
+        "content": "{\n  \"ticket_id\": \"INC-004\",\n  \"root_cause_code\": \"PARTIAL_TRANSFER_RECEIPT\",\n  \"summary\": \"Transfer TR-200 shipped 6 units from PDX-01 to SEA-01. Only 4 units were received (EV-4002), leaving 2 units pending receipt (EV-4003). Current physical quantity at SEA-01 is 98, which matches the expected 100 minus the 2 unreceived units.\",\n  \"evidence_ids\": [\"EV-4001\", \"EV-4002\", \"EV-4003\", \"TR-200\"],\n  \"recommended_action\": \"Complete receipt of remaining 2 units for transfer TR-200 at location SEA-01.\",\n  \"confidence\": 0.95,\n  \"requires_escalation\": false\n}",
+        "role": "assistant"
+      },
+      "prompt_tokens": 2012,
+      "turn": 4,
+      "type": "model_response"
+    }
+  ],
+  "result": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-4001",
+      "EV-4002",
+      "EV-4003",
+      "TR-200"
+    ],
+    "recommended_action": "Complete receipt of remaining 2 units for transfer TR-200 at location SEA-01.",
+    "requires_escalation": false,
+    "root_cause_code": "PARTIAL_TRANSFER_RECEIPT",
+    "summary": "Transfer TR-200 shipped 6 units from PDX-01 to SEA-01. Only 4 units were received (EV-4002), leaving 2 units pending receipt (EV-4003). Current physical quantity at SEA-01 is 98, which matches the expected 100 minus the 2 unreceived units.",
+    "ticket_id": "INC-004"
+  },
+  "started_at": "2026-08-28T22:44:36.159862+00:00",
+  "ticket_id": "INC-004"
+}

@@ -1,0 +1,57 @@
+{
+  "elapsed_ms": 12674,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "TR-200",
+      "EV-4002",
+      "EV-4003",
+      "EV-H004A",
+      "EV-H004B"
+    ],
+    "recommended_action": "Verify the receipt of the remaining 2 units from transfer TR-200 and update the system accordingly.",
+    "requires_escalation": false,
+    "root_cause_code": "PARTIAL_TRANSFER_RECEIPT",
+    "summary": "The transfer TR-200 was partially received, with 4 out of 6 units accounted for. The remaining 2 units are still pending receipt. The discrepancy is due to the incomplete receipt of the transfer.",
+    "ticket_id": "INC-004"
+  },
+  "routing": {
+    "attempt_count": 1,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 12673,
+        "error": null,
+        "evidence_flags": [
+          "partial_transfer"
+        ],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "PARTIAL_TRANSFER_RECEIPT",
+        "status": "completed",
+        "tokens": {
+          "completion": 302,
+          "prompt": 8539,
+          "total": 8841
+        },
+        "trajectory_path": "trajectories/buried-evidence/qwen3-8b/INC-004_20260828T234701Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3:8b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b"
+    ]
+  },
+  "ticket_id": "INC-004",
+  "tokens": {
+    "completion": 302,
+    "prompt": 8539,
+    "total": 8841
+  }
+}

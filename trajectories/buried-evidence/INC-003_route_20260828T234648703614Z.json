@@ -1,0 +1,53 @@
+{
+  "elapsed_ms": 18326,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-3001",
+      "CC-300",
+      "SNAP-003-LATEST"
+    ],
+    "recommended_action": "Approve the cycle count document (CC-300) to reconcile the discrepancy.",
+    "requires_escalation": false,
+    "root_cause_code": "PENDING_CYCLE_COUNT",
+    "summary": "The cycle count for SKU-GREEN-DESK at PDX-01 was completed but is pending approval. The observed quantity (100) matches the physical count, but the system quantity (100) does not match the expected quantity (97). The discrepancy is due to the pending approval of the cycle count.",
+    "ticket_id": "INC-003"
+  },
+  "routing": {
+    "attempt_count": 1,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 18325,
+        "error": null,
+        "evidence_flags": [],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "PENDING_CYCLE_COUNT",
+        "status": "completed",
+        "tokens": {
+          "completion": 306,
+          "prompt": 8257,
+          "total": 8563
+        },
+        "trajectory_path": "trajectories/buried-evidence/qwen3-8b/INC-003_20260828T234648Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3:8b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b"
+    ]
+  },
+  "ticket_id": "INC-003",
+  "tokens": {
+    "completion": 306,
+    "prompt": 8257,
+    "total": 8563
+  }
+}

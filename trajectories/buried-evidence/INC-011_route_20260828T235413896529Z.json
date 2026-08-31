@@ -1,0 +1,76 @@
+{
+  "elapsed_ms": 62160,
+  "outcome": {
+    "confidence": 0.98,
+    "evidence_ids": [
+      "EV-11001",
+      "EV-11002",
+      "SO-903",
+      "SNAP-011-LATEST"
+    ],
+    "recommended_action": "Release the stale reservation of 9 units for SKU-TEAL-OTTOMAN associated with cancelled sales order SO-903 to reconcile available inventory.",
+    "requires_escalation": true,
+    "root_cause_code": "STALE_RESERVATION",
+    "summary": "Sales order SO-903 for SKU-TEAL-OTTOMAN was cancelled (EV-11002), but the associated reservation of 9 units (EV-11001) remains active. The snapshot confirms physical_quantity is 50, reserved_quantity is 9, and available_quantity is 41. The discrepancy between expected (50) and observed (41) available stock is fully explained by this unreleased reservation on a cancelled order.",
+    "ticket_id": "INC-011"
+  },
+  "routing": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 12869,
+        "error": null,
+        "evidence_flags": [
+          "multiple_documents"
+        ],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": true,
+        "root_cause_code": "STALE_RESERVATION",
+        "status": "completed",
+        "tokens": {
+          "completion": 312,
+          "prompt": 11307,
+          "total": 11619
+        },
+        "trajectory_path": "trajectories/buried-evidence/qwen3-8b/INC-011_20260828T235324Z.json"
+      },
+      {
+        "confidence": 0.98,
+        "elapsed_ms": 49286,
+        "error": null,
+        "evidence_flags": [
+          "multiple_documents"
+        ],
+        "model": "qwen3.5:27b",
+        "reason": "primary model requested escalation",
+        "requires_escalation": true,
+        "root_cause_code": "STALE_RESERVATION",
+        "status": "completed",
+        "tokens": {
+          "completion": 249,
+          "prompt": 2330,
+          "total": 2579
+        },
+        "trajectory_path": "trajectories/buried-evidence/qwen3.5-27b/INC-011_review_20260828T235413892800Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3.5:27b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-011",
+  "tokens": {
+    "completion": 561,
+    "prompt": 13637,
+    "total": 14198
+  }
+}

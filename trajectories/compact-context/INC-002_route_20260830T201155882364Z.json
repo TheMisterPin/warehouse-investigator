@@ -1,0 +1,71 @@
+{
+  "elapsed_ms": 262418,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-2001",
+      "EV-2002",
+      "SO-900"
+    ],
+    "recommended_action": "Investigate and resolve the stale reservation by either releasing the reserved quantity or removing the reservation from the system.",
+    "requires_escalation": true,
+    "root_cause_code": "STALE_RESERVATION",
+    "summary": "A reservation created for SKU-BLUE-LAMP at SEA-01 remains active despite the associated sales order (SO-900) being cancelled. The reservation is not linked to a release, and the available quantity matches the observed quantity, indicating a stale reservation.",
+    "ticket_id": "INC-002"
+  },
+  "routing": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 82415,
+        "error": null,
+        "evidence_flags": [],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": true,
+        "root_cause_code": "STALE_RESERVATION",
+        "status": "completed",
+        "tokens": {
+          "completion": 296,
+          "prompt": 3965,
+          "total": 4261
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-002_20260830T200855Z.json"
+      },
+      {
+        "confidence": null,
+        "elapsed_ms": null,
+        "error": "timed out",
+        "evidence_flags": [],
+        "model": "qwen3.5:27b",
+        "reason": "primary model requested escalation",
+        "requires_escalation": null,
+        "root_cause_code": null,
+        "status": "error",
+        "tokens": {
+          "completion": 0,
+          "prompt": 0,
+          "total": 0
+        },
+        "trajectory_path": null
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3:8b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-002",
+  "tokens": {
+    "completion": 296,
+    "prompt": 3965,
+    "total": 4261
+  }
+}

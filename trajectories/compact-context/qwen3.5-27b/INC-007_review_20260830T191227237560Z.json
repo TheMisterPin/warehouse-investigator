@@ -1,0 +1,135 @@
+{
+  "elapsed_ms": 41444,
+  "evidence": [
+    {
+      "arguments": {
+        "ticket_id": "INC-007"
+      },
+      "result": {
+        "document_refs": [
+          "SO-901"
+        ],
+        "expected_quantity": 50,
+        "id": "INC-007",
+        "investigation_window_start": "2026-08-26T20:00:00Z",
+        "location": "SEA-01",
+        "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+        "observed_quantity": 50,
+        "reported_at": "2026-08-27T20:00:00Z",
+        "sku": "SKU-PURPLE-RUG",
+        "title": "Inventory reconciliation alert for SKU-PURPLE-RUG at SEA-01"
+      },
+      "tool": "get_ticket"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-007"
+      },
+      "result": [
+        {
+          "document_id": "SO-901",
+          "event_type": "reservation_released",
+          "id": "EV-7003",
+          "location": "SEA-01",
+          "quantity_delta": 9,
+          "sku": "SKU-PURPLE-RUG",
+          "state": "posted",
+          "ticket_id": "INC-007",
+          "timestamp": "2026-08-27T09:01:00Z"
+        },
+        {
+          "document_id": "SO-901",
+          "event_type": "order_cancelled",
+          "id": "EV-7002",
+          "location": "SEA-01",
+          "quantity_delta": 0,
+          "sku": "SKU-PURPLE-RUG",
+          "state": "posted",
+          "ticket_id": "INC-007",
+          "timestamp": "2026-08-27T09:00:00Z"
+        },
+        {
+          "document_id": "SO-901",
+          "event_type": "reservation_created",
+          "id": "EV-7001",
+          "location": "SEA-01",
+          "quantity_delta": -9,
+          "sku": "SKU-PURPLE-RUG",
+          "state": "posted",
+          "ticket_id": "INC-007",
+          "timestamp": "2026-08-27T08:00:00Z"
+        }
+      ],
+      "tool": "query_ledger"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-PURPLE-RUG"
+      },
+      "result": {
+        "available_quantity": 50,
+        "captured_at": "2026-08-27T19:55:00Z",
+        "location": "SEA-01",
+        "physical_quantity": 50,
+        "reserved_quantity": 0,
+        "sku": "SKU-PURPLE-RUG",
+        "snapshot_id": "SNAP-007-LATEST"
+      },
+      "tool": "get_snapshot"
+    },
+    {
+      "arguments": {
+        "document_id": "SO-901"
+      },
+      "result": {
+        "id": "SO-901",
+        "location": "SEA-01",
+        "quantity": 9,
+        "reservation_release_id": "EV-7003",
+        "sku": "SKU-PURPLE-RUG",
+        "status": "cancelled",
+        "type": "sales_order"
+      },
+      "tool": "get_document"
+    }
+  ],
+  "model": "qwen3.5:27b",
+  "outcome": {
+    "confidence": 0.98,
+    "evidence_ids": [
+      "EV-7001",
+      "EV-7002",
+      "EV-7003",
+      "SO-901",
+      "SNAP-007-LATEST"
+    ],
+    "recommended_action": "Close the ticket as resolved; no corrective action is required.",
+    "requires_escalation": false,
+    "root_cause_code": "NO_DISCREPANCY",
+    "summary": "The ticket reports a variance for SKU-PURPLE-RUG at SEA-01, but the current snapshot shows physical_quantity=50 and reserved_quantity=0, matching the expected quantity. The ledger confirms that order SO-901 was cancelled (EV-7002) and its reservation of 9 units was subsequently released (EV-7003). The document status is 'cancelled' with a linked release event. All inventory movements are reconciled; there is no stale reservation or missing stock.",
+    "ticket_id": "INC-007"
+  },
+  "prior_outcomes": [
+    {
+      "confidence": 0.95,
+      "evidence_ids": [
+        "EV-7002",
+        "EV-7003",
+        "SO-901"
+      ],
+      "recommended_action": "Review the stale reservation for order SO-901 and consider reversing or removing it from the system.",
+      "requires_escalation": true,
+      "root_cause_code": "STALE_RESERVATION",
+      "summary": "A reservation was released for a cancelled order, but the reservation remains in the system. The reservation release (EV-7003) was posted after the order cancellation (EV-7002), but the reservation quantity is zero in the snapshot. This indicates a stale reservation that should be reviewed.",
+      "ticket_id": "INC-007"
+    }
+  ],
+  "reason": "primary model requested escalation",
+  "ticket_id": "INC-007",
+  "tokens": {
+    "completion": 232,
+    "prompt": 1527,
+    "total": 1759
+  }
+}

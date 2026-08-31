@@ -1,0 +1,116 @@
+{
+  "elapsed_ms": 51487,
+  "evidence": [
+    {
+      "arguments": {
+        "ticket_id": "INC-012"
+      },
+      "result": {
+        "document_refs": [
+          "TR-203"
+        ],
+        "expected_quantity": 100,
+        "id": "INC-012",
+        "investigation_window_start": "2026-08-26T23:00:00Z",
+        "location": "SEA-01",
+        "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+        "observed_quantity": 94,
+        "reported_at": "2026-08-27T23:00:00Z",
+        "sku": "SKU-GRAY-SOFA",
+        "title": "Inventory reconciliation alert for SKU-GRAY-SOFA at SEA-01"
+      },
+      "tool": "get_ticket"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-GRAY-SOFA",
+        "ticket_id": "INC-012"
+      },
+      "result": [
+        {
+          "document_id": "TR-203",
+          "event_type": "transfer_received",
+          "id": "EV-12002",
+          "location": "SEA-01",
+          "quantity_delta": 6,
+          "sku": "SKU-GRAY-SOFA",
+          "state": "posted",
+          "ticket_id": "INC-012",
+          "timestamp": "2026-08-27T14:00:00Z"
+        }
+      ],
+      "tool": "query_ledger"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-GRAY-SOFA"
+      },
+      "result": {
+        "available_quantity": 94,
+        "captured_at": "2026-08-27T22:55:00Z",
+        "location": "SEA-01",
+        "physical_quantity": 94,
+        "reserved_quantity": 0,
+        "sku": "SKU-GRAY-SOFA",
+        "snapshot_id": "SNAP-012-LATEST"
+      },
+      "tool": "get_snapshot"
+    },
+    {
+      "arguments": {
+        "document_id": "TR-203"
+      },
+      "result": {
+        "destination_location": "SEA-01",
+        "id": "TR-203",
+        "quantity": 6,
+        "received_at": "2026-08-27T14:00:00Z",
+        "received_quantity": 6,
+        "sku": "SKU-GRAY-SOFA",
+        "source_location": "PDX-01",
+        "status": "received",
+        "type": "transfer"
+      },
+      "tool": "get_document"
+    }
+  ],
+  "model": "qwen3.5:27b",
+  "outcome": {
+    "confidence": 0.5,
+    "evidence_ids": [
+      "EV-12002",
+      "SNAP-012-LATEST",
+      "TR-203"
+    ],
+    "recommended_action": "Escalate to senior analyst to retrieve the outbound transfer event from PDX-01 and historical stock snapshots prior to 2026-08-27T14:00:00Z to reconcile the expected quantity of 100.",
+    "requires_escalation": true,
+    "root_cause_code": "INSUFFICIENT_EVIDENCE",
+    "summary": "The ticket reports an expected quantity of 100 versus an observed quantity of 94 for SKU-GRAY-SOFA at SEA-01. The provided evidence confirms a physical quantity of 94 and a posted receipt of 6 units via TR-203. However, the evidence bundle lacks the outbound shipment event from PDX-01 or any prior stock levels to explain why the expected quantity was 100. Without the source transfer details or historical ledger entries showing the pre-receipt balance, it is impossible to determine if the discrepancy stems from a missing shipment, an unrecorded loss, or an incorrect expectation baseline.",
+    "ticket_id": "INC-012"
+  },
+  "prior_outcomes": [
+    {
+      "confidence": 1.0,
+      "evidence_ids": [
+        "EV-12002",
+        "EV-H012B",
+        "EV-H012A",
+        "TR-203"
+      ],
+      "recommended_action": "No corrective action needed. The inventory reconciliation is consistent with the current snapshot and posted records.",
+      "requires_escalation": false,
+      "root_cause_code": "NO_DISCREPANCY",
+      "summary": "The observed quantity of 94 matches the physical quantity in the snapshot. The transfer receipt for TR-203 with quantity 6 is posted, and the cycle count adjustment is posted. No discrepancy found.",
+      "ticket_id": "INC-012"
+    }
+  ],
+  "reason": "evidence requires deep review: conflicting_stock",
+  "ticket_id": "INC-012",
+  "tokens": {
+    "completion": 297,
+    "prompt": 1591,
+    "total": 1888
+  }
+}

@@ -1,0 +1,193 @@
+{
+  "elapsed_ms": 45202,
+  "evidence": [
+    {
+      "arguments": {
+        "ticket_id": "INC-009"
+      },
+      "result": {
+        "document_refs": [
+          "CC-301"
+        ],
+        "expected_quantity": 97,
+        "id": "INC-009",
+        "investigation_window_start": "2026-08-26T13:00:00Z",
+        "location": "PDX-01",
+        "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+        "observed_quantity": 94,
+        "reported_at": "2026-08-27T13:00:00Z",
+        "sku": "SKU-SILVER-RACK",
+        "title": "Inventory reconciliation alert for SKU-SILVER-RACK at PDX-01"
+      },
+      "tool": "get_ticket"
+    },
+    {
+      "arguments": {
+        "location": "PDX-01",
+        "sku": "SKU-SILVER-RACK",
+        "ticket_id": "INC-009"
+      },
+      "result": [
+        {
+          "document_id": "TR-X009",
+          "event_type": "transfer_received",
+          "id": "EV-X009",
+          "location": "PDX-01",
+          "quantity_delta": 5,
+          "sku": "SKU-NOISE-009",
+          "state": "posted",
+          "ticket_id": "INC-009",
+          "timestamp": "2026-08-27T12:30:00Z"
+        },
+        {
+          "document_id": "CC-301",
+          "event_type": "count_adjustment_posted",
+          "id": "EV-9003",
+          "location": "PDX-01",
+          "quantity_delta": -3,
+          "retry_of": "EV-9002",
+          "sku": "SKU-SILVER-RACK",
+          "state": "posted",
+          "ticket_id": "INC-009",
+          "timestamp": "2026-08-27T10:11:00Z"
+        },
+        {
+          "document_id": "CC-301",
+          "event_type": "count_adjustment_posted",
+          "id": "EV-9002",
+          "location": "PDX-01",
+          "quantity_delta": -3,
+          "sku": "SKU-SILVER-RACK",
+          "state": "posted",
+          "ticket_id": "INC-009",
+          "timestamp": "2026-08-27T10:10:00Z"
+        },
+        {
+          "document_id": "CC-301",
+          "event_type": "cycle_count_completed",
+          "id": "EV-9001",
+          "location": "PDX-01",
+          "quantity_delta": -3,
+          "sku": "SKU-SILVER-RACK",
+          "state": "approved",
+          "ticket_id": "INC-009",
+          "timestamp": "2026-08-27T10:00:00Z"
+        },
+        {
+          "document_id": "CC-H009",
+          "event_type": "count_adjustment_posted",
+          "id": "EV-H009B",
+          "location": "PDX-01",
+          "quantity_delta": 1,
+          "sku": "SKU-SILVER-RACK",
+          "state": "posted",
+          "ticket_id": "INC-009",
+          "timestamp": "2026-08-20T13:05:00Z"
+        },
+        {
+          "document_id": "CC-H009",
+          "event_type": "cycle_count_completed",
+          "id": "EV-H009A",
+          "location": "PDX-01",
+          "quantity_delta": 1,
+          "sku": "SKU-SILVER-RACK",
+          "state": "approved",
+          "ticket_id": "INC-009",
+          "timestamp": "2026-08-20T13:00:00Z"
+        }
+      ],
+      "tool": "query_ledger"
+    },
+    {
+      "arguments": {
+        "location": "PDX-01",
+        "sku": "SKU-SILVER-RACK"
+      },
+      "result": {
+        "available_quantity": 94,
+        "captured_at": "2026-08-27T12:55:00Z",
+        "history": [
+          {
+            "available_quantity": 94,
+            "captured_at": "2026-08-25T13:00:00Z",
+            "location": "PDX-01",
+            "physical_quantity": 94,
+            "reserved_quantity": 0,
+            "sku": "SKU-SILVER-RACK",
+            "snapshot_id": "SNAP-009-PREVIOUS"
+          },
+          {
+            "available_quantity": 94,
+            "captured_at": "2026-08-20T13:00:00Z",
+            "location": "PDX-01",
+            "physical_quantity": 94,
+            "reserved_quantity": 0,
+            "sku": "SKU-SILVER-RACK",
+            "snapshot_id": "SNAP-009-HISTORICAL"
+          }
+        ],
+        "location": "PDX-01",
+        "physical_quantity": 94,
+        "reserved_quantity": 0,
+        "sku": "SKU-SILVER-RACK",
+        "snapshot_id": "SNAP-009-LATEST"
+      },
+      "tool": "get_snapshot"
+    },
+    {
+      "arguments": {
+        "document_id": "CC-301"
+      },
+      "result": {
+        "adjustment_quantity": -3,
+        "counted_quantity": 97,
+        "id": "CC-301",
+        "location": "PDX-01",
+        "sku": "SKU-SILVER-RACK",
+        "status": "posted",
+        "system_quantity": 100,
+        "type": "cycle_count"
+      },
+      "tool": "get_document"
+    }
+  ],
+  "model": "qwen3.5:27b",
+  "outcome": {
+    "confidence": 0.98,
+    "evidence_ids": [
+      "EV-9002",
+      "EV-9003",
+      "CC-301",
+      "SNAP-009-LATEST"
+    ],
+    "recommended_action": "Escalate to reverse the duplicate event EV-9003 to correct the inventory balance.",
+    "requires_escalation": true,
+    "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+    "summary": "The cycle count adjustment for document CC-301 was posted twice (EV-9002 and EV-9003), where EV-9003 is a retry of EV-9002. Both events applied a -3 quantity delta, resulting in a total reduction of 6 units instead of the intended 3. The system expected 97 (100 - 3) but the physical stock reflects 94 (100 - 6).",
+    "ticket_id": "INC-009"
+  },
+  "prior_outcomes": [
+    {
+      "confidence": 0.95,
+      "evidence_ids": [
+        "EV-9001",
+        "EV-9002",
+        "EV-9003",
+        "CC-301",
+        "SNAP-009-LATEST"
+      ],
+      "recommended_action": "Post the count adjustment for document CC-301 to reconcile the inventory discrepancy.",
+      "requires_escalation": false,
+      "root_cause_code": "COUNT_ADJUSTMENT_NOT_POSTED",
+      "summary": "The cycle count for SKU-SILVER-RACK at PDX-01 was completed and approved (document CC-301), but the count adjustment has not yet posted, leading to a discrepancy between the expected and observed quantities.",
+      "ticket_id": "INC-009"
+    }
+  ],
+  "reason": "evidence requires deep review: duplicate_event",
+  "ticket_id": "INC-009",
+  "tokens": {
+    "completion": 228,
+    "prompt": 2279,
+    "total": 2507
+  }
+}

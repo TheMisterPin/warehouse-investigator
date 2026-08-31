@@ -1,0 +1,137 @@
+{
+  "elapsed_ms": 138861,
+  "evidence": [
+    {
+      "arguments": {
+        "ticket_id": "INC-009"
+      },
+      "result": {
+        "document_refs": [
+          "CC-301"
+        ],
+        "expected_quantity": 97,
+        "id": "INC-009",
+        "investigation_window_start": "2026-08-26T13:00:00Z",
+        "location": "PDX-01",
+        "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+        "observed_quantity": 94,
+        "reported_at": "2026-08-27T13:00:00Z",
+        "sku": "SKU-SILVER-RACK",
+        "title": "Inventory reconciliation alert for SKU-SILVER-RACK at PDX-01"
+      },
+      "tool": "get_ticket"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-009"
+      },
+      "result": [
+        {
+          "document_id": "CC-301",
+          "event_type": "count_adjustment_posted",
+          "id": "EV-9003",
+          "location": "PDX-01",
+          "quantity_delta": -3,
+          "retry_of": "EV-9002",
+          "sku": "SKU-SILVER-RACK",
+          "state": "posted",
+          "ticket_id": "INC-009",
+          "timestamp": "2026-08-27T10:11:00Z"
+        },
+        {
+          "document_id": "CC-301",
+          "event_type": "count_adjustment_posted",
+          "id": "EV-9002",
+          "location": "PDX-01",
+          "quantity_delta": -3,
+          "sku": "SKU-SILVER-RACK",
+          "state": "posted",
+          "ticket_id": "INC-009",
+          "timestamp": "2026-08-27T10:10:00Z"
+        },
+        {
+          "document_id": "CC-301",
+          "event_type": "cycle_count_completed",
+          "id": "EV-9001",
+          "location": "PDX-01",
+          "quantity_delta": -3,
+          "sku": "SKU-SILVER-RACK",
+          "state": "approved",
+          "ticket_id": "INC-009",
+          "timestamp": "2026-08-27T10:00:00Z"
+        }
+      ],
+      "tool": "query_ledger"
+    },
+    {
+      "arguments": {
+        "location": "PDX-01",
+        "sku": "SKU-SILVER-RACK"
+      },
+      "result": {
+        "available_quantity": 94,
+        "captured_at": "2026-08-27T12:55:00Z",
+        "location": "PDX-01",
+        "physical_quantity": 94,
+        "reserved_quantity": 0,
+        "sku": "SKU-SILVER-RACK",
+        "snapshot_id": "SNAP-009-LATEST"
+      },
+      "tool": "get_snapshot"
+    },
+    {
+      "arguments": {
+        "document_id": "CC-301"
+      },
+      "result": {
+        "adjustment_quantity": -3,
+        "counted_quantity": 97,
+        "id": "CC-301",
+        "location": "PDX-01",
+        "sku": "SKU-SILVER-RACK",
+        "status": "posted",
+        "system_quantity": 100,
+        "type": "cycle_count"
+      },
+      "tool": "get_document"
+    }
+  ],
+  "model": "qwen3.5:27b",
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-9001",
+      "EV-9002",
+      "EV-9003",
+      "CC-301"
+    ],
+    "recommended_action": "Escalate to the inventory control team to reverse the duplicate event EV-9003 and reconcile the physical stock with the system quantity.",
+    "requires_escalation": true,
+    "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+    "summary": "Cycle count CC-301 approved an adjustment of -3 units. However, the ledger shows two posted events (EV-9002 and EV-9003) for this same document with identical quantity deltas (-3). EV-9003 is marked as a retry of EV-9002. This duplicate posting reduced inventory by 6 units instead of 3, causing the observed quantity (94) to be lower than expected (97).",
+    "ticket_id": "INC-009"
+  },
+  "prior_outcomes": [
+    {
+      "confidence": 0.85,
+      "evidence_ids": [
+        "EV-9001",
+        "EV-9002",
+        "EV-9003",
+        "CC-301"
+      ],
+      "recommended_action": "Verify if the count adjustment for CC-301 was successfully posted and reconcile the inventory quantities. If the adjustment is confirmed as posted, investigate further for any discrepancies in the system or physical inventory.",
+      "requires_escalation": true,
+      "root_cause_code": "COUNT_ADJUSTMENT_NOT_POSTED",
+      "summary": "The cycle count for SKU-SILVER-RACK at PDX-01 was completed and approved (EV-9001), but the count adjustment was not posted. The adjustment was posted later (EV-9002 and EV-9003), but the observed quantity (94) still does not match the expected quantity (97).",
+      "ticket_id": "INC-009"
+    }
+  ],
+  "reason": "evidence requires deep review: duplicate_event",
+  "ticket_id": "INC-009",
+  "tokens": {
+    "completion": 232,
+    "prompt": 1601,
+    "total": 1833
+  }
+}

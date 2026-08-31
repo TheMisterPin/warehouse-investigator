@@ -1,0 +1,72 @@
+{
+  "elapsed_ms": 120382,
+  "outcome": {
+    "confidence": 0.98,
+    "evidence_ids": [
+      "EV-2001",
+      "EV-2002",
+      "SO-900",
+      "SNAP-002-LATEST"
+    ],
+    "recommended_action": "Manually release the stale reservation of 9 units for SKU-BLUE-LAMP at SEA-01 associated with cancelled order SO-900 to restore available stock to 50.",
+    "requires_escalation": true,
+    "root_cause_code": "STALE_RESERVATION",
+    "summary": "Sales order SO-900 was cancelled at 2026-08-27T09:00:00Z (EV-2002), but the associated reservation of 9 units created at 2026-08-27T08:00:00Z (EV-2001) remains active. The snapshot confirms physical stock is 50, reserved stock is 9, and available stock is 41. The document SO-900 shows no reservation release was executed (reservation_release_id is null), causing the discrepancy between expected (50) and observed (41) available quantities.",
+    "ticket_id": "INC-002"
+  },
+  "routing": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 43824,
+        "error": null,
+        "evidence_flags": [],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": true,
+        "root_cause_code": "STALE_RESERVATION",
+        "status": "completed",
+        "tokens": {
+          "completion": 296,
+          "prompt": 3965,
+          "total": 4261
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-002_20260830T211903Z.json"
+      },
+      {
+        "confidence": 0.98,
+        "elapsed_ms": 76555,
+        "error": null,
+        "evidence_flags": [],
+        "model": "qwen3.5:27b",
+        "reason": "primary model requested escalation",
+        "requires_escalation": true,
+        "root_cause_code": "STALE_RESERVATION",
+        "status": "completed",
+        "tokens": {
+          "completion": 300,
+          "prompt": 1521,
+          "total": 1821
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3.5-27b/INC-002_review_20260830T212019912977Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3.5:27b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-002",
+  "tokens": {
+    "completion": 596,
+    "prompt": 5486,
+    "total": 6082
+  }
+}

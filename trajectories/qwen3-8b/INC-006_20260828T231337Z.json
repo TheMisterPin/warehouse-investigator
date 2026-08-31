@@ -1,0 +1,220 @@
+{
+  "duration_ms": 31646,
+  "error": null,
+  "events": [
+    {
+      "elapsed_ms": 0,
+      "max_turns": 8,
+      "model": "qwen3:8b",
+      "type": "run_started"
+    },
+    {
+      "completion_tokens": 25,
+      "done_reason": "stop",
+      "elapsed_ms": 20196,
+      "message": {
+        "content": "Requested tool call(s): get_ticket",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-006"
+              },
+              "index": 0,
+              "name": "get_ticket"
+            },
+            "id": "call_z4buqduv"
+          }
+        ]
+      },
+      "prompt_tokens": 957,
+      "turn": 1,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-006"
+      },
+      "elapsed_ms": 20196,
+      "name": "get_ticket",
+      "result": {
+        "document_refs": [
+          "TR-MISSING"
+        ],
+        "expected_quantity": 80,
+        "id": "INC-006",
+        "location": "SEA-01",
+        "notes": "Ledger events exist, but the transfer record cannot be found.",
+        "observed_quantity": 74,
+        "reported_at": "2026-08-27T19:00:00Z",
+        "sku": "SKU-YELLOW-BENCH",
+        "title": "Transfer shortage references a missing document"
+      },
+      "turn": 1,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 26,
+      "done_reason": "stop",
+      "elapsed_ms": 21665,
+      "message": {
+        "content": "Requested tool call(s): query_ledger",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-006"
+              },
+              "index": 0,
+              "name": "query_ledger"
+            },
+            "id": "call_xa62jykd"
+          }
+        ]
+      },
+      "prompt_tokens": 1104,
+      "turn": 2,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-006"
+      },
+      "elapsed_ms": 21665,
+      "name": "query_ledger",
+      "result": [
+        {
+          "document_id": "TR-MISSING",
+          "event_type": "transfer_shipped",
+          "id": "EV-6001",
+          "location": "PDX-01",
+          "quantity_delta": -6,
+          "sku": "SKU-YELLOW-BENCH",
+          "state": "posted",
+          "ticket_id": "INC-006",
+          "timestamp": "2026-08-27T12:00:00Z"
+        },
+        {
+          "document_id": "TR-MISSING",
+          "event_type": "transfer_received",
+          "id": "EV-6002",
+          "location": "SEA-01",
+          "quantity_delta": 0,
+          "sku": "SKU-YELLOW-BENCH",
+          "state": "pending",
+          "ticket_id": "INC-006",
+          "timestamp": "2026-08-27T12:00:00Z"
+        }
+      ],
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 33,
+      "done_reason": "stop",
+      "elapsed_ms": 23745,
+      "message": {
+        "content": "Requested tool call(s): get_snapshot",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "location": "SEA-01",
+                "sku": "SKU-YELLOW-BENCH"
+              },
+              "index": 0,
+              "name": "get_snapshot"
+            },
+            "id": "call_rljbcp34"
+          }
+        ]
+      },
+      "prompt_tokens": 1339,
+      "turn": 3,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-YELLOW-BENCH"
+      },
+      "elapsed_ms": 23745,
+      "name": "get_snapshot",
+      "result": {
+        "available_quantity": 74,
+        "location": "SEA-01",
+        "physical_quantity": 74,
+        "reserved_quantity": 0,
+        "sku": "SKU-YELLOW-BENCH"
+      },
+      "turn": 3,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 23,
+      "done_reason": "stop",
+      "elapsed_ms": 24981,
+      "message": {
+        "content": "Requested tool call(s): get_document",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "document_id": "TR-MISSING"
+              },
+              "index": 0,
+              "name": "get_document"
+            },
+            "id": "call_cda0yi5h"
+          }
+        ]
+      },
+      "prompt_tokens": 1423,
+      "turn": 4,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "document_id": "TR-MISSING"
+      },
+      "elapsed_ms": 24981,
+      "name": "get_document",
+      "result": {
+        "error": "No document found for TR-MISSING"
+      },
+      "turn": 4,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 172,
+      "done_reason": "stop",
+      "elapsed_ms": 31645,
+      "message": {
+        "content": "{\n  \"ticket_id\": \"INC-006\",\n  \"root_cause_code\": \"TRANSFER_NOT_RECEIVED\",\n  \"summary\": \"The transfer document TR-MISSING is missing, and the transfer receipt for SKU-YELLOW-BENCH at SEA-01 is pending. The transfer_shipped event has been posted, but the transfer_received event is not yet posted, leading to a discrepancy.\",\n  \"evidence_ids\": [\"TR-MISSING\", \"EV-6001\", \"EV-6002\"],\n  \"recommended_action\": \"Verify the existence of the transfer document TR-MISSING and ensure the transfer receipt is posted. If the document is missing, investigate the cause and escalate for resolution.\",\n  \"confidence\": 0.85,\n  \"requires_escalation\": true\n}",
+        "role": "assistant"
+      },
+      "prompt_tokens": 1471,
+      "turn": 5,
+      "type": "model_response"
+    }
+  ],
+  "result": {
+    "confidence": 0.85,
+    "evidence_ids": [
+      "TR-MISSING",
+      "EV-6001",
+      "EV-6002"
+    ],
+    "recommended_action": "Verify the existence of the transfer document TR-MISSING and ensure the transfer receipt is posted. If the document is missing, investigate the cause and escalate for resolution.",
+    "requires_escalation": true,
+    "root_cause_code": "TRANSFER_NOT_RECEIVED",
+    "summary": "The transfer document TR-MISSING is missing, and the transfer receipt for SKU-YELLOW-BENCH at SEA-01 is pending. The transfer_shipped event has been posted, but the transfer_received event is not yet posted, leading to a discrepancy.",
+    "ticket_id": "INC-006"
+  },
+  "started_at": "2026-08-28T23:13:06.306801+00:00",
+  "ticket_id": "INC-006"
+}

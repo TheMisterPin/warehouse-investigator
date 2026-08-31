@@ -1,0 +1,212 @@
+{
+  "duration_ms": 44131,
+  "error": null,
+  "events": [
+    {
+      "elapsed_ms": 0,
+      "max_turns": 8,
+      "model": "qwen3:4b",
+      "type": "run_started"
+    },
+    {
+      "completion_tokens": 308,
+      "done_reason": "stop",
+      "elapsed_ms": 5115,
+      "message": {
+        "content": "Requested tool call(s): get_ticket",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-006"
+              },
+              "index": 0,
+              "name": "get_ticket"
+            },
+            "id": "call_1bjvim15"
+          }
+        ]
+      },
+      "prompt_tokens": 941,
+      "turn": 1,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-006"
+      },
+      "elapsed_ms": 5115,
+      "name": "get_ticket",
+      "result": {
+        "document_refs": [
+          "TR-MISSING"
+        ],
+        "expected_quantity": 80,
+        "id": "INC-006",
+        "location": "SEA-01",
+        "notes": "Ledger events exist, but the transfer record cannot be found.",
+        "observed_quantity": 74,
+        "reported_at": "2026-08-27T19:00:00Z",
+        "sku": "SKU-YELLOW-BENCH",
+        "title": "Transfer shortage references a missing document"
+      },
+      "turn": 1,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 485,
+      "done_reason": "stop",
+      "elapsed_ms": 13770,
+      "message": {
+        "content": "Requested tool call(s): query_ledger",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "location": "SEA-01",
+                "sku": "SKU-YELLOW-BENCH",
+                "ticket_id": "INC-006"
+              },
+              "index": 0,
+              "name": "query_ledger"
+            },
+            "id": "call_ii9ggt6k"
+          }
+        ]
+      },
+      "prompt_tokens": 1371,
+      "turn": 2,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-YELLOW-BENCH",
+        "ticket_id": "INC-006"
+      },
+      "elapsed_ms": 13770,
+      "name": "query_ledger",
+      "result": [
+        {
+          "document_id": "TR-MISSING",
+          "event_type": "transfer_received",
+          "id": "EV-6002",
+          "location": "SEA-01",
+          "quantity_delta": 0,
+          "sku": "SKU-YELLOW-BENCH",
+          "state": "pending",
+          "ticket_id": "INC-006",
+          "timestamp": "2026-08-27T12:00:00Z"
+        }
+      ],
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 409,
+      "done_reason": "stop",
+      "elapsed_ms": 21667,
+      "message": {
+        "content": "Requested tool call(s): get_snapshot",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "location": "SEA-01",
+                "sku": "SKU-YELLOW-BENCH"
+              },
+              "index": 0,
+              "name": "get_snapshot"
+            },
+            "id": "call_1zivmcmn"
+          }
+        ]
+      },
+      "prompt_tokens": 1962,
+      "turn": 3,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-YELLOW-BENCH"
+      },
+      "elapsed_ms": 21667,
+      "name": "get_snapshot",
+      "result": {
+        "available_quantity": 74,
+        "location": "SEA-01",
+        "physical_quantity": 74,
+        "reserved_quantity": 0,
+        "sku": "SKU-YELLOW-BENCH"
+      },
+      "turn": 3,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 930,
+      "done_reason": "stop",
+      "elapsed_ms": 39231,
+      "message": {
+        "content": "Requested tool call(s): get_document",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "document_id": "TR-MISSING"
+              },
+              "index": 0,
+              "name": "get_document"
+            },
+            "id": "call_bp7kc9c6"
+          }
+        ]
+      },
+      "prompt_tokens": 2422,
+      "turn": 4,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "document_id": "TR-MISSING"
+      },
+      "elapsed_ms": 39231,
+      "name": "get_document",
+      "result": {
+        "error": "No document found for TR-MISSING"
+      },
+      "turn": 4,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 146,
+      "done_reason": "stop",
+      "elapsed_ms": 44130,
+      "message": {
+        "content": "{\n  \"ticket_id\": \"INC-006\",\n  \"root_cause_code\": \"TRANSFER_NOT_RECEIVED\",\n  \"summary\": \"Transfer receipt for SKU-YELLOW-BENCH (SEA-01) is pending with 0 quantity delta. Document TR-MISSING not found in system, indicating the transfer receipt was not posted.\",\n  \"evidence_ids\": [\n    \"EV-6002\",\n    \"TR-MISSING\"\n  ],\n  \"recommended_action\": \"Post the missing transfer receipt document to update stock levels for SKU-YELLOW-BENCH at SEA-01\",\n  \"confidence\": 0.95,\n  \"requires_escalation\": false\n}",
+        "role": "assistant"
+      },
+      "prompt_tokens": 3376,
+      "turn": 5,
+      "type": "model_response"
+    }
+  ],
+  "result": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-6002",
+      "TR-MISSING"
+    ],
+    "recommended_action": "Post the missing transfer receipt document to update stock levels for SKU-YELLOW-BENCH at SEA-01",
+    "requires_escalation": false,
+    "root_cause_code": "TRANSFER_NOT_RECEIVED",
+    "summary": "Transfer receipt for SKU-YELLOW-BENCH (SEA-01) is pending with 0 quantity delta. Document TR-MISSING not found in system, indicating the transfer receipt was not posted.",
+    "ticket_id": "INC-006"
+  },
+  "started_at": "2026-08-28T23:07:09.228799+00:00",
+  "ticket_id": "INC-006"
+}

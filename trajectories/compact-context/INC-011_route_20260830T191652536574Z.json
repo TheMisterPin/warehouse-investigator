@@ -1,0 +1,76 @@
+{
+  "elapsed_ms": 150500,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-11001",
+      "EV-11002",
+      "SO-903",
+      "SNAP-011-LATEST"
+    ],
+    "recommended_action": "Release the stale reservation of 9 units for SKU-TEAL-OTTOMAN at SEA-01 associated with cancelled sales order SO-903.",
+    "requires_escalation": false,
+    "root_cause_code": "STALE_RESERVATION",
+    "summary": "Sales order SO-903 for SKU-TEAL-OTTOMAN at SEA-01 was cancelled (EV-11002), but the associated reservation of 9 units (EV-11001) remains active. The snapshot confirms physical_quantity is 50, reserved_quantity is 9, and available_quantity is 41. The discrepancy between expected (50) and observed (41) quantities is due to the unreleased reservation on a cancelled order.",
+    "ticket_id": "INC-011"
+  },
+  "routing": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 78519,
+        "error": null,
+        "evidence_flags": [
+          "multiple_documents"
+        ],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": true,
+        "root_cause_code": "STALE_RESERVATION",
+        "status": "completed",
+        "tokens": {
+          "completion": 317,
+          "prompt": 3798,
+          "total": 4115
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-011_20260830T191540Z.json"
+      },
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 71976,
+        "error": null,
+        "evidence_flags": [
+          "multiple_documents"
+        ],
+        "model": "qwen3.5:27b",
+        "reason": "primary model requested escalation",
+        "requires_escalation": false,
+        "root_cause_code": "STALE_RESERVATION",
+        "status": "completed",
+        "tokens": {
+          "completion": 241,
+          "prompt": 1533,
+          "total": 1774
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3.5-27b/INC-011_review_20260830T191652534275Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3.5:27b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-011",
+  "tokens": {
+    "completion": 558,
+    "prompt": 5331,
+    "total": 5889
+  }
+}

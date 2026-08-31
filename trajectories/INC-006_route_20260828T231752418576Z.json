@@ -1,0 +1,96 @@
+{
+  "elapsed_ms": 95329,
+  "outcome": {
+    "confidence": 0.6,
+    "evidence_ids": [
+      "EV-6001",
+      "EV-6002",
+      "TR-MISSING"
+    ],
+    "recommended_action": "Escalate to locate the missing transfer document TR-MISSING or investigate the source of the ledger events EV-6001 and EV-6002 to determine the correct expected quantity and receipt status.",
+    "requires_escalation": true,
+    "root_cause_code": "INSUFFICIENT_EVIDENCE",
+    "summary": "Ledger shows a shipped transfer of 6 units (EV-6001) and a pending receipt of 0 units (EV-6002) for document TR-MISSING. The physical stock at SEA-01 is 74, but the expected quantity is 80. However, the referenced document TR-MISSING cannot be retrieved, preventing verification of the transfer details, intended quantities, or receipt status. Without the document, it is impossible to determine if the discrepancy is due to a missing receipt, a partial receipt, or an error in the ledger events themselves.",
+    "ticket_id": "INC-006"
+  },
+  "routing": {
+    "attempt_count": 3,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 40897,
+        "error": null,
+        "evidence_flags": [
+          "missing_document"
+        ],
+        "model": "qwen3:4b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "TRANSFER_NOT_RECEIVED",
+        "status": "completed",
+        "tokens": {
+          "completion": 2368,
+          "prompt": 14753,
+          "total": 17121
+        },
+        "trajectory_path": "trajectories/qwen3-4b/INC-006_20260828T231657Z.json"
+      },
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 11460,
+        "error": null,
+        "evidence_flags": [
+          "missing_document"
+        ],
+        "model": "qwen3:8b",
+        "reason": "evidence requires balanced review: missing_document",
+        "requires_escalation": false,
+        "root_cause_code": "TRANSFER_NOT_RECEIVED",
+        "status": "completed",
+        "tokens": {
+          "completion": 202,
+          "prompt": 1609,
+          "total": 1811
+        },
+        "trajectory_path": "trajectories/qwen3-8b/INC-006_review_20260828T231709447813Z.json"
+      },
+      {
+        "confidence": 0.6,
+        "elapsed_ms": 42967,
+        "error": null,
+        "evidence_flags": [
+          "missing_document"
+        ],
+        "model": "qwen3.5:27b",
+        "reason": "evidence requires deep review: missing_document",
+        "requires_escalation": true,
+        "root_cause_code": "INSUFFICIENT_EVIDENCE",
+        "status": "completed",
+        "tokens": {
+          "completion": 270,
+          "prompt": 1814,
+          "total": 2084
+        },
+        "trajectory_path": "trajectories/qwen3.5-27b/INC-006_review_20260828T231752416997Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:4b",
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3.5:27b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:4b",
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-006",
+  "tokens": {
+    "completion": 2840,
+    "prompt": 18176,
+    "total": 21016
+  }
+}

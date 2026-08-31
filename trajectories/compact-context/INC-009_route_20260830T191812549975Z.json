@@ -1,0 +1,74 @@
+{
+  "elapsed_ms": 308421,
+  "outcome": {
+    "confidence": 0.85,
+    "evidence_ids": [
+      "EV-9001",
+      "EV-9002",
+      "EV-9003",
+      "CC-301"
+    ],
+    "recommended_action": "Verify if the count adjustment for CC-301 was successfully posted and reconcile the inventory quantities. If the adjustment is confirmed as posted, investigate further for any discrepancies in the system or physical inventory.",
+    "requires_escalation": true,
+    "root_cause_code": "COUNT_ADJUSTMENT_NOT_POSTED",
+    "summary": "The cycle count for SKU-SILVER-RACK at PDX-01 was completed and approved (EV-9001), but the count adjustment was not posted. The adjustment was posted later (EV-9002 and EV-9003), but the observed quantity (94) still does not match the expected quantity (97).",
+    "ticket_id": "INC-009"
+  },
+  "routing": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "confidence": 0.85,
+        "elapsed_ms": 128418,
+        "error": null,
+        "evidence_flags": [
+          "duplicate_event"
+        ],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": true,
+        "root_cause_code": "COUNT_ADJUSTMENT_NOT_POSTED",
+        "status": "completed",
+        "tokens": {
+          "completion": 325,
+          "prompt": 3742,
+          "total": 4067
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-009_20260830T191512Z.json"
+      },
+      {
+        "confidence": null,
+        "elapsed_ms": null,
+        "error": "timed out",
+        "evidence_flags": [],
+        "model": "qwen3.5:27b",
+        "reason": "evidence requires deep review: duplicate_event",
+        "requires_escalation": null,
+        "root_cause_code": null,
+        "status": "error",
+        "tokens": {
+          "completion": 0,
+          "prompt": 0,
+          "total": 0
+        },
+        "trajectory_path": null
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3:8b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-009",
+  "tokens": {
+    "completion": 325,
+    "prompt": 3742,
+    "total": 4067
+  }
+}

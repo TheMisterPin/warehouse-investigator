@@ -1,0 +1,52 @@
+{
+  "elapsed_ms": 44133,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-6002",
+      "TR-MISSING"
+    ],
+    "recommended_action": "Post the missing transfer receipt document to update stock levels for SKU-YELLOW-BENCH at SEA-01",
+    "requires_escalation": false,
+    "root_cause_code": "TRANSFER_NOT_RECEIVED",
+    "summary": "Transfer receipt for SKU-YELLOW-BENCH (SEA-01) is pending with 0 quantity delta. Document TR-MISSING not found in system, indicating the transfer receipt was not posted.",
+    "ticket_id": "INC-006"
+  },
+  "routing": {
+    "attempt_count": 1,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 44132,
+        "error": null,
+        "model": "qwen3:4b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "TRANSFER_NOT_RECEIVED",
+        "status": "completed",
+        "tokens": {
+          "completion": 2278,
+          "prompt": 10072,
+          "total": 12350
+        },
+        "trajectory_path": "trajectories/qwen3-4b/INC-006_20260828T230753Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:4b",
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3:4b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:4b"
+    ]
+  },
+  "ticket_id": "INC-006",
+  "tokens": {
+    "completion": 2278,
+    "prompt": 10072,
+    "total": 12350
+  }
+}

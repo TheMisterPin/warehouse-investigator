@@ -1,0 +1,76 @@
+{
+  "elapsed_ms": 240069,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-11001",
+      "EV-11002",
+      "SO-903",
+      "SNAP-011-LATEST"
+    ],
+    "recommended_action": "Manually release the stale reservation of 9 units for SKU-TEAL-OTTOMAN linked to cancelled order SO-903.",
+    "requires_escalation": true,
+    "root_cause_code": "STALE_RESERVATION",
+    "summary": "Sales order SO-903 for SKU-TEAL-OTTOMAN was cancelled (EV-11002), but the associated reservation of 9 units (EV-11001) remains active. The snapshot confirms physical stock is 50, reserved is 9, and available is 41, matching the reported observed quantity. No release event exists for this cancellation.",
+    "ticket_id": "INC-011"
+  },
+  "routing": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 114491,
+        "error": null,
+        "evidence_flags": [
+          "multiple_documents"
+        ],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": true,
+        "root_cause_code": "STALE_RESERVATION",
+        "status": "completed",
+        "tokens": {
+          "completion": 335,
+          "prompt": 4115,
+          "total": 4450
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-011_20260830T212902Z.json"
+      },
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 125575,
+        "error": null,
+        "evidence_flags": [
+          "multiple_documents"
+        ],
+        "model": "qwen3.5:27b",
+        "reason": "primary model requested escalation",
+        "requires_escalation": true,
+        "root_cause_code": "STALE_RESERVATION",
+        "status": "completed",
+        "tokens": {
+          "completion": 229,
+          "prompt": 1595,
+          "total": 1824
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3.5-27b/INC-011_review_20260830T213107760715Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3.5:27b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-011",
+  "tokens": {
+    "completion": 564,
+    "prompt": 5710,
+    "total": 6274
+  }
+}

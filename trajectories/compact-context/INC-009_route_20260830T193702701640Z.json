@@ -1,0 +1,76 @@
+{
+  "elapsed_ms": 251796,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-9001",
+      "EV-9002",
+      "EV-9003",
+      "CC-301"
+    ],
+    "recommended_action": "Escalate to the inventory control team to reverse the duplicate event EV-9003 and reconcile the physical stock with the system quantity.",
+    "requires_escalation": true,
+    "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+    "summary": "Cycle count CC-301 approved an adjustment of -3 units. However, the ledger shows two posted events (EV-9002 and EV-9003) for this same document with identical quantity deltas (-3). EV-9003 is marked as a retry of EV-9002. This duplicate posting reduced inventory by 6 units instead of 3, causing the observed quantity (94) to be lower than expected (97).",
+    "ticket_id": "INC-009"
+  },
+  "routing": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "confidence": 0.85,
+        "elapsed_ms": 112931,
+        "error": null,
+        "evidence_flags": [
+          "duplicate_event"
+        ],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": true,
+        "root_cause_code": "COUNT_ADJUSTMENT_NOT_POSTED",
+        "status": "completed",
+        "tokens": {
+          "completion": 325,
+          "prompt": 3742,
+          "total": 4067
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-009_20260830T193443Z.json"
+      },
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 138861,
+        "error": null,
+        "evidence_flags": [
+          "duplicate_event"
+        ],
+        "model": "qwen3.5:27b",
+        "reason": "evidence requires deep review: duplicate_event",
+        "requires_escalation": true,
+        "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+        "status": "completed",
+        "tokens": {
+          "completion": 232,
+          "prompt": 1601,
+          "total": 1833
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3.5-27b/INC-009_review_20260830T193702699658Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3.5:27b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-009",
+  "tokens": {
+    "completion": 557,
+    "prompt": 5343,
+    "total": 5900
+  }
+}

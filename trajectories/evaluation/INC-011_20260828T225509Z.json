@@ -1,0 +1,239 @@
+{
+  "duration_ms": 82633,
+  "error": null,
+  "events": [
+    {
+      "elapsed_ms": 0,
+      "max_turns": 8,
+      "model": "qwen3.5:27b",
+      "type": "run_started"
+    },
+    {
+      "completion_tokens": 51,
+      "done_reason": "stop",
+      "elapsed_ms": 16382,
+      "message": {
+        "content": "I'll start by retrieving the ticket details for INC-011 to understand the incident.",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-011"
+              },
+              "index": 0,
+              "name": "get_ticket"
+            },
+            "id": "call_eq3oyz88"
+          }
+        ]
+      },
+      "prompt_tokens": 1153,
+      "turn": 1,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-011"
+      },
+      "elapsed_ms": 16382,
+      "name": "get_ticket",
+      "result": {
+        "document_refs": [
+          "SO-903",
+          "TR-202"
+        ],
+        "expected_quantity": 50,
+        "id": "INC-011",
+        "location": "SEA-01",
+        "notes": "The ledger includes an unrelated transfer for a different SKU.",
+        "observed_quantity": 41,
+        "reported_at": "2026-08-27T22:00:00Z",
+        "sku": "SKU-TEAL-OTTOMAN",
+        "title": "Cancelled order leaves availability low amid unrelated activity"
+      },
+      "turn": 1,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 272,
+      "done_reason": "stop",
+      "elapsed_ms": 50113,
+      "message": {
+        "content": "Now I have the ticket details. Let me gather all required evidence:\n- Ticket ID: INC-011\n- SKU: SKU-TEAL-OTTOMAN\n- Location: SEA-01\n- Document references: SO-903, TR-202\n- Expected quantity: 50, Observed quantity: 41\n\nI need to:\n1. Query the ledger for this ticket\n2. Get the snapshot for SKU-TEAL-OTTOMAN at SEA-01\n3. Get documents SO-903 and TR-202\n\nLet me start with these calls:",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-011"
+              },
+              "index": 0,
+              "name": "query_ledger"
+            },
+            "id": "call_cfuienvq"
+          },
+          {
+            "function": {
+              "arguments": {
+                "location": "SEA-01",
+                "sku": "SKU-TEAL-OTTOMAN"
+              },
+              "index": 1,
+              "name": "get_snapshot"
+            },
+            "id": "call_bk2zk5cj"
+          },
+          {
+            "function": {
+              "arguments": {
+                "document_id": "SO-903"
+              },
+              "index": 2,
+              "name": "get_document"
+            },
+            "id": "call_iofxqik9"
+          },
+          {
+            "function": {
+              "arguments": {
+                "document_id": "TR-202"
+              },
+              "index": 3,
+              "name": "get_document"
+            },
+            "id": "call_p94a1vkv"
+          }
+        ]
+      },
+      "prompt_tokens": 1338,
+      "turn": 2,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-011"
+      },
+      "elapsed_ms": 50113,
+      "name": "query_ledger",
+      "result": [
+        {
+          "document_id": "SO-903",
+          "event_type": "reservation_created",
+          "id": "EV-11001",
+          "location": "SEA-01",
+          "quantity_delta": -9,
+          "sku": "SKU-TEAL-OTTOMAN",
+          "state": "active",
+          "ticket_id": "INC-011",
+          "timestamp": "2026-08-27T08:00:00Z"
+        },
+        {
+          "document_id": "SO-903",
+          "event_type": "order_cancelled",
+          "id": "EV-11002",
+          "location": "SEA-01",
+          "quantity_delta": 0,
+          "sku": "SKU-TEAL-OTTOMAN",
+          "state": "posted",
+          "ticket_id": "INC-011",
+          "timestamp": "2026-08-27T09:00:00Z"
+        },
+        {
+          "document_id": "TR-202",
+          "event_type": "transfer_received",
+          "id": "EV-11003",
+          "location": "SEA-01",
+          "quantity_delta": 20,
+          "sku": "SKU-PINK-PILLOW",
+          "state": "posted",
+          "ticket_id": "INC-011",
+          "timestamp": "2026-08-27T09:30:00Z"
+        }
+      ],
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-TEAL-OTTOMAN"
+      },
+      "elapsed_ms": 50113,
+      "name": "get_snapshot",
+      "result": {
+        "available_quantity": 41,
+        "location": "SEA-01",
+        "physical_quantity": 50,
+        "reserved_quantity": 9,
+        "sku": "SKU-TEAL-OTTOMAN"
+      },
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "arguments": {
+        "document_id": "SO-903"
+      },
+      "elapsed_ms": 50113,
+      "name": "get_document",
+      "result": {
+        "id": "SO-903",
+        "location": "SEA-01",
+        "quantity": 9,
+        "reservation_release_id": null,
+        "sku": "SKU-TEAL-OTTOMAN",
+        "status": "cancelled",
+        "type": "sales_order"
+      },
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "arguments": {
+        "document_id": "TR-202"
+      },
+      "elapsed_ms": 50113,
+      "name": "get_document",
+      "result": {
+        "destination_location": "SEA-01",
+        "id": "TR-202",
+        "quantity": 20,
+        "received_quantity": 20,
+        "sku": "SKU-PINK-PILLOW",
+        "source_location": "PDX-01",
+        "status": "received",
+        "type": "transfer"
+      },
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 209,
+      "done_reason": "stop",
+      "elapsed_ms": 82633,
+      "message": {
+        "content": "{\"ticket_id\": \"INC-011\", \"root_cause_code\": \"STALE_RESERVATION\", \"summary\": \"Sales order SO-903 was cancelled but the reservation of 9 units for SKU-TEAL-OTTOMAN at SEA-01 remains active. The ledger shows a reservation_created event (EV-11001) and an order_cancelled event (EV-11002), but no reservation release event. Current snapshot confirms physical=50, reserved=9, available=41. The transfer TR-202 is for SKU-PINK-PILLOW and is unrelated to this discrepancy.\", \"evidence_ids\": [\"EV-11001\", \"EV-11002\", \"SO-903\"], \"recommended_action\": \"Post a reservation release event for SO-903 to clear the stale reservation of 9 units.\", \"confidence\": 0.9, \"requires_escalation\": false}",
+        "role": "assistant"
+      },
+      "prompt_tokens": 2114,
+      "turn": 3,
+      "type": "model_response"
+    }
+  ],
+  "result": {
+    "confidence": 0.9,
+    "evidence_ids": [
+      "EV-11001",
+      "EV-11002",
+      "SO-903"
+    ],
+    "recommended_action": "Post a reservation release event for SO-903 to clear the stale reservation of 9 units.",
+    "requires_escalation": false,
+    "root_cause_code": "STALE_RESERVATION",
+    "summary": "Sales order SO-903 was cancelled but the reservation of 9 units for SKU-TEAL-OTTOMAN at SEA-01 remains active. The ledger shows a reservation_created event (EV-11001) and an order_cancelled event (EV-11002), but no reservation release event. Current snapshot confirms physical=50, reserved=9, available=41. The transfer TR-202 is for SKU-PINK-PILLOW and is unrelated to this discrepancy.",
+    "ticket_id": "INC-011"
+  },
+  "started_at": "2026-08-28T22:53:46.487886+00:00",
+  "ticket_id": "INC-011"
+}

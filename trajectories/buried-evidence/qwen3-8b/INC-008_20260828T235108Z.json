@@ -1,0 +1,301 @@
+{
+  "duration_ms": 23099,
+  "error": null,
+  "events": [
+    {
+      "elapsed_ms": 0,
+      "max_turns": 12,
+      "model": "qwen3:8b",
+      "type": "run_started"
+    },
+    {
+      "completion_tokens": 25,
+      "done_reason": "stop",
+      "elapsed_ms": 6537,
+      "message": {
+        "content": "Requested tool call(s): get_ticket",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-008"
+              },
+              "index": 0,
+              "name": "get_ticket"
+            },
+            "id": "call_9ntkdxaz"
+          }
+        ]
+      },
+      "prompt_tokens": 1077,
+      "turn": 1,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-008"
+      },
+      "elapsed_ms": 6538,
+      "name": "get_ticket",
+      "result": {
+        "document_refs": [
+          "SO-902"
+        ],
+        "expected_quantity": 50,
+        "id": "INC-008",
+        "investigation_window_start": "2026-08-26T21:00:00Z",
+        "location": "SEA-01",
+        "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+        "observed_quantity": 41,
+        "reported_at": "2026-08-27T21:00:00Z",
+        "sku": "SKU-ORANGE-STOOL",
+        "title": "Inventory reconciliation alert for SKU-ORANGE-STOOL at SEA-01"
+      },
+      "turn": 1,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 47,
+      "done_reason": "stop",
+      "elapsed_ms": 8772,
+      "message": {
+        "content": "Requested tool call(s): query_ledger",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "location": "SEA-01",
+                "sku": "SKU-ORANGE-STOOL",
+                "ticket_id": "INC-008"
+              },
+              "index": 0,
+              "name": "query_ledger"
+            },
+            "id": "call_kl3ma9sq"
+          }
+        ]
+      },
+      "prompt_tokens": 1266,
+      "turn": 2,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-ORANGE-STOOL",
+        "ticket_id": "INC-008"
+      },
+      "elapsed_ms": 8772,
+      "name": "query_ledger",
+      "result": [
+        {
+          "document_id": "TR-X008",
+          "event_type": "transfer_received",
+          "id": "EV-X008",
+          "location": "SEA-01",
+          "quantity_delta": 5,
+          "sku": "SKU-NOISE-008",
+          "state": "posted",
+          "ticket_id": "INC-008",
+          "timestamp": "2026-08-27T20:30:00Z"
+        },
+        {
+          "document_id": "SO-902",
+          "error": "lock_timeout",
+          "event_type": "reservation_release",
+          "id": "EV-8003",
+          "location": "SEA-01",
+          "quantity_delta": 0,
+          "sku": "SKU-ORANGE-STOOL",
+          "state": "failed",
+          "ticket_id": "INC-008",
+          "timestamp": "2026-08-27T09:01:00Z"
+        },
+        {
+          "document_id": "SO-902",
+          "event_type": "order_cancelled",
+          "id": "EV-8002",
+          "location": "SEA-01",
+          "quantity_delta": 0,
+          "sku": "SKU-ORANGE-STOOL",
+          "state": "posted",
+          "ticket_id": "INC-008",
+          "timestamp": "2026-08-27T09:00:00Z"
+        },
+        {
+          "document_id": "SO-902",
+          "event_type": "reservation_created",
+          "id": "EV-8001",
+          "location": "SEA-01",
+          "quantity_delta": -9,
+          "sku": "SKU-ORANGE-STOOL",
+          "state": "posted",
+          "ticket_id": "INC-008",
+          "timestamp": "2026-08-27T08:00:00Z"
+        },
+        {
+          "document_id": "CC-H008",
+          "event_type": "count_adjustment_posted",
+          "id": "EV-H008B",
+          "location": "SEA-01",
+          "quantity_delta": 1,
+          "sku": "SKU-ORANGE-STOOL",
+          "state": "posted",
+          "ticket_id": "INC-008",
+          "timestamp": "2026-08-20T21:05:00Z"
+        },
+        {
+          "document_id": "CC-H008",
+          "event_type": "cycle_count_completed",
+          "id": "EV-H008A",
+          "location": "SEA-01",
+          "quantity_delta": 1,
+          "sku": "SKU-ORANGE-STOOL",
+          "state": "approved",
+          "ticket_id": "INC-008",
+          "timestamp": "2026-08-20T21:00:00Z"
+        }
+      ],
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 35,
+      "done_reason": "stop",
+      "elapsed_ms": 12720,
+      "message": {
+        "content": "Requested tool call(s): get_snapshot",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "location": "SEA-01",
+                "sku": "SKU-ORANGE-STOOL"
+              },
+              "index": 0,
+              "name": "get_snapshot"
+            },
+            "id": "call_etavzrzl"
+          }
+        ]
+      },
+      "prompt_tokens": 1934,
+      "turn": 3,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-ORANGE-STOOL"
+      },
+      "elapsed_ms": 12720,
+      "name": "get_snapshot",
+      "result": {
+        "available_quantity": 41,
+        "captured_at": "2026-08-27T20:55:00Z",
+        "history": [
+          {
+            "available_quantity": 41,
+            "captured_at": "2026-08-25T21:00:00Z",
+            "location": "SEA-01",
+            "physical_quantity": 50,
+            "reserved_quantity": 9,
+            "sku": "SKU-ORANGE-STOOL",
+            "snapshot_id": "SNAP-008-PREVIOUS"
+          },
+          {
+            "available_quantity": 41,
+            "captured_at": "2026-08-20T21:00:00Z",
+            "location": "SEA-01",
+            "physical_quantity": 50,
+            "reserved_quantity": 9,
+            "sku": "SKU-ORANGE-STOOL",
+            "snapshot_id": "SNAP-008-HISTORICAL"
+          }
+        ],
+        "location": "SEA-01",
+        "physical_quantity": 50,
+        "reserved_quantity": 9,
+        "sku": "SKU-ORANGE-STOOL",
+        "snapshot_id": "SNAP-008-LATEST"
+      },
+      "turn": 3,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 24,
+      "done_reason": "stop",
+      "elapsed_ms": 14832,
+      "message": {
+        "content": "Requested tool call(s): get_document",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "document_id": "SO-902"
+              },
+              "index": 0,
+              "name": "get_document"
+            },
+            "id": "call_c5fo93qk"
+          }
+        ]
+      },
+      "prompt_tokens": 2240,
+      "turn": 4,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "document_id": "SO-902"
+      },
+      "elapsed_ms": 14832,
+      "name": "get_document",
+      "result": {
+        "id": "SO-902",
+        "location": "SEA-01",
+        "quantity": 9,
+        "reservation_release_id": "EV-8003",
+        "reservation_release_status": "failed",
+        "sku": "SKU-ORANGE-STOOL",
+        "status": "cancelled",
+        "type": "sales_order"
+      },
+      "turn": 4,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 210,
+      "done_reason": "stop",
+      "elapsed_ms": 23098,
+      "message": {
+        "content": "{\n  \"ticket_id\": \"INC-008\",\n  \"root_cause_code\": \"STALE_RESERVATION\",\n  \"summary\": \"A reservation was created for SKU-ORANGE-STOOL at SEA-01 via sales order SO-902, which was later cancelled. The reservation release failed due to a lock timeout, leaving a stale reservation. The physical quantity matches the expected quantity, but the reservation remains, causing a discrepancy in available stock.\",\n  \"evidence_ids\": [\"EV-8001\", \"EV-8002\", \"EV-8003\", \"SO-902\", \"SNAP-008-LATEST\"],\n  \"recommended_action\": \"Investigate the failed reservation release (EV-8003) and manually cancel the stale reservation. Verify if the reservation should still be active after the sales order was cancelled.\",\n  \"confidence\": 0.95,\n  \"requires_escalation\": true\n}",
+        "role": "assistant"
+      },
+      "prompt_tokens": 2347,
+      "turn": 5,
+      "type": "model_response"
+    }
+  ],
+  "result": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-8001",
+      "EV-8002",
+      "EV-8003",
+      "SO-902",
+      "SNAP-008-LATEST"
+    ],
+    "recommended_action": "Investigate the failed reservation release (EV-8003) and manually cancel the stale reservation. Verify if the reservation should still be active after the sales order was cancelled.",
+    "requires_escalation": true,
+    "root_cause_code": "STALE_RESERVATION",
+    "summary": "A reservation was created for SKU-ORANGE-STOOL at SEA-01 via sales order SO-902, which was later cancelled. The reservation release failed due to a lock timeout, leaving a stale reservation. The physical quantity matches the expected quantity, but the reservation remains, causing a discrepancy in available stock.",
+    "ticket_id": "INC-008"
+  },
+  "started_at": "2026-08-28T23:50:45.729058+00:00",
+  "ticket_id": "INC-008"
+}

@@ -1,0 +1,648 @@
+{
+  "configuration": {
+    "case_count": 3,
+    "max_turns": 8,
+    "runs_per_case": 3
+  },
+  "created_at": "2026-08-28T22:15:28.794115+00:00",
+  "model": "qwen3.5:27b",
+  "results": [
+    {
+      "checks": {
+        "escalation": {
+          "actual": false,
+          "expected": false,
+          "passed": true
+        },
+        "recommended_action": {
+          "actual": "Post the receipt for transfer TR-100 at SEA-01 to update physical stock from 94 to 100 units.",
+          "expected_any_keyword": [
+            "receive",
+            "receipt",
+            "receiving"
+          ],
+          "passed": true
+        },
+        "required_evidence": {
+          "actual": [
+            "EV-1001",
+            "EV-1002",
+            "TR-100"
+          ],
+          "missing": [],
+          "passed": true,
+          "required": [
+            "EV-1002",
+            "TR-100"
+          ]
+        },
+        "root_cause": {
+          "actual": "TRANSFER_NOT_RECEIVED",
+          "expected": "TRANSFER_NOT_RECEIVED",
+          "passed": true
+        },
+        "ticket_id": {
+          "actual": "INC-001",
+          "expected": "INC-001",
+          "passed": true
+        }
+      },
+      "elapsed_ms": 111756,
+      "error": null,
+      "model": "qwen3.5:27b",
+      "outcome": {
+        "confidence": 0.95,
+        "evidence_ids": [
+          "EV-1001",
+          "EV-1002",
+          "TR-100"
+        ],
+        "recommended_action": "Post the receipt for transfer TR-100 at SEA-01 to update physical stock from 94 to 100 units.",
+        "requires_escalation": false,
+        "root_cause_code": "TRANSFER_NOT_RECEIVED",
+        "summary": "Transfer TR-100 shipped 6 units from PDX-01 to SEA-01 on 2026-08-27T12:00:00Z. The source location (PDX-01) shows the transfer as posted with -6 quantity delta, but the destination receipt at SEA-01 is still pending with 0 quantity delta. Physical stock at SEA-01 is 94 units, which matches observed quantity. The expected 100 units would require the 6-unit transfer to be received and posted.",
+        "ticket_id": "INC-001"
+      },
+      "passed": true,
+      "repetition": 1,
+      "step_count": 7,
+      "ticket_id": "INC-001",
+      "tokens": {
+        "completion": 532,
+        "prompt": 3590,
+        "total": 4122
+      },
+      "trajectory_path": "trajectories/evaluation/INC-001_20260828T221720Z.json"
+    },
+    {
+      "checks": {
+        "escalation": {
+          "actual": false,
+          "expected": false,
+          "passed": true
+        },
+        "recommended_action": {
+          "actual": "Post the receipt for transfer TR-100 at SEA-01 to update physical stock from 94 to 100 units.",
+          "expected_any_keyword": [
+            "receive",
+            "receipt",
+            "receiving"
+          ],
+          "passed": true
+        },
+        "required_evidence": {
+          "actual": [
+            "EV-1001",
+            "EV-1002",
+            "TR-100"
+          ],
+          "missing": [],
+          "passed": true,
+          "required": [
+            "EV-1002",
+            "TR-100"
+          ]
+        },
+        "root_cause": {
+          "actual": "TRANSFER_NOT_RECEIVED",
+          "expected": "TRANSFER_NOT_RECEIVED",
+          "passed": true
+        },
+        "ticket_id": {
+          "actual": "INC-001",
+          "expected": "INC-001",
+          "passed": true
+        }
+      },
+      "elapsed_ms": 95267,
+      "error": null,
+      "model": "qwen3.5:27b",
+      "outcome": {
+        "confidence": 0.95,
+        "evidence_ids": [
+          "EV-1001",
+          "EV-1002",
+          "TR-100"
+        ],
+        "recommended_action": "Post the receipt for transfer TR-100 at SEA-01 to update physical stock from 94 to 100 units.",
+        "requires_escalation": false,
+        "root_cause_code": "TRANSFER_NOT_RECEIVED",
+        "summary": "Transfer TR-100 shipped 6 units from PDX-01 to SEA-01 on 2026-08-27T12:00:00Z. The source location (PDX-01) shows the transfer as posted with -6 quantity delta, but the destination receipt at SEA-01 is still pending with 0 quantity delta. Physical stock at SEA-01 is 94 units, which matches observed quantity. The expected 100 units would require the 6-unit transfer to be received and posted.",
+        "ticket_id": "INC-001"
+      },
+      "passed": true,
+      "repetition": 2,
+      "step_count": 7,
+      "ticket_id": "INC-001",
+      "tokens": {
+        "completion": 532,
+        "prompt": 3590,
+        "total": 4122
+      },
+      "trajectory_path": "trajectories/evaluation/INC-001_20260828T221855Z.json"
+    },
+    {
+      "checks": {
+        "escalation": {
+          "actual": false,
+          "expected": false,
+          "passed": true
+        },
+        "recommended_action": {
+          "actual": "Post the receipt for transfer TR-100 at SEA-01 to update physical stock from 94 to 100 units.",
+          "expected_any_keyword": [
+            "receive",
+            "receipt",
+            "receiving"
+          ],
+          "passed": true
+        },
+        "required_evidence": {
+          "actual": [
+            "EV-1001",
+            "EV-1002",
+            "TR-100"
+          ],
+          "missing": [],
+          "passed": true,
+          "required": [
+            "EV-1002",
+            "TR-100"
+          ]
+        },
+        "root_cause": {
+          "actual": "TRANSFER_NOT_RECEIVED",
+          "expected": "TRANSFER_NOT_RECEIVED",
+          "passed": true
+        },
+        "ticket_id": {
+          "actual": "INC-001",
+          "expected": "INC-001",
+          "passed": true
+        }
+      },
+      "elapsed_ms": 97109,
+      "error": null,
+      "model": "qwen3.5:27b",
+      "outcome": {
+        "confidence": 0.95,
+        "evidence_ids": [
+          "EV-1001",
+          "EV-1002",
+          "TR-100"
+        ],
+        "recommended_action": "Post the receipt for transfer TR-100 at SEA-01 to update physical stock from 94 to 100 units.",
+        "requires_escalation": false,
+        "root_cause_code": "TRANSFER_NOT_RECEIVED",
+        "summary": "Transfer TR-100 shipped 6 units from PDX-01 to SEA-01 on 2026-08-27T12:00:00Z. The source location (PDX-01) shows the transfer as posted with -6 quantity delta, but the destination receipt at SEA-01 is still pending with 0 quantity delta. Physical stock at SEA-01 is 94 units, which matches observed quantity. The expected 100 units would require the 6-unit transfer to be received and posted.",
+        "ticket_id": "INC-001"
+      },
+      "passed": true,
+      "repetition": 3,
+      "step_count": 7,
+      "ticket_id": "INC-001",
+      "tokens": {
+        "completion": 532,
+        "prompt": 3590,
+        "total": 4122
+      },
+      "trajectory_path": "trajectories/evaluation/INC-001_20260828T222032Z.json"
+    },
+    {
+      "checks": {
+        "escalation": {
+          "actual": false,
+          "expected": false,
+          "passed": true
+        },
+        "recommended_action": {
+          "actual": "Release the stale reservation of 9 units for SKU-BLUE-LAMP at SEA-01 associated with cancelled order SO-900 to restore available quantity to 50.",
+          "expected_any_keyword": [
+            "release",
+            "reservation",
+            "unreserve"
+          ],
+          "passed": true
+        },
+        "required_evidence": {
+          "actual": [
+            "INC-002",
+            "EV-2001",
+            "EV-2002",
+            "SO-900"
+          ],
+          "missing": [],
+          "passed": true,
+          "required": [
+            "EV-2001",
+            "EV-2002",
+            "SO-900"
+          ]
+        },
+        "root_cause": {
+          "actual": "STALE_RESERVATION",
+          "expected": "STALE_RESERVATION",
+          "passed": true
+        },
+        "ticket_id": {
+          "actual": "INC-002",
+          "expected": "INC-002",
+          "passed": true
+        }
+      },
+      "elapsed_ms": 125660,
+      "error": null,
+      "model": "qwen3.5:27b",
+      "outcome": {
+        "confidence": 0.95,
+        "evidence_ids": [
+          "INC-002",
+          "EV-2001",
+          "EV-2002",
+          "SO-900"
+        ],
+        "recommended_action": "Release the stale reservation of 9 units for SKU-BLUE-LAMP at SEA-01 associated with cancelled order SO-900 to restore available quantity to 50.",
+        "requires_escalation": false,
+        "root_cause_code": "STALE_RESERVATION",
+        "summary": "Sales order SO-900 was cancelled at 2026-08-27T09:00:00Z, but the reservation of 9 units created at 08:00:00Z (EV-2001) remains active. The snapshot shows physical_quantity=50, reserved_quantity=9, available_quantity=41. The order_cancelled event (EV-2002) has quantity_delta=0 and no reservation_release_id, indicating the reservation was not released upon cancellation.",
+        "ticket_id": "INC-002"
+      },
+      "passed": true,
+      "repetition": 1,
+      "step_count": 7,
+      "ticket_id": "INC-002",
+      "tokens": {
+        "completion": 531,
+        "prompt": 3552,
+        "total": 4083
+      },
+      "trajectory_path": "trajectories/evaluation/INC-002_20260828T222238Z.json"
+    },
+    {
+      "checks": {
+        "escalation": {
+          "actual": false,
+          "expected": false,
+          "passed": true
+        },
+        "recommended_action": {
+          "actual": "Release the stale reservation of 9 units for SKU-BLUE-LAMP at SEA-01 associated with cancelled order SO-900 to restore available quantity to 50.",
+          "expected_any_keyword": [
+            "release",
+            "reservation",
+            "unreserve"
+          ],
+          "passed": true
+        },
+        "required_evidence": {
+          "actual": [
+            "INC-002",
+            "EV-2001",
+            "EV-2002",
+            "SO-900"
+          ],
+          "missing": [],
+          "passed": true,
+          "required": [
+            "EV-2001",
+            "EV-2002",
+            "SO-900"
+          ]
+        },
+        "root_cause": {
+          "actual": "STALE_RESERVATION",
+          "expected": "STALE_RESERVATION",
+          "passed": true
+        },
+        "ticket_id": {
+          "actual": "INC-002",
+          "expected": "INC-002",
+          "passed": true
+        }
+      },
+      "elapsed_ms": 52708,
+      "error": null,
+      "model": "qwen3.5:27b",
+      "outcome": {
+        "confidence": 0.95,
+        "evidence_ids": [
+          "INC-002",
+          "EV-2001",
+          "EV-2002",
+          "SO-900"
+        ],
+        "recommended_action": "Release the stale reservation of 9 units for SKU-BLUE-LAMP at SEA-01 associated with cancelled order SO-900 to restore available quantity to 50.",
+        "requires_escalation": false,
+        "root_cause_code": "STALE_RESERVATION",
+        "summary": "Sales order SO-900 was cancelled at 2026-08-27T09:00:00Z, but the reservation of 9 units created at 08:00:00Z (EV-2001) remains active. The snapshot shows physical_quantity=50, reserved_quantity=9, available_quantity=41. The order_cancelled event (EV-2002) has quantity_delta=0 and no reservation_release_id, indicating the reservation was not released upon cancellation.",
+        "ticket_id": "INC-002"
+      },
+      "passed": true,
+      "repetition": 2,
+      "step_count": 7,
+      "ticket_id": "INC-002",
+      "tokens": {
+        "completion": 531,
+        "prompt": 3552,
+        "total": 4083
+      },
+      "trajectory_path": "trajectories/evaluation/INC-002_20260828T222331Z.json"
+    },
+    {
+      "checks": {
+        "escalation": {
+          "actual": false,
+          "expected": false,
+          "passed": true
+        },
+        "recommended_action": {
+          "actual": "Release the stale reservation of 9 units for SKU-BLUE-LAMP at SEA-01 associated with cancelled order SO-900 to restore available quantity to 50.",
+          "expected_any_keyword": [
+            "release",
+            "reservation",
+            "unreserve"
+          ],
+          "passed": true
+        },
+        "required_evidence": {
+          "actual": [
+            "INC-002",
+            "EV-2001",
+            "EV-2002",
+            "SO-900"
+          ],
+          "missing": [],
+          "passed": true,
+          "required": [
+            "EV-2001",
+            "EV-2002",
+            "SO-900"
+          ]
+        },
+        "root_cause": {
+          "actual": "STALE_RESERVATION",
+          "expected": "STALE_RESERVATION",
+          "passed": true
+        },
+        "ticket_id": {
+          "actual": "INC-002",
+          "expected": "INC-002",
+          "passed": true
+        }
+      },
+      "elapsed_ms": 61446,
+      "error": null,
+      "model": "qwen3.5:27b",
+      "outcome": {
+        "confidence": 0.95,
+        "evidence_ids": [
+          "INC-002",
+          "EV-2001",
+          "EV-2002",
+          "SO-900"
+        ],
+        "recommended_action": "Release the stale reservation of 9 units for SKU-BLUE-LAMP at SEA-01 associated with cancelled order SO-900 to restore available quantity to 50.",
+        "requires_escalation": false,
+        "root_cause_code": "STALE_RESERVATION",
+        "summary": "Sales order SO-900 was cancelled at 2026-08-27T09:00:00Z, but the reservation of 9 units created at 08:00:00Z (EV-2001) remains active. The snapshot shows physical_quantity=50, reserved_quantity=9, available_quantity=41. The order_cancelled event (EV-2002) has quantity_delta=0 and no reservation_release_id, indicating the reservation was not released upon cancellation.",
+        "ticket_id": "INC-002"
+      },
+      "passed": true,
+      "repetition": 3,
+      "step_count": 7,
+      "ticket_id": "INC-002",
+      "tokens": {
+        "completion": 531,
+        "prompt": 3552,
+        "total": 4083
+      },
+      "trajectory_path": "trajectories/evaluation/INC-002_20260828T222432Z.json"
+    },
+    {
+      "checks": {
+        "escalation": {
+          "actual": false,
+          "expected": false,
+          "passed": true
+        },
+        "recommended_action": {
+          "actual": "Approve cycle count document CC-300 to post the -3 adjustment and reconcile inventory balance.",
+          "expected_any_keyword": [
+            "approve",
+            "approval",
+            "post",
+            "adjustment"
+          ],
+          "passed": true
+        },
+        "required_evidence": {
+          "actual": [
+            "EV-3001",
+            "CC-300"
+          ],
+          "missing": [],
+          "passed": true,
+          "required": [
+            "CC-300",
+            "EV-3001"
+          ]
+        },
+        "root_cause": {
+          "actual": "PENDING_CYCLE_COUNT",
+          "expected": "PENDING_CYCLE_COUNT",
+          "passed": true
+        },
+        "ticket_id": {
+          "actual": "INC-003",
+          "expected": "INC-003",
+          "passed": true
+        }
+      },
+      "elapsed_ms": 74114,
+      "error": null,
+      "model": "qwen3.5:27b",
+      "outcome": {
+        "confidence": 0.95,
+        "evidence_ids": [
+          "EV-3001",
+          "CC-300"
+        ],
+        "recommended_action": "Approve cycle count document CC-300 to post the -3 adjustment and reconcile inventory balance.",
+        "requires_escalation": false,
+        "root_cause_code": "PENDING_CYCLE_COUNT",
+        "summary": "Cycle count CC-300 was completed showing 97 units (vs system 100), but the adjustment of -3 is in pending_approval state and has not yet posted. Physical quantity remains at 100 until approval.",
+        "ticket_id": "INC-003"
+      },
+      "passed": true,
+      "repetition": 1,
+      "step_count": 7,
+      "ticket_id": "INC-003",
+      "tokens": {
+        "completion": 440,
+        "prompt": 3435,
+        "total": 3875
+      },
+      "trajectory_path": "trajectories/evaluation/INC-003_20260828T222546Z.json"
+    },
+    {
+      "checks": {
+        "escalation": {
+          "actual": false,
+          "expected": false,
+          "passed": true
+        },
+        "recommended_action": {
+          "actual": "Approve cycle count document CC-300 to post the -3 adjustment and reconcile inventory balance.",
+          "expected_any_keyword": [
+            "approve",
+            "approval",
+            "post",
+            "adjustment"
+          ],
+          "passed": true
+        },
+        "required_evidence": {
+          "actual": [
+            "EV-3001",
+            "CC-300"
+          ],
+          "missing": [],
+          "passed": true,
+          "required": [
+            "CC-300",
+            "EV-3001"
+          ]
+        },
+        "root_cause": {
+          "actual": "PENDING_CYCLE_COUNT",
+          "expected": "PENDING_CYCLE_COUNT",
+          "passed": true
+        },
+        "ticket_id": {
+          "actual": "INC-003",
+          "expected": "INC-003",
+          "passed": true
+        }
+      },
+      "elapsed_ms": 54207,
+      "error": null,
+      "model": "qwen3.5:27b",
+      "outcome": {
+        "confidence": 0.95,
+        "evidence_ids": [
+          "EV-3001",
+          "CC-300"
+        ],
+        "recommended_action": "Approve cycle count document CC-300 to post the -3 adjustment and reconcile inventory balance.",
+        "requires_escalation": false,
+        "root_cause_code": "PENDING_CYCLE_COUNT",
+        "summary": "Cycle count CC-300 was completed showing 97 units (vs system 100), but the adjustment of -3 is in pending_approval state and has not yet posted. Physical quantity remains at 100 until approval.",
+        "ticket_id": "INC-003"
+      },
+      "passed": true,
+      "repetition": 2,
+      "step_count": 7,
+      "ticket_id": "INC-003",
+      "tokens": {
+        "completion": 440,
+        "prompt": 3435,
+        "total": 3875
+      },
+      "trajectory_path": "trajectories/evaluation/INC-003_20260828T222641Z.json"
+    },
+    {
+      "checks": {
+        "escalation": {
+          "actual": false,
+          "expected": false,
+          "passed": true
+        },
+        "recommended_action": {
+          "actual": "Approve cycle count document CC-300 to post the -3 adjustment and reconcile inventory balance.",
+          "expected_any_keyword": [
+            "approve",
+            "approval",
+            "post",
+            "adjustment"
+          ],
+          "passed": true
+        },
+        "required_evidence": {
+          "actual": [
+            "EV-3001",
+            "CC-300"
+          ],
+          "missing": [],
+          "passed": true,
+          "required": [
+            "CC-300",
+            "EV-3001"
+          ]
+        },
+        "root_cause": {
+          "actual": "PENDING_CYCLE_COUNT",
+          "expected": "PENDING_CYCLE_COUNT",
+          "passed": true
+        },
+        "ticket_id": {
+          "actual": "INC-003",
+          "expected": "INC-003",
+          "passed": true
+        }
+      },
+      "elapsed_ms": 51874,
+      "error": null,
+      "model": "qwen3.5:27b",
+      "outcome": {
+        "confidence": 0.95,
+        "evidence_ids": [
+          "EV-3001",
+          "CC-300"
+        ],
+        "recommended_action": "Approve cycle count document CC-300 to post the -3 adjustment and reconcile inventory balance.",
+        "requires_escalation": false,
+        "root_cause_code": "PENDING_CYCLE_COUNT",
+        "summary": "Cycle count CC-300 was completed showing 97 units (vs system 100), but the adjustment of -3 is in pending_approval state and has not yet posted. Physical quantity remains at 100 until approval.",
+        "ticket_id": "INC-003"
+      },
+      "passed": true,
+      "repetition": 3,
+      "step_count": 7,
+      "ticket_id": "INC-003",
+      "tokens": {
+        "completion": 440,
+        "prompt": 3435,
+        "total": 3875
+      },
+      "trajectory_path": "trajectories/evaluation/INC-003_20260828T222732Z.json"
+    }
+  ],
+  "summary": {
+    "cases": {
+      "INC-001": {
+        "pass_rate": 1.0,
+        "passed_runs": 3,
+        "total_runs": 3
+      },
+      "INC-002": {
+        "pass_rate": 1.0,
+        "passed_runs": 3,
+        "total_runs": 3
+      },
+      "INC-003": {
+        "pass_rate": 1.0,
+        "passed_runs": 3,
+        "total_runs": 3
+      }
+    },
+    "completion_tokens": 4509,
+    "mean_run_seconds": 80.46,
+    "mean_tokens_per_run": 4026.7,
+    "pass_rate": 1.0,
+    "passed_runs": 9,
+    "prompt_tokens": 31731,
+    "total_runs": 9,
+    "total_tokens": 36240,
+    "wall_clock_seconds": 724.151
+  }
+}

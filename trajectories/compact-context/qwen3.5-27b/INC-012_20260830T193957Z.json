@@ -1,0 +1,257 @@
+{
+  "duration_ms": 119260,
+  "error": null,
+  "events": [
+    {
+      "elapsed_ms": 0,
+      "max_turns": 12,
+      "model": "qwen3.5:27b",
+      "type": "run_started"
+    },
+    {
+      "completion_tokens": 31,
+      "done_reason": "stop",
+      "elapsed_ms": 28811,
+      "message": {
+        "content": "Requested tool call(s): get_ticket",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-012"
+              },
+              "index": 0,
+              "name": "get_ticket"
+            },
+            "id": "call_vkevw282"
+          }
+        ]
+      },
+      "prompt_tokens": 1210,
+      "turn": 1,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-012"
+      },
+      "elapsed_ms": 28811,
+      "name": "get_ticket",
+      "result": {
+        "document_refs": [
+          "TR-203"
+        ],
+        "expected_quantity": 100,
+        "id": "INC-012",
+        "investigation_window_start": "2026-08-26T23:00:00Z",
+        "location": "SEA-01",
+        "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+        "observed_quantity": 94,
+        "reported_at": "2026-08-27T23:00:00Z",
+        "sku": "SKU-GRAY-SOFA",
+        "title": "Inventory reconciliation alert for SKU-GRAY-SOFA at SEA-01"
+      },
+      "turn": 1,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 108,
+      "done_reason": "stop",
+      "elapsed_ms": 61435,
+      "message": {
+        "content": "Requested tool call(s): query_ledger, get_snapshot, get_document",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-012"
+              },
+              "index": 0,
+              "name": "query_ledger"
+            },
+            "id": "call_0dg845nl"
+          },
+          {
+            "function": {
+              "arguments": {
+                "location": "SEA-01",
+                "sku": "SKU-GRAY-SOFA"
+              },
+              "index": 1,
+              "name": "get_snapshot"
+            },
+            "id": "call_5mxq3vyh"
+          },
+          {
+            "function": {
+              "arguments": {
+                "document_id": "TR-203"
+              },
+              "index": 2,
+              "name": "get_document"
+            },
+            "id": "call_9ehe43ue"
+          }
+        ]
+      },
+      "prompt_tokens": 1411,
+      "turn": 2,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-012"
+      },
+      "elapsed_ms": 61435,
+      "name": "query_ledger",
+      "result": [
+        {
+          "document_id": "TR-X012",
+          "event_type": "transfer_received",
+          "id": "EV-X012",
+          "location": "SEA-01",
+          "quantity_delta": 5,
+          "sku": "SKU-NOISE-012",
+          "state": "posted",
+          "ticket_id": "INC-012",
+          "timestamp": "2026-08-27T22:30:00Z"
+        },
+        {
+          "document_id": "TR-203",
+          "event_type": "transfer_received",
+          "id": "EV-12002",
+          "location": "SEA-01",
+          "quantity_delta": 6,
+          "sku": "SKU-GRAY-SOFA",
+          "state": "posted",
+          "ticket_id": "INC-012",
+          "timestamp": "2026-08-27T14:00:00Z"
+        },
+        {
+          "document_id": "TR-203",
+          "event_type": "transfer_shipped",
+          "id": "EV-12001",
+          "location": "PDX-01",
+          "quantity_delta": -6,
+          "sku": "SKU-GRAY-SOFA",
+          "state": "posted",
+          "ticket_id": "INC-012",
+          "timestamp": "2026-08-27T12:00:00Z"
+        },
+        {
+          "document_id": "CC-H012",
+          "event_type": "count_adjustment_posted",
+          "id": "EV-H012B",
+          "location": "SEA-01",
+          "quantity_delta": 1,
+          "sku": "SKU-GRAY-SOFA",
+          "state": "posted",
+          "ticket_id": "INC-012",
+          "timestamp": "2026-08-20T23:05:00Z"
+        },
+        {
+          "document_id": "CC-H012",
+          "event_type": "cycle_count_completed",
+          "id": "EV-H012A",
+          "location": "SEA-01",
+          "quantity_delta": 1,
+          "sku": "SKU-GRAY-SOFA",
+          "state": "approved",
+          "ticket_id": "INC-012",
+          "timestamp": "2026-08-20T23:00:00Z"
+        }
+      ],
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-GRAY-SOFA"
+      },
+      "elapsed_ms": 61435,
+      "name": "get_snapshot",
+      "result": {
+        "available_quantity": 94,
+        "captured_at": "2026-08-27T22:55:00Z",
+        "history": [
+          {
+            "available_quantity": 94,
+            "captured_at": "2026-08-25T23:00:00Z",
+            "location": "SEA-01",
+            "physical_quantity": 94,
+            "reserved_quantity": 0,
+            "sku": "SKU-GRAY-SOFA",
+            "snapshot_id": "SNAP-012-PREVIOUS"
+          },
+          {
+            "available_quantity": 94,
+            "captured_at": "2026-08-20T23:00:00Z",
+            "location": "SEA-01",
+            "physical_quantity": 94,
+            "reserved_quantity": 0,
+            "sku": "SKU-GRAY-SOFA",
+            "snapshot_id": "SNAP-012-HISTORICAL"
+          }
+        ],
+        "location": "SEA-01",
+        "physical_quantity": 94,
+        "reserved_quantity": 0,
+        "sku": "SKU-GRAY-SOFA",
+        "snapshot_id": "SNAP-012-LATEST"
+      },
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "arguments": {
+        "document_id": "TR-203"
+      },
+      "elapsed_ms": 61436,
+      "name": "get_document",
+      "result": {
+        "destination_location": "SEA-01",
+        "id": "TR-203",
+        "quantity": 6,
+        "received_at": "2026-08-27T14:00:00Z",
+        "received_quantity": 6,
+        "sku": "SKU-GRAY-SOFA",
+        "source_location": "PDX-01",
+        "status": "received",
+        "type": "transfer"
+      },
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 216,
+      "done_reason": "stop",
+      "elapsed_ms": 119260,
+      "message": {
+        "content": "{\n  \"ticket_id\": \"INC-012\",\n  \"root_cause_code\": \"NO_DISCREPANCY\",\n  \"summary\": \"The observed physical quantity of 94 matches the snapshot. The transfer TR-203 for 6 units was fully shipped from PDX-01 and received at SEA-01, reconciling with the ledger events EV-12001 and EV-12002. The reported expected quantity of 100 appears to be a baseline expectation not reflected in current system records; no missing receipts, stale reservations, or unposted adjustments were found.\",\n  \"evidence_ids\": [\"EV-12001\", \"EV-12002\", \"TR-203\", \"SNAP-012-LATEST\"],\n  \"recommended_action\": \"Close ticket as resolved; no corrective action required.\",\n  \"confidence\": 0.95,\n  \"requires_escalation\": false\n}",
+        "role": "assistant"
+      },
+      "prompt_tokens": 1472,
+      "turn": 3,
+      "type": "model_response"
+    }
+  ],
+  "result": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-12001",
+      "EV-12002",
+      "TR-203",
+      "SNAP-012-LATEST"
+    ],
+    "recommended_action": "Close ticket as resolved; no corrective action required.",
+    "requires_escalation": false,
+    "root_cause_code": "NO_DISCREPANCY",
+    "summary": "The observed physical quantity of 94 matches the snapshot. The transfer TR-203 for 6 units was fully shipped from PDX-01 and received at SEA-01, reconciling with the ledger events EV-12001 and EV-12002. The reported expected quantity of 100 appears to be a baseline expectation not reflected in current system records; no missing receipts, stale reservations, or unposted adjustments were found.",
+    "ticket_id": "INC-012"
+  },
+  "started_at": "2026-08-30T19:37:58.531783+00:00",
+  "ticket_id": "INC-012"
+}

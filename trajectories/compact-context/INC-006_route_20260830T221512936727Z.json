@@ -1,0 +1,74 @@
+{
+  "elapsed_ms": 55228,
+  "outcome": {
+    "confidence": 0.85,
+    "evidence_ids": [
+      "EV-6001",
+      "EV-6002"
+    ],
+    "recommended_action": "Locate and post the pending transfer receipt for document TR-MISSING at SEA-01 to reconcile the inventory discrepancy. If the document cannot be located, escalate to investigate the missing document.",
+    "requires_escalation": true,
+    "root_cause_code": "TRANSFER_NOT_RECEIVED",
+    "summary": "A transfer shipment of 6 units (EV-6001) from PDX-01 to SEA-01 under document TR-MISSING was posted, but the corresponding receipt at SEA-01 (EV-6002) remains pending with a quantity delta of 0. The physical stock at SEA-01 is 74, which is 6 units lower than the expected 80 if the transfer had been received. The document TR-MISSING could not be retrieved, confirming it is missing or inaccessible in the system.",
+    "ticket_id": "INC-006"
+  },
+  "routing": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 15261,
+        "error": null,
+        "evidence_flags": [
+          "missing_document"
+        ],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "TRANSFER_NOT_RECEIVED",
+        "status": "completed",
+        "tokens": {
+          "completion": 302,
+          "prompt": 4349,
+          "total": 4651
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-006_20260830T221432Z.json"
+      },
+      {
+        "confidence": 0.85,
+        "elapsed_ms": 39964,
+        "error": null,
+        "evidence_flags": [
+          "missing_document"
+        ],
+        "model": "qwen3.5:27b",
+        "reason": "evidence requires deep review: missing_document",
+        "requires_escalation": true,
+        "root_cause_code": "TRANSFER_NOT_RECEIVED",
+        "status": "completed",
+        "tokens": {
+          "completion": 248,
+          "prompt": 1617,
+          "total": 1865
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3.5-27b/INC-006_review_20260830T221512935074Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3.5:27b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-006",
+  "tokens": {
+    "completion": 550,
+    "prompt": 5966,
+    "total": 6516
+  }
+}

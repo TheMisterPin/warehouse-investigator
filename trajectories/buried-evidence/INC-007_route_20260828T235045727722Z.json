@@ -1,0 +1,73 @@
+{
+  "elapsed_ms": 76267,
+  "outcome": {
+    "confidence": 0.98,
+    "evidence_ids": [
+      "EV-7001",
+      "EV-7002",
+      "EV-7003",
+      "SO-901",
+      "SNAP-007-LATEST"
+    ],
+    "recommended_action": "Close the ticket as resolved; no corrective action is required.",
+    "requires_escalation": false,
+    "root_cause_code": "NO_DISCREPANCY",
+    "summary": "The sales order SO-901 was cancelled (EV-7002) and its associated reservation of 9 units was successfully released (EV-7003). The current snapshot confirms physical quantity is 50, reserved quantity is 0, and available quantity is 50. The ledger events reconcile with the current state; no stale reservation or inventory discrepancy exists.",
+    "ticket_id": "INC-007"
+  },
+  "routing": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 20442,
+        "error": null,
+        "evidence_flags": [],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": true,
+        "root_cause_code": "STALE_RESERVATION",
+        "status": "completed",
+        "tokens": {
+          "completion": 282,
+          "prompt": 8803,
+          "total": 9085
+        },
+        "trajectory_path": "trajectories/buried-evidence/qwen3-8b/INC-007_20260828T234949Z.json"
+      },
+      {
+        "confidence": 0.98,
+        "elapsed_ms": 55821,
+        "error": null,
+        "evidence_flags": [],
+        "model": "qwen3.5:27b",
+        "reason": "primary model requested escalation",
+        "requires_escalation": false,
+        "root_cause_code": "NO_DISCREPANCY",
+        "status": "completed",
+        "tokens": {
+          "completion": 205,
+          "prompt": 2215,
+          "total": 2420
+        },
+        "trajectory_path": "trajectories/buried-evidence/qwen3.5-27b/INC-007_review_20260828T235045725096Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3.5:27b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-007",
+  "tokens": {
+    "completion": 487,
+    "prompt": 11018,
+    "total": 11505
+  }
+}

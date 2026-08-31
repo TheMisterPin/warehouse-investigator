@@ -1,0 +1,78 @@
+{
+  "elapsed_ms": 219407,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-5001",
+      "EV-5002",
+      "EV-5003",
+      "TR-201"
+    ],
+    "recommended_action": "Escalate to inventory control to reverse the duplicate ledger event EV-5003 and reconcile the stock level to 100.",
+    "requires_escalation": true,
+    "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+    "summary": "The observed quantity of 106 at SEA-01 is inflated by a duplicate receipt. Transfer TR-201 shipped 6 units from PDX-01 (EV-5001) and was received once for 6 units (EV-5002). However, EV-5003 is a posted retry of EV-5002 with the same document ID and quantity, incorrectly adding another 6 units to stock. The expected quantity of 100 implies only one receipt should have been applied.",
+    "ticket_id": "INC-005"
+  },
+  "routing": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "confidence": 1.0,
+        "elapsed_ms": 66870,
+        "error": null,
+        "evidence_flags": [
+          "conflicting_stock",
+          "duplicate_event"
+        ],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "NO_DISCREPANCY",
+        "status": "completed",
+        "tokens": {
+          "completion": 339,
+          "prompt": 3740,
+          "total": 4079
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-005_20260830T194233Z.json"
+      },
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 152533,
+        "error": null,
+        "evidence_flags": [
+          "conflicting_stock",
+          "duplicate_event"
+        ],
+        "model": "qwen3.5:27b",
+        "reason": "evidence requires deep review: conflicting_stock, duplicate_event",
+        "requires_escalation": true,
+        "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+        "status": "completed",
+        "tokens": {
+          "completion": 245,
+          "prompt": 1611,
+          "total": 1856
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3.5-27b/INC-005_review_20260830T194506223047Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3.5:27b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-005",
+  "tokens": {
+    "completion": 584,
+    "prompt": 5351,
+    "total": 5935
+  }
+}

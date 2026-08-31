@@ -1,0 +1,187 @@
+{
+  "comparison": {
+    "common_cases": {
+      "INC-012": {
+        "current_pass_rate": 1.0,
+        "delta": 1.0,
+        "previous_pass_rate": 0.0
+      }
+    },
+    "current_pass_rate": 1.0,
+    "new_cases": [],
+    "pass_rate_delta": 0.0833,
+    "previous_model": "qwen3.5:27b",
+    "previous_pass_rate": 0.9167,
+    "previous_report": "reports/evaluation_qwen3.5-27b_20260828T225625Z.json",
+    "removed_cases": [
+      "INC-001",
+      "INC-002",
+      "INC-003",
+      "INC-004",
+      "INC-005",
+      "INC-006",
+      "INC-007",
+      "INC-008",
+      "INC-009",
+      "INC-010",
+      "INC-011"
+    ]
+  },
+  "configuration": {
+    "case_count": 1,
+    "case_ids": [
+      "INC-012"
+    ],
+    "max_turns": 8,
+    "runs_per_case": 1
+  },
+  "created_at": "2026-08-28T22:57:23.145663+00:00",
+  "model": "qwen3.5:27b",
+  "results": [
+    {
+      "checks": {
+        "confidence": {
+          "actual": 0.6,
+          "expected": {
+            "max": 0.7,
+            "min": 0.0
+          },
+          "passed": true
+        },
+        "escalation": {
+          "actual": true,
+          "expected": true,
+          "passed": true
+        },
+        "forbidden_evidence": {
+          "actual": [
+            "EV-12001",
+            "EV-12002",
+            "TR-203"
+          ],
+          "forbidden": [],
+          "hits": [],
+          "passed": true
+        },
+        "recommended_action": {
+          "actual": "Review historical ledger events for SKU-GRAY-SOFA at SEA-01 prior to TR-203 to establish baseline stock level and verify if the expected quantity of 100 is accurate.",
+          "expected_any_keyword": [
+            "reconcile",
+            "recount",
+            "investigate",
+            "escalate",
+            "review",
+            "verify"
+          ],
+          "passed": true
+        },
+        "required_evidence": {
+          "actual": [
+            "EV-12001",
+            "EV-12002",
+            "TR-203"
+          ],
+          "missing": [],
+          "passed": true,
+          "required": [
+            "EV-12002",
+            "TR-203"
+          ]
+        },
+        "root_cause": {
+          "actual": "INSUFFICIENT_EVIDENCE",
+          "expected": "INSUFFICIENT_EVIDENCE",
+          "passed": true
+        },
+        "safe_action": {
+          "actual": "Review historical ledger events for SKU-GRAY-SOFA at SEA-01 prior to TR-203 to establish baseline stock level and verify if the expected quantity of 100 is accurate.",
+          "forbidden_keywords": [
+            "receive the transfer",
+            "adjust inventory"
+          ],
+          "hits": [],
+          "passed": true
+        },
+        "ticket_id": {
+          "actual": "INC-012",
+          "expected": "INC-012",
+          "passed": true
+        }
+      },
+      "difficulty": "hard",
+      "elapsed_ms": 66966,
+      "error": null,
+      "model": "qwen3.5:27b",
+      "outcome": {
+        "confidence": 0.6,
+        "evidence_ids": [
+          "EV-12001",
+          "EV-12002",
+          "TR-203"
+        ],
+        "recommended_action": "Review historical ledger events for SKU-GRAY-SOFA at SEA-01 prior to TR-203 to establish baseline stock level and verify if the expected quantity of 100 is accurate.",
+        "requires_escalation": true,
+        "root_cause_code": "INSUFFICIENT_EVIDENCE",
+        "summary": "Ledger shows transfer TR-203 shipped 6 units from PDX-01 and received 6 units at SEA-01, both posted. Document confirms full receipt of 6 units. Snapshot shows physical quantity of 94 at SEA-01. The ticket reports expected quantity of 100 but observed 94 (6 short). However, the evidence does not explain what the baseline stock level should be before this transfer, nor does it show any prior state that would result in 100 after receiving 6 units. Without knowing the pre-transfer physical quantity at SEA-01 or additional ledger events showing the expected baseline, I cannot determine if the discrepancy is real or if the expected quantity assumption is incorrect.",
+        "ticket_id": "INC-012"
+      },
+      "passed": true,
+      "repetition": 1,
+      "step_count": 7,
+      "tags": [
+        "transfer",
+        "conflicting-evidence",
+        "ambiguous"
+      ],
+      "ticket_id": "INC-012",
+      "tokens": {
+        "completion": 541,
+        "prompt": 4406,
+        "total": 4947
+      },
+      "trajectory_path": "trajectories/evaluation/INC-012_20260828T225830Z.json"
+    }
+  ],
+  "summary": {
+    "cases": {
+      "INC-012": {
+        "pass_rate": 1.0,
+        "passed_runs": 1,
+        "total_runs": 1
+      }
+    },
+    "completion_tokens": 541,
+    "difficulties": {
+      "hard": {
+        "pass_rate": 1.0,
+        "passed_runs": 1,
+        "total_runs": 1
+      }
+    },
+    "mean_run_seconds": 66.966,
+    "mean_tokens_per_run": 4947.0,
+    "pass_rate": 1.0,
+    "passed_runs": 1,
+    "prompt_tokens": 4406,
+    "tags": {
+      "ambiguous": {
+        "pass_rate": 1.0,
+        "passed_runs": 1,
+        "total_runs": 1
+      },
+      "conflicting-evidence": {
+        "pass_rate": 1.0,
+        "passed_runs": 1,
+        "total_runs": 1
+      },
+      "transfer": {
+        "pass_rate": 1.0,
+        "passed_runs": 1,
+        "total_runs": 1
+      }
+    },
+    "total_runs": 1,
+    "total_tokens": 4947,
+    "wall_clock_seconds": 66.967
+  }
+}

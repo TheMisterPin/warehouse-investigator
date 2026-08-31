@@ -1,0 +1,52 @@
+{
+  "elapsed_ms": 54299,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-1002",
+      "TR-100"
+    ],
+    "recommended_action": "Post the pending transfer receipt (TR-100) to update destination stock to 6 units in SEA-01",
+    "requires_escalation": false,
+    "root_cause_code": "TRANSFER_NOT_RECEIVED",
+    "summary": "Destination stock (SEA-01) is six units short after replenishment due to pending transfer receipt (TR-100) with zero quantity delta. The transfer from PDX-01 to SEA-01 was shipped but not received.",
+    "ticket_id": "INC-001"
+  },
+  "routing": {
+    "attempt_count": 1,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 54299,
+        "error": null,
+        "model": "qwen3:4b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "TRANSFER_NOT_RECEIVED",
+        "status": "completed",
+        "tokens": {
+          "completion": 2678,
+          "prompt": 10543,
+          "total": 13221
+        },
+        "trajectory_path": "trajectories/qwen3-4b/INC-001_20260828T230632Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:4b",
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3:4b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:4b"
+    ]
+  },
+  "ticket_id": "INC-001",
+  "tokens": {
+    "completion": 2678,
+    "prompt": 10543,
+    "total": 13221
+  }
+}

@@ -1,0 +1,212 @@
+{
+  "duration_ms": 75060,
+  "error": null,
+  "events": [
+    {
+      "elapsed_ms": 0,
+      "max_turns": 8,
+      "model": "qwen3.5:27b",
+      "type": "run_started"
+    },
+    {
+      "completion_tokens": 51,
+      "done_reason": "stop",
+      "elapsed_ms": 15571,
+      "message": {
+        "content": "I'll start by retrieving the ticket details for INC-008 to understand the incident.",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-008"
+              },
+              "index": 0,
+              "name": "get_ticket"
+            },
+            "id": "call_yiwjz7r3"
+          }
+        ]
+      },
+      "prompt_tokens": 1153,
+      "turn": 1,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-008"
+      },
+      "elapsed_ms": 15571,
+      "name": "get_ticket",
+      "result": {
+        "document_refs": [
+          "SO-902"
+        ],
+        "expected_quantity": 50,
+        "id": "INC-008",
+        "location": "SEA-01",
+        "notes": "The release workflow ran but reported a failure.",
+        "observed_quantity": 41,
+        "reported_at": "2026-08-27T21:00:00Z",
+        "sku": "SKU-ORANGE-STOOL",
+        "title": "Reservation release failed after order cancellation"
+      },
+      "turn": 1,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 230,
+      "done_reason": "stop",
+      "elapsed_ms": 45078,
+      "message": {
+        "content": "Now I have the ticket details. Let me gather the required evidence:\n- SKU: SKU-ORANGE-STOOL\n- Location: SEA-01\n- Document reference: SO-902\n- Expected quantity: 50, Observed quantity: 41 (discrepancy of 9)\n\nI need to:\n1. Query the ledger for this ticket\n2. Get the snapshot for SKU-ORANGE-STOOL at SEA-01\n3. Get the document SO-902\n\nLet me start with these calls:",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-008"
+              },
+              "index": 0,
+              "name": "query_ledger"
+            },
+            "id": "call_5ch7a37e"
+          },
+          {
+            "function": {
+              "arguments": {
+                "location": "SEA-01",
+                "sku": "SKU-ORANGE-STOOL"
+              },
+              "index": 1,
+              "name": "get_snapshot"
+            },
+            "id": "call_w25ly3o9"
+          },
+          {
+            "function": {
+              "arguments": {
+                "document_id": "SO-902"
+              },
+              "index": 2,
+              "name": "get_document"
+            },
+            "id": "call_3mdd6pt3"
+          }
+        ]
+      },
+      "prompt_tokens": 1327,
+      "turn": 2,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-008"
+      },
+      "elapsed_ms": 45078,
+      "name": "query_ledger",
+      "result": [
+        {
+          "document_id": "SO-902",
+          "event_type": "reservation_created",
+          "id": "EV-8001",
+          "location": "SEA-01",
+          "quantity_delta": -9,
+          "sku": "SKU-ORANGE-STOOL",
+          "state": "posted",
+          "ticket_id": "INC-008",
+          "timestamp": "2026-08-27T08:00:00Z"
+        },
+        {
+          "document_id": "SO-902",
+          "event_type": "order_cancelled",
+          "id": "EV-8002",
+          "location": "SEA-01",
+          "quantity_delta": 0,
+          "sku": "SKU-ORANGE-STOOL",
+          "state": "posted",
+          "ticket_id": "INC-008",
+          "timestamp": "2026-08-27T09:00:00Z"
+        },
+        {
+          "document_id": "SO-902",
+          "error": "lock_timeout",
+          "event_type": "reservation_release",
+          "id": "EV-8003",
+          "location": "SEA-01",
+          "quantity_delta": 0,
+          "sku": "SKU-ORANGE-STOOL",
+          "state": "failed",
+          "ticket_id": "INC-008",
+          "timestamp": "2026-08-27T09:01:00Z"
+        }
+      ],
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-ORANGE-STOOL"
+      },
+      "elapsed_ms": 45078,
+      "name": "get_snapshot",
+      "result": {
+        "available_quantity": 41,
+        "location": "SEA-01",
+        "physical_quantity": 50,
+        "reserved_quantity": 9,
+        "sku": "SKU-ORANGE-STOOL"
+      },
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "arguments": {
+        "document_id": "SO-902"
+      },
+      "elapsed_ms": 45078,
+      "name": "get_document",
+      "result": {
+        "id": "SO-902",
+        "location": "SEA-01",
+        "quantity": 9,
+        "reservation_release_id": "EV-8003",
+        "reservation_release_status": "failed",
+        "sku": "SKU-ORANGE-STOOL",
+        "status": "cancelled",
+        "type": "sales_order"
+      },
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 173,
+      "done_reason": "stop",
+      "elapsed_ms": 75060,
+      "message": {
+        "content": "{\"ticket_id\": \"INC-008\", \"root_cause_code\": \"STALE_RESERVATION\", \"summary\": \"Sales order SO-902 was cancelled, but the reservation release (EV-8003) failed with a lock_timeout error. The reservation of 9 units remains active despite the order cancellation, causing available quantity to be 41 instead of expected 50.\", \"evidence_ids\": [\"EV-8001\", \"EV-8002\", \"EV-8003\", \"SO-902\"], \"recommended_action\": \"Retry the reservation release for document SO-902 after confirming no conflicting locks exist, or manually release the stale reservation of 9 units.\", \"confidence\": 0.95, \"requires_escalation\": false}",
+        "role": "assistant"
+      },
+      "prompt_tokens": 2005,
+      "turn": 3,
+      "type": "model_response"
+    }
+  ],
+  "result": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-8001",
+      "EV-8002",
+      "EV-8003",
+      "SO-902"
+    ],
+    "recommended_action": "Retry the reservation release for document SO-902 after confirming no conflicting locks exist, or manually release the stale reservation of 9 units.",
+    "requires_escalation": false,
+    "root_cause_code": "STALE_RESERVATION",
+    "summary": "Sales order SO-902 was cancelled, but the reservation release (EV-8003) failed with a lock_timeout error. The reservation of 9 units remains active despite the order cancellation, causing available quantity to be 41 instead of expected 50.",
+    "ticket_id": "INC-008"
+  },
+  "started_at": "2026-08-28T22:49:06.013209+00:00",
+  "ticket_id": "INC-008"
+}

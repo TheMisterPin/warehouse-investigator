@@ -1,0 +1,116 @@
+{
+  "elapsed_ms": 85735,
+  "evidence": [
+    {
+      "arguments": {
+        "ticket_id": "INC-012"
+      },
+      "result": {
+        "document_refs": [
+          "TR-203"
+        ],
+        "expected_quantity": 100,
+        "id": "INC-012",
+        "investigation_window_start": "2026-08-26T23:00:00Z",
+        "location": "SEA-01",
+        "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+        "observed_quantity": 94,
+        "reported_at": "2026-08-27T23:00:00Z",
+        "sku": "SKU-GRAY-SOFA",
+        "title": "Inventory reconciliation alert for SKU-GRAY-SOFA at SEA-01"
+      },
+      "tool": "get_ticket"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-GRAY-SOFA",
+        "ticket_id": "INC-012"
+      },
+      "result": [
+        {
+          "document_id": "TR-203",
+          "event_type": "transfer_received",
+          "id": "EV-12002",
+          "location": "SEA-01",
+          "quantity_delta": 6,
+          "sku": "SKU-GRAY-SOFA",
+          "state": "posted",
+          "ticket_id": "INC-012",
+          "timestamp": "2026-08-27T14:00:00Z"
+        }
+      ],
+      "tool": "query_ledger"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-GRAY-SOFA"
+      },
+      "result": {
+        "available_quantity": 94,
+        "captured_at": "2026-08-27T22:55:00Z",
+        "location": "SEA-01",
+        "physical_quantity": 94,
+        "reserved_quantity": 0,
+        "sku": "SKU-GRAY-SOFA",
+        "snapshot_id": "SNAP-012-LATEST"
+      },
+      "tool": "get_snapshot"
+    },
+    {
+      "arguments": {
+        "document_id": "TR-203"
+      },
+      "result": {
+        "destination_location": "SEA-01",
+        "id": "TR-203",
+        "quantity": 6,
+        "received_at": "2026-08-27T14:00:00Z",
+        "received_quantity": 6,
+        "sku": "SKU-GRAY-SOFA",
+        "source_location": "PDX-01",
+        "status": "received",
+        "type": "transfer"
+      },
+      "tool": "get_document"
+    }
+  ],
+  "model": "qwen3.5:27b",
+  "outcome": {
+    "confidence": 0.6,
+    "evidence_ids": [
+      "EV-12002",
+      "TR-203",
+      "SNAP-012-LATEST"
+    ],
+    "recommended_action": "Escalate to inventory control to locate the source document or system state that established the expected quantity of 100 units and verify if a cycle count was performed but not recorded in the current evidence set.",
+    "requires_escalation": true,
+    "root_cause_code": "INSUFFICIENT_EVIDENCE",
+    "summary": "The ticket reports an expected quantity of 100 versus an observed quantity of 94 for SKU-GRAY-SOFA at SEA-01. The provided evidence confirms a posted transfer receipt (TR-203) of 6 units, resulting in a current physical quantity of 94. However, no evidence explains the origin of the 'expected' quantity of 100 or accounts for the missing 6 units relative to that expectation. The prior outcome citing a completed cycle count (CC-H012) is unsupported by the provided evidence bundle, which contains no records for CC-H012. Without documentation establishing the baseline expectation or the specific event causing the variance from 100 to 94, the root cause cannot be determined.",
+    "ticket_id": "INC-012"
+  },
+  "prior_outcomes": [
+    {
+      "confidence": 1.0,
+      "evidence_ids": [
+        "EV-12002",
+        "EV-H012A",
+        "EV-H012B",
+        "TR-203"
+      ],
+      "recommended_action": "No action required. The inventory reconciliation is complete and accurate.",
+      "requires_escalation": false,
+      "root_cause_code": "NO_DISCREPANCY",
+      "summary": "The discrepancy between expected and observed quantities for SKU-GRAY-SOFA at SEA-01 is resolved by a completed cycle count (CC-H012) and a posted transfer receipt (TR-203). The observed quantity of 94 matches the available quantity in the snapshot, confirming no discrepancy.",
+      "ticket_id": "INC-012"
+    }
+  ],
+  "reason": "evidence requires deep review: conflicting_stock",
+  "ticket_id": "INC-012",
+  "tokens": {
+    "completion": 308,
+    "prompt": 1461,
+    "total": 1769
+  }
+}

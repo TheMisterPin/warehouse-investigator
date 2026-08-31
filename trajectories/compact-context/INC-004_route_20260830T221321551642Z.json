@@ -1,0 +1,75 @@
+{
+  "elapsed_ms": 47889,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "TR-200",
+      "EV-4001",
+      "EV-4002"
+    ],
+    "recommended_action": "Locate and receive the remaining 2 units for transfer TR-200 to complete the transaction.",
+    "requires_escalation": false,
+    "root_cause_code": "PARTIAL_TRANSFER_RECEIPT",
+    "summary": "Transfer TR-200 shipped 6 units from PDX-01 to SEA-01. Only 4 units have been received and posted (EV-4002), leaving 2 units outstanding. The document status is 'partially_received' with a remaining quantity of 2. The observed physical stock of 98 reflects the partial receipt, but the discrepancy arises from the unposted balance of the transfer.",
+    "ticket_id": "INC-004"
+  },
+  "routing": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 10694,
+        "error": null,
+        "evidence_flags": [
+          "partial_transfer"
+        ],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "TRANSFER_NOT_RECEIVED",
+        "status": "completed",
+        "tokens": {
+          "completion": 310,
+          "prompt": 4494,
+          "total": 4804
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-004_20260830T221244Z.json"
+      },
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 37192,
+        "error": null,
+        "evidence_flags": [
+          "partial_transfer"
+        ],
+        "model": "qwen3.5:27b",
+        "reason": "evidence requires deep review: partial_transfer",
+        "requires_escalation": false,
+        "root_cause_code": "PARTIAL_TRANSFER_RECEIPT",
+        "status": "completed",
+        "tokens": {
+          "completion": 204,
+          "prompt": 1761,
+          "total": 1965
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3.5-27b/INC-004_review_20260830T221321549985Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3.5:27b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-004",
+  "tokens": {
+    "completion": 514,
+    "prompt": 6255,
+    "total": 6769
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "elapsed_ms": 67271,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-8001",
+      "EV-8002",
+      "EV-8003",
+      "SO-902",
+      "SNAP-008-LATEST"
+    ],
+    "recommended_action": "Manually retry or force the reservation release for document SO-902 to clear the stale reservation of 9 units.",
+    "requires_escalation": true,
+    "root_cause_code": "STALE_RESERVATION",
+    "summary": "Sales order SO-902 for SKU-ORANGE-STOOL at SEA-01 was cancelled (EV-8002), but the corresponding reservation release (EV-8003) failed due to a lock timeout. Consequently, 9 units remain reserved despite the cancellation, reducing available stock from 50 to 41 while physical stock remains correct.",
+    "ticket_id": "INC-008"
+  },
+  "routing": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 23100,
+        "error": null,
+        "evidence_flags": [
+          "failed_workflow"
+        ],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": true,
+        "root_cause_code": "STALE_RESERVATION",
+        "status": "completed",
+        "tokens": {
+          "completion": 341,
+          "prompt": 8864,
+          "total": 9205
+        },
+        "trajectory_path": "trajectories/buried-evidence/qwen3-8b/INC-008_20260828T235108Z.json"
+      },
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 44169,
+        "error": null,
+        "evidence_flags": [
+          "failed_workflow"
+        ],
+        "model": "qwen3.5:27b",
+        "reason": "primary model requested escalation",
+        "requires_escalation": true,
+        "root_cause_code": "STALE_RESERVATION",
+        "status": "completed",
+        "tokens": {
+          "completion": 230,
+          "prompt": 2299,
+          "total": 2529
+        },
+        "trajectory_path": "trajectories/buried-evidence/qwen3.5-27b/INC-008_review_20260828T235152998254Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3.5:27b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-008",
+  "tokens": {
+    "completion": 571,
+    "prompt": 11163,
+    "total": 11734
+  }
+}
