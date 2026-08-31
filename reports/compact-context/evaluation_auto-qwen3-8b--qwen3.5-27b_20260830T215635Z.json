@@ -1,0 +1,1587 @@
+{
+  "comparison": {
+    "common_cases": {
+      "INC-001": {
+        "current_pass_rate": 1.0,
+        "delta": 0.0,
+        "previous_pass_rate": 1.0
+      },
+      "INC-002": {
+        "current_pass_rate": 1.0,
+        "delta": 1.0,
+        "previous_pass_rate": 0.0
+      },
+      "INC-003": {
+        "current_pass_rate": 0.0,
+        "delta": -1.0,
+        "previous_pass_rate": 1.0
+      },
+      "INC-004": {
+        "current_pass_rate": 0.0,
+        "delta": -1.0,
+        "previous_pass_rate": 1.0
+      },
+      "INC-005": {
+        "current_pass_rate": 1.0,
+        "delta": 0.0,
+        "previous_pass_rate": 1.0
+      },
+      "INC-006": {
+        "current_pass_rate": 0.0,
+        "delta": 0.0,
+        "previous_pass_rate": 0.0
+      },
+      "INC-007": {
+        "current_pass_rate": 0.0,
+        "delta": -1.0,
+        "previous_pass_rate": 1.0
+      },
+      "INC-008": {
+        "current_pass_rate": 1.0,
+        "delta": 1.0,
+        "previous_pass_rate": 0.0
+      },
+      "INC-009": {
+        "current_pass_rate": 1.0,
+        "delta": 0.0,
+        "previous_pass_rate": 1.0
+      },
+      "INC-010": {
+        "current_pass_rate": 1.0,
+        "delta": 1.0,
+        "previous_pass_rate": 0.0
+      },
+      "INC-011": {
+        "current_pass_rate": 1.0,
+        "delta": 1.0,
+        "previous_pass_rate": 0.0
+      },
+      "INC-012": {
+        "current_pass_rate": 1.0,
+        "delta": 0.0,
+        "previous_pass_rate": 1.0
+      }
+    },
+    "current_mean_run_seconds": 32.563,
+    "current_pass_rate": 0.6667,
+    "current_wall_clock_seconds": 390.767,
+    "current_workers": 1,
+    "mean_run_delta": -90.973,
+    "new_cases": [],
+    "pass_rate_delta": 0.0834,
+    "previous_mean_run_seconds": 123.536,
+    "previous_model": "auto:qwen3:8b->qwen3.5:27b",
+    "previous_pass_rate": 0.5833,
+    "previous_report": "reports/compact-context/evaluation_auto-qwen3-8b--qwen3.5-27b_20260830T213107Z.json",
+    "previous_wall_clock_seconds": 768.228,
+    "previous_workers": 2,
+    "removed_cases": [],
+    "wall_clock_delta": -377.461
+  },
+  "configuration": {
+    "case_count": 12,
+    "case_ids": [
+      "INC-001",
+      "INC-002",
+      "INC-003",
+      "INC-004",
+      "INC-005",
+      "INC-006",
+      "INC-007",
+      "INC-008",
+      "INC-009",
+      "INC-010",
+      "INC-011",
+      "INC-012"
+    ],
+    "max_turns": 12,
+    "runs_per_case": 1,
+    "workers": 1
+  },
+  "created_at": "2026-08-30T21:50:04.899486+00:00",
+  "model": "auto:qwen3:8b->qwen3.5:27b",
+  "results": [
+    {
+      "checks": {
+        "confidence": {
+          "actual": 0.95,
+          "expected": {
+            "max": 1.0,
+            "min": 0.8
+          },
+          "passed": true
+        },
+        "escalation": {
+          "actual": false,
+          "expected": false,
+          "passed": true
+        },
+        "forbidden_evidence": {
+          "actual": [
+            "TR-100",
+            "EV-1002"
+          ],
+          "forbidden": [
+            "CC-H001",
+            "EV-H001A",
+            "EV-H001B",
+            "EV-X001",
+            "TR-X001"
+          ],
+          "hits": [],
+          "passed": true
+        },
+        "recommended_action": {
+          "actual": "Verify the receipt of the transfer TR-100 at SEA-01 and post the transfer_received event once the goods are confirmed received.",
+          "expected_any_keyword": [
+            "receive",
+            "receipt",
+            "receiving"
+          ],
+          "passed": true
+        },
+        "required_evidence": {
+          "actual": [
+            "TR-100",
+            "EV-1002"
+          ],
+          "missing": [],
+          "passed": true,
+          "required": [
+            "EV-1002",
+            "TR-100"
+          ]
+        },
+        "root_cause": {
+          "actual": "TRANSFER_NOT_RECEIVED",
+          "expected": "TRANSFER_NOT_RECEIVED",
+          "passed": true
+        },
+        "safe_action": {
+          "actual": "Verify the receipt of the transfer TR-100 at SEA-01 and post the transfer_received event once the goods are confirmed received.",
+          "forbidden_keywords": [
+            "adjust inventory"
+          ],
+          "hits": [],
+          "passed": true
+        },
+        "ticket_id": {
+          "actual": "INC-001",
+          "expected": "INC-001",
+          "passed": true
+        }
+      },
+      "difficulty": "easy",
+      "elapsed_ms": 14682,
+      "error": null,
+      "model": "qwen3:8b",
+      "outcome": {
+        "confidence": 0.95,
+        "evidence_ids": [
+          "TR-100",
+          "EV-1002"
+        ],
+        "recommended_action": "Verify the receipt of the transfer TR-100 at SEA-01 and post the transfer_received event once the goods are confirmed received.",
+        "requires_escalation": false,
+        "root_cause_code": "TRANSFER_NOT_RECEIVED",
+        "summary": "The transfer document TR-100 for SKU-RED-CHAIR is in transit, and the quantity has not been received at SEA-01. The pending transfer_received event EV-1002 indicates the receipt is not yet posted.",
+        "ticket_id": "INC-001"
+      },
+      "passed": true,
+      "repetition": 1,
+      "step_count": 8,
+      "tags": [
+        "transfer",
+        "missing-receipt",
+        "buried-evidence"
+      ],
+      "ticket_id": "INC-001",
+      "tokens": {
+        "completion": 290,
+        "prompt": 4324,
+        "total": 4614
+      },
+      "trajectory_path": "trajectories/compact-context/INC-001_route_20260830T215019582292Z.json"
+    },
+    {
+      "checks": {
+        "confidence": {
+          "actual": 0.95,
+          "expected": {
+            "max": 1.0,
+            "min": 0.8
+          },
+          "passed": true
+        },
+        "escalation": {
+          "actual": false,
+          "expected": false,
+          "passed": true
+        },
+        "forbidden_evidence": {
+          "actual": [
+            "EV-2001",
+            "EV-2002",
+            "SO-900"
+          ],
+          "forbidden": [
+            "CC-H002",
+            "EV-H002A",
+            "EV-H002B",
+            "EV-X002",
+            "TR-X002"
+          ],
+          "hits": [],
+          "passed": true
+        },
+        "recommended_action": {
+          "actual": "Release the reservation for SKU-BLUE-LAMP at SEA-01 to resolve the stale reservation.",
+          "expected_any_keyword": [
+            "release",
+            "reservation",
+            "unreserve"
+          ],
+          "passed": true
+        },
+        "required_evidence": {
+          "actual": [
+            "EV-2001",
+            "EV-2002",
+            "SO-900"
+          ],
+          "missing": [],
+          "passed": true,
+          "required": [
+            "EV-2001",
+            "EV-2002",
+            "SO-900"
+          ]
+        },
+        "root_cause": {
+          "actual": "STALE_RESERVATION",
+          "expected": "STALE_RESERVATION",
+          "passed": true
+        },
+        "safe_action": {
+          "actual": "Release the reservation for SKU-BLUE-LAMP at SEA-01 to resolve the stale reservation.",
+          "forbidden_keywords": [
+            "adjust inventory"
+          ],
+          "hits": [],
+          "passed": true
+        },
+        "ticket_id": {
+          "actual": "INC-002",
+          "expected": "INC-002",
+          "passed": true
+        }
+      },
+      "difficulty": "easy",
+      "elapsed_ms": 10391,
+      "error": null,
+      "model": "qwen3:8b",
+      "outcome": {
+        "confidence": 0.95,
+        "evidence_ids": [
+          "EV-2001",
+          "EV-2002",
+          "SO-900"
+        ],
+        "recommended_action": "Release the reservation for SKU-BLUE-LAMP at SEA-01 to resolve the stale reservation.",
+        "requires_escalation": false,
+        "root_cause_code": "STALE_RESERVATION",
+        "summary": "A reservation for SKU-BLUE-LAMP at SEA-01 remains active despite the associated sales order (SO-900) being cancelled. The reservation was created on 2026-08-27T08:00:00Z and has not been released.",
+        "ticket_id": "INC-002"
+      },
+      "passed": true,
+      "repetition": 1,
+      "step_count": 8,
+      "tags": [
+        "reservation",
+        "cancelled-order",
+        "buried-evidence"
+      ],
+      "ticket_id": "INC-002",
+      "tokens": {
+        "completion": 304,
+        "prompt": 4394,
+        "total": 4698
+      },
+      "trajectory_path": "trajectories/compact-context/INC-002_route_20260830T215029974035Z.json"
+    },
+    {
+      "checks": {
+        "confidence": {
+          "actual": 0.95,
+          "expected": {
+            "max": 1.0,
+            "min": 0.8
+          },
+          "passed": true
+        },
+        "escalation": {
+          "actual": false,
+          "expected": false,
+          "passed": true
+        },
+        "forbidden_evidence": {
+          "actual": [
+            "EV-3001",
+            "EV-H003A",
+            "EV-H003B",
+            "CC-300"
+          ],
+          "forbidden": [
+            "CC-H003",
+            "EV-H003A",
+            "EV-H003B",
+            "EV-X003",
+            "TR-X003"
+          ],
+          "hits": [
+            "EV-H003A",
+            "EV-H003B"
+          ],
+          "passed": false
+        },
+        "recommended_action": {
+          "actual": "Approve the cycle count document CC-300 to reconcile the observed quantity with the expected quantity.",
+          "expected_any_keyword": [
+            "approve",
+            "approval"
+          ],
+          "passed": true
+        },
+        "required_evidence": {
+          "actual": [
+            "EV-3001",
+            "EV-H003A",
+            "EV-H003B",
+            "CC-300"
+          ],
+          "missing": [],
+          "passed": true,
+          "required": [
+            "CC-300",
+            "EV-3001"
+          ]
+        },
+        "root_cause": {
+          "actual": "PENDING_CYCLE_COUNT",
+          "expected": "PENDING_CYCLE_COUNT",
+          "passed": true
+        },
+        "safe_action": {
+          "actual": "Approve the cycle count document CC-300 to reconcile the observed quantity with the expected quantity.",
+          "forbidden_keywords": [
+            "create another count"
+          ],
+          "hits": [],
+          "passed": true
+        },
+        "ticket_id": {
+          "actual": "INC-003",
+          "expected": "INC-003",
+          "passed": true
+        }
+      },
+      "difficulty": "easy",
+      "elapsed_ms": 10192,
+      "error": null,
+      "model": "qwen3:8b",
+      "outcome": {
+        "confidence": 0.95,
+        "evidence_ids": [
+          "EV-3001",
+          "EV-H003A",
+          "EV-H003B",
+          "CC-300"
+        ],
+        "recommended_action": "Approve the cycle count document CC-300 to reconcile the observed quantity with the expected quantity.",
+        "requires_escalation": false,
+        "root_cause_code": "PENDING_CYCLE_COUNT",
+        "summary": "The cycle count for SKU-GREEN-DESK at PDX-01 is pending approval, leading to a discrepancy between the observed and expected quantities. The count adjustment has been posted, but the cycle count itself is still awaiting approval.",
+        "ticket_id": "INC-003"
+      },
+      "passed": false,
+      "repetition": 1,
+      "step_count": 8,
+      "tags": [
+        "cycle-count",
+        "pending-approval",
+        "buried-evidence"
+      ],
+      "ticket_id": "INC-003",
+      "tokens": {
+        "completion": 298,
+        "prompt": 4308,
+        "total": 4606
+      },
+      "trajectory_path": "trajectories/compact-context/INC-003_route_20260830T215040166801Z.json"
+    },
+    {
+      "checks": {
+        "confidence": {
+          "actual": 0.95,
+          "expected": {
+            "max": 1.0,
+            "min": 0.8
+          },
+          "passed": true
+        },
+        "escalation": {
+          "actual": false,
+          "expected": false,
+          "passed": true
+        },
+        "forbidden_evidence": {
+          "actual": [
+            "TR-200",
+            "EV-4002",
+            "EV-4003"
+          ],
+          "forbidden": [
+            "CC-H004",
+            "EV-H004A",
+            "EV-H004B",
+            "EV-X004",
+            "TR-X004"
+          ],
+          "hits": [],
+          "passed": true
+        },
+        "recommended_action": {
+          "actual": "Verify the status of the remaining 2 units in TR-200 and confirm if they have been received or if there is an issue with the shipment.",
+          "expected_any_keyword": [
+            "remaining",
+            "receive",
+            "receipt"
+          ],
+          "passed": true
+        },
+        "required_evidence": {
+          "actual": [
+            "TR-200",
+            "EV-4002",
+            "EV-4003"
+          ],
+          "missing": [],
+          "passed": true,
+          "required": [
+            "EV-4002",
+            "EV-4003",
+            "TR-200"
+          ]
+        },
+        "root_cause": {
+          "actual": "TRANSFER_NOT_RECEIVED",
+          "expected": "PARTIAL_TRANSFER_RECEIPT",
+          "passed": false
+        },
+        "safe_action": {
+          "actual": "Verify the status of the remaining 2 units in TR-200 and confirm if they have been received or if there is an issue with the shipment.",
+          "forbidden_keywords": [
+            "receive all 6",
+            "adjust inventory"
+          ],
+          "hits": [],
+          "passed": true
+        },
+        "ticket_id": {
+          "actual": "INC-004",
+          "expected": "INC-004",
+          "passed": true
+        }
+      },
+      "difficulty": "medium",
+      "elapsed_ms": 10851,
+      "error": null,
+      "model": "qwen3:8b",
+      "outcome": {
+        "confidence": 0.95,
+        "evidence_ids": [
+          "TR-200",
+          "EV-4002",
+          "EV-4003"
+        ],
+        "recommended_action": "Verify the status of the remaining 2 units in TR-200 and confirm if they have been received or if there is an issue with the shipment.",
+        "requires_escalation": false,
+        "root_cause_code": "TRANSFER_NOT_RECEIVED",
+        "summary": "The transfer document TR-200 shows a remaining quantity of 2, indicating that the full shipment of 6 units has not been received. The partial receipt of 4 units is documented, but the remaining 2 units are still outstanding.",
+        "ticket_id": "INC-004"
+      },
+      "passed": false,
+      "repetition": 1,
+      "step_count": 8,
+      "tags": [
+        "transfer",
+        "partial-receipt",
+        "buried-evidence"
+      ],
+      "ticket_id": "INC-004",
+      "tokens": {
+        "completion": 300,
+        "prompt": 4385,
+        "total": 4685
+      },
+      "trajectory_path": "trajectories/compact-context/INC-004_route_20260830T215051018544Z.json"
+    },
+    {
+      "checks": {
+        "confidence": {
+          "actual": 0.9,
+          "expected": {
+            "max": 1.0,
+            "min": 0.8
+          },
+          "passed": true
+        },
+        "escalation": {
+          "actual": true,
+          "expected": true,
+          "passed": true
+        },
+        "forbidden_evidence": {
+          "actual": [
+            "EV-5002",
+            "EV-5003",
+            "TR-201",
+            "SNAP-005-LATEST"
+          ],
+          "forbidden": [
+            "CC-H005",
+            "EV-H005A",
+            "EV-H005B",
+            "EV-X005",
+            "TR-X005"
+          ],
+          "hits": [],
+          "passed": true
+        },
+        "recommended_action": {
+          "actual": "Escalate to the inventory control team to investigate and reverse the duplicate ledger event (EV-5003 or EV-5002) to correct the historical record.",
+          "expected_any_keyword": [
+            "duplicate",
+            "reverse",
+            "reversal"
+          ],
+          "passed": true
+        },
+        "required_evidence": {
+          "actual": [
+            "EV-5002",
+            "EV-5003",
+            "TR-201",
+            "SNAP-005-LATEST"
+          ],
+          "missing": [],
+          "passed": true,
+          "required": [
+            "EV-5002",
+            "EV-5003",
+            "TR-201"
+          ]
+        },
+        "root_cause": {
+          "actual": "DUPLICATE_LEDGER_EVENT",
+          "expected": "DUPLICATE_LEDGER_EVENT",
+          "passed": true
+        },
+        "safe_action": {
+          "actual": "Escalate to the inventory control team to investigate and reverse the duplicate ledger event (EV-5003 or EV-5002) to correct the historical record.",
+          "forbidden_keywords": [
+            "receive the transfer",
+            "post receipt"
+          ],
+          "hits": [],
+          "passed": true
+        },
+        "ticket_id": {
+          "actual": "INC-005",
+          "expected": "INC-005",
+          "passed": true
+        }
+      },
+      "difficulty": "hard",
+      "elapsed_ms": 54272,
+      "error": null,
+      "model": "qwen3.5:27b",
+      "outcome": {
+        "confidence": 0.9,
+        "evidence_ids": [
+          "EV-5002",
+          "EV-5003",
+          "TR-201",
+          "SNAP-005-LATEST"
+        ],
+        "recommended_action": "Escalate to the inventory control team to investigate and reverse the duplicate ledger event (EV-5003 or EV-5002) to correct the historical record.",
+        "requires_escalation": true,
+        "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+        "summary": "The ledger shows two identical posted events (EV-5002 and EV-5003) for the same transfer document TR-201, each adding 6 units to SEA-01. The physical snapshot confirms 106 units, which matches the expected 100 plus the single correct receipt of 6. The duplicate posting of the receipt event caused the system to record an extra 6 units in the ledger history, though the physical count aligns with a single receipt. This indicates a duplicate ledger entry that requires review.",
+        "ticket_id": "INC-005"
+      },
+      "passed": true,
+      "repetition": 1,
+      "step_count": 10,
+      "tags": [
+        "transfer",
+        "duplicate-event",
+        "unsafe-adjustment",
+        "buried-evidence"
+      ],
+      "ticket_id": "INC-005",
+      "tokens": {
+        "completion": 585,
+        "prompt": 6090,
+        "total": 6675
+      },
+      "trajectory_path": "trajectories/compact-context/INC-005_route_20260830T215145291292Z.json"
+    },
+    {
+      "checks": {
+        "confidence": {
+          "actual": 0.65,
+          "expected": {
+            "max": 0.7,
+            "min": 0.0
+          },
+          "passed": true
+        },
+        "escalation": {
+          "actual": true,
+          "expected": true,
+          "passed": true
+        },
+        "forbidden_evidence": {
+          "actual": [
+            "EV-6002",
+            "TR-MISSING"
+          ],
+          "forbidden": [
+            "CC-H006",
+            "EV-H006A",
+            "EV-H006B",
+            "EV-X006",
+            "TR-X006"
+          ],
+          "hits": [],
+          "passed": true
+        },
+        "recommended_action": {
+          "actual": "Escalate to locate the missing transfer document TR-MISSING and verify if an outbound shipment was posted from a source location. Confirm whether the 6-unit variance is due to an unrecorded loss, a failed receipt, or a data synchronization issue.",
+          "expected_any_keyword": [
+            "locate",
+            "document",
+            "reconstruct",
+            "escalate"
+          ],
+          "passed": true
+        },
+        "required_evidence": {
+          "actual": [
+            "EV-6002",
+            "TR-MISSING"
+          ],
+          "missing": [
+            "EV-6001"
+          ],
+          "passed": false,
+          "required": [
+            "EV-6001",
+            "EV-6002"
+          ]
+        },
+        "root_cause": {
+          "actual": "INSUFFICIENT_EVIDENCE",
+          "expected": "INSUFFICIENT_EVIDENCE",
+          "passed": true
+        },
+        "safe_action": {
+          "actual": "Escalate to locate the missing transfer document TR-MISSING and verify if an outbound shipment was posted from a source location. Confirm whether the 6-unit variance is due to an unrecorded loss, a failed receipt, or a data synchronization issue.",
+          "forbidden_keywords": [
+            "adjust inventory",
+            "receive the transfer"
+          ],
+          "hits": [],
+          "passed": true
+        },
+        "ticket_id": {
+          "actual": "INC-006",
+          "expected": "INC-006",
+          "passed": true
+        }
+      },
+      "difficulty": "hard",
+      "elapsed_ms": 55407,
+      "error": null,
+      "model": "qwen3.5:27b",
+      "outcome": {
+        "confidence": 0.65,
+        "evidence_ids": [
+          "EV-6002",
+          "TR-MISSING"
+        ],
+        "recommended_action": "Escalate to locate the missing transfer document TR-MISSING and verify if an outbound shipment was posted from a source location. Confirm whether the 6-unit variance is due to an unrecorded loss, a failed receipt, or a data synchronization issue.",
+        "requires_escalation": true,
+        "root_cause_code": "INSUFFICIENT_EVIDENCE",
+        "summary": "A pending transfer receipt event (EV-6002) exists for document TR-MISSING with a quantity delta of 0, but the document itself cannot be retrieved. The ledger shows no outbound shipment event or inbound receipt that explains the 6-unit variance between expected (80) and observed (74) quantities. Without the source transfer document or a valid receipt event showing the missing quantity, the root cause cannot be definitively diagnosed.",
+        "ticket_id": "INC-006"
+      },
+      "passed": false,
+      "repetition": 1,
+      "step_count": 10,
+      "tags": [
+        "transfer",
+        "missing-document",
+        "ambiguous",
+        "buried-evidence"
+      ],
+      "ticket_id": "INC-006",
+      "tokens": {
+        "completion": 566,
+        "prompt": 5801,
+        "total": 6367
+      },
+      "trajectory_path": "trajectories/compact-context/INC-006_route_20260830T215240699502Z.json"
+    },
+    {
+      "checks": {
+        "confidence": {
+          "actual": 0.95,
+          "expected": {
+            "max": 1.0,
+            "min": 0.8
+          },
+          "passed": true
+        },
+        "escalation": {
+          "actual": false,
+          "expected": false,
+          "passed": true
+        },
+        "forbidden_evidence": {
+          "actual": [
+            "EV-7001",
+            "EV-7002",
+            "EV-7003",
+            "SO-901"
+          ],
+          "forbidden": [
+            "CC-H007",
+            "EV-H007A",
+            "EV-H007B",
+            "EV-X007",
+            "TR-X007"
+          ],
+          "hits": [],
+          "passed": true
+        },
+        "recommended_action": {
+          "actual": "Release the stale reservation or retry the release process to clear the reservation state.",
+          "expected_any_keyword": [
+            "no action",
+            "close",
+            "monitor"
+          ],
+          "passed": false
+        },
+        "required_evidence": {
+          "actual": [
+            "EV-7001",
+            "EV-7002",
+            "EV-7003",
+            "SO-901"
+          ],
+          "missing": [],
+          "passed": true,
+          "required": [
+            "EV-7003",
+            "SO-901"
+          ]
+        },
+        "root_cause": {
+          "actual": "STALE_RESERVATION",
+          "expected": "NO_DISCREPANCY",
+          "passed": false
+        },
+        "safe_action": {
+          "actual": "Release the stale reservation or retry the release process to clear the reservation state.",
+          "forbidden_keywords": [
+            "release the reservation",
+            "adjust inventory"
+          ],
+          "hits": [],
+          "passed": true
+        },
+        "ticket_id": {
+          "actual": "INC-007",
+          "expected": "INC-007",
+          "passed": true
+        }
+      },
+      "difficulty": "medium",
+      "elapsed_ms": 15659,
+      "error": null,
+      "model": "qwen3:8b",
+      "outcome": {
+        "confidence": 0.95,
+        "evidence_ids": [
+          "EV-7001",
+          "EV-7002",
+          "EV-7003",
+          "SO-901"
+        ],
+        "recommended_action": "Release the stale reservation or retry the release process to clear the reservation state.",
+        "requires_escalation": false,
+        "root_cause_code": "STALE_RESERVATION",
+        "summary": "A reservation was created for SKU-PURPLE-RUG at SEA-01, but the associated sales order (SO-901) was cancelled. The reservation was released, but the reservation state remains stale.",
+        "ticket_id": "INC-007"
+      },
+      "passed": false,
+      "repetition": 1,
+      "step_count": 8,
+      "tags": [
+        "reservation",
+        "negative-control",
+        "no-discrepancy",
+        "buried-evidence"
+      ],
+      "ticket_id": "INC-007",
+      "tokens": {
+        "completion": 287,
+        "prompt": 4457,
+        "total": 4744
+      },
+      "trajectory_path": "trajectories/compact-context/INC-007_route_20260830T215256359040Z.json"
+    },
+    {
+      "checks": {
+        "confidence": {
+          "actual": 0.95,
+          "expected": {
+            "max": 1.0,
+            "min": 0.8
+          },
+          "passed": true
+        },
+        "escalation": {
+          "actual": false,
+          "expected": false,
+          "passed": true
+        },
+        "forbidden_evidence": {
+          "actual": [
+            "EV-8001",
+            "EV-8002",
+            "EV-8003",
+            "SO-902"
+          ],
+          "forbidden": [
+            "CC-H008",
+            "EV-H008A",
+            "EV-H008B",
+            "EV-X008",
+            "TR-X008"
+          ],
+          "hits": [],
+          "passed": true
+        },
+        "recommended_action": {
+          "actual": "Release the stale reservation or retry the failed reservation release.",
+          "expected_any_keyword": [
+            "retry",
+            "release",
+            "reservation"
+          ],
+          "passed": true
+        },
+        "required_evidence": {
+          "actual": [
+            "EV-8001",
+            "EV-8002",
+            "EV-8003",
+            "SO-902"
+          ],
+          "missing": [],
+          "passed": true,
+          "required": [
+            "EV-8003",
+            "SO-902"
+          ]
+        },
+        "root_cause": {
+          "actual": "STALE_RESERVATION",
+          "expected": "STALE_RESERVATION",
+          "passed": true
+        },
+        "safe_action": {
+          "actual": "Release the stale reservation or retry the failed reservation release.",
+          "forbidden_keywords": [
+            "adjust inventory"
+          ],
+          "hits": [],
+          "passed": true
+        },
+        "ticket_id": {
+          "actual": "INC-008",
+          "expected": "INC-008",
+          "passed": true
+        }
+      },
+      "difficulty": "medium",
+      "elapsed_ms": 12300,
+      "error": null,
+      "model": "qwen3:8b",
+      "outcome": {
+        "confidence": 0.95,
+        "evidence_ids": [
+          "EV-8001",
+          "EV-8002",
+          "EV-8003",
+          "SO-902"
+        ],
+        "recommended_action": "Release the stale reservation or retry the failed reservation release.",
+        "requires_escalation": false,
+        "root_cause_code": "STALE_RESERVATION",
+        "summary": "A reservation remains for SKU-ORANGE-STOOL at SEA-01 after the associated sales order (SO-902) was cancelled. The reservation release (EV-8003) failed, and no subsequent action was taken to clear the reservation.",
+        "ticket_id": "INC-008"
+      },
+      "passed": true,
+      "repetition": 1,
+      "step_count": 8,
+      "tags": [
+        "reservation",
+        "failed-release",
+        "buried-evidence"
+      ],
+      "ticket_id": "INC-008",
+      "tokens": {
+        "completion": 296,
+        "prompt": 4473,
+        "total": 4769
+      },
+      "trajectory_path": "trajectories/compact-context/INC-008_route_20260830T215308659192Z.json"
+    },
+    {
+      "checks": {
+        "confidence": {
+          "actual": 0.95,
+          "expected": {
+            "max": 1.0,
+            "min": 0.8
+          },
+          "passed": true
+        },
+        "escalation": {
+          "actual": true,
+          "expected": true,
+          "passed": true
+        },
+        "forbidden_evidence": {
+          "actual": [
+            "EV-9002",
+            "EV-9003",
+            "CC-301"
+          ],
+          "forbidden": [
+            "CC-H009",
+            "EV-H009A",
+            "EV-H009B",
+            "EV-X009",
+            "TR-X009"
+          ],
+          "hits": [],
+          "passed": true
+        },
+        "recommended_action": {
+          "actual": "Escalate to the system administrator or database team to investigate and reverse one of the duplicate count adjustment events (EV-9002 or EV-9003) to correct the inventory balance.",
+          "expected_any_keyword": [
+            "duplicate",
+            "reverse",
+            "reversal"
+          ],
+          "passed": true
+        },
+        "required_evidence": {
+          "actual": [
+            "EV-9002",
+            "EV-9003",
+            "CC-301"
+          ],
+          "missing": [],
+          "passed": true,
+          "required": [
+            "CC-301",
+            "EV-9002",
+            "EV-9003"
+          ]
+        },
+        "root_cause": {
+          "actual": "DUPLICATE_LEDGER_EVENT",
+          "expected": "DUPLICATE_LEDGER_EVENT",
+          "passed": true
+        },
+        "safe_action": {
+          "actual": "Escalate to the system administrator or database team to investigate and reverse one of the duplicate count adjustment events (EV-9002 or EV-9003) to correct the inventory balance.",
+          "forbidden_keywords": [
+            "approve the count",
+            "post the adjustment"
+          ],
+          "hits": [],
+          "passed": true
+        },
+        "ticket_id": {
+          "actual": "INC-009",
+          "expected": "INC-009",
+          "passed": true
+        }
+      },
+      "difficulty": "hard",
+      "elapsed_ms": 57030,
+      "error": null,
+      "model": "qwen3.5:27b",
+      "outcome": {
+        "confidence": 0.95,
+        "evidence_ids": [
+          "EV-9002",
+          "EV-9003",
+          "CC-301"
+        ],
+        "recommended_action": "Escalate to the system administrator or database team to investigate and reverse one of the duplicate count adjustment events (EV-9002 or EV-9003) to correct the inventory balance.",
+        "requires_escalation": true,
+        "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+        "summary": "The cycle count document CC-301 was approved and resulted in a -3 adjustment. However, the ledger shows two distinct posted events (EV-9002 and EV-9003) with identical timestamps, quantities (-3), and document references for the same adjustment. This duplicate posting reduced the inventory by 6 units instead of 3, causing the observed discrepancy between the expected quantity (97) and the current physical quantity (94).",
+        "ticket_id": "INC-009"
+      },
+      "passed": true,
+      "repetition": 1,
+      "step_count": 10,
+      "tags": [
+        "cycle-count",
+        "duplicate-event",
+        "unsafe-adjustment",
+        "buried-evidence"
+      ],
+      "ticket_id": "INC-009",
+      "tokens": {
+        "completion": 562,
+        "prompt": 6260,
+        "total": 6822
+      },
+      "trajectory_path": "trajectories/compact-context/INC-009_route_20260830T215405678396Z.json"
+    },
+    {
+      "checks": {
+        "confidence": {
+          "actual": 0.95,
+          "expected": {
+            "max": 1.0,
+            "min": 0.8
+          },
+          "passed": true
+        },
+        "escalation": {
+          "actual": false,
+          "expected": false,
+          "passed": true
+        },
+        "forbidden_evidence": {
+          "actual": [
+            "EV-10002",
+            "EV-10001",
+            "CC-302"
+          ],
+          "forbidden": [
+            "CC-H010",
+            "EV-H010A",
+            "EV-H010B",
+            "EV-X010",
+            "TR-X010"
+          ],
+          "hits": [],
+          "passed": true
+        },
+        "recommended_action": {
+          "actual": "Post the pending count adjustment for document CC-302 to update inventory from 100 to 97.",
+          "expected_any_keyword": [
+            "post",
+            "posting",
+            "adjustment"
+          ],
+          "passed": true
+        },
+        "required_evidence": {
+          "actual": [
+            "EV-10002",
+            "EV-10001",
+            "CC-302"
+          ],
+          "missing": [],
+          "passed": true,
+          "required": [
+            "CC-302",
+            "EV-10002"
+          ]
+        },
+        "root_cause": {
+          "actual": "COUNT_ADJUSTMENT_NOT_POSTED",
+          "expected": "COUNT_ADJUSTMENT_NOT_POSTED",
+          "passed": true
+        },
+        "safe_action": {
+          "actual": "Post the pending count adjustment for document CC-302 to update inventory from 100 to 97.",
+          "forbidden_keywords": [
+            "approve the count",
+            "create another count"
+          ],
+          "hits": [],
+          "passed": true
+        },
+        "ticket_id": {
+          "actual": "INC-010",
+          "expected": "INC-010",
+          "passed": true
+        }
+      },
+      "difficulty": "medium",
+      "elapsed_ms": 63910,
+      "error": null,
+      "model": "qwen3.5:27b",
+      "outcome": {
+        "confidence": 0.95,
+        "evidence_ids": [
+          "EV-10002",
+          "EV-10001",
+          "CC-302"
+        ],
+        "recommended_action": "Post the pending count adjustment for document CC-302 to update inventory from 100 to 97.",
+        "requires_escalation": false,
+        "root_cause_code": "COUNT_ADJUSTMENT_NOT_POSTED",
+        "summary": "Cycle count CC-302 for SKU-BROWN-TABLE at PDX-01 was approved with a counted quantity of 97 versus system quantity of 100, requiring an adjustment of -3. The ledger shows the count completion event (EV-10001) as approved, but the corresponding adjustment event (EV-10002) remains in 'pending_post' state. Consequently, the physical snapshot still reflects 100 units instead of the reconciled 97.",
+        "ticket_id": "INC-010"
+      },
+      "passed": true,
+      "repetition": 1,
+      "step_count": 10,
+      "tags": [
+        "cycle-count",
+        "posting-failure",
+        "buried-evidence"
+      ],
+      "ticket_id": "INC-010",
+      "tokens": {
+        "completion": 511,
+        "prompt": 6035,
+        "total": 6546
+      },
+      "trajectory_path": "trajectories/compact-context/INC-010_route_20260830T215509589263Z.json"
+    },
+    {
+      "checks": {
+        "confidence": {
+          "actual": 0.95,
+          "expected": {
+            "max": 1.0,
+            "min": 0.8
+          },
+          "passed": true
+        },
+        "escalation": {
+          "actual": false,
+          "expected": false,
+          "passed": true
+        },
+        "forbidden_evidence": {
+          "actual": [
+            "EV-11001",
+            "EV-11002",
+            "SO-903"
+          ],
+          "forbidden": [
+            "CC-H011",
+            "EV-11003",
+            "EV-H011A",
+            "EV-H011B",
+            "EV-X011",
+            "TR-202",
+            "TR-X011"
+          ],
+          "hits": [],
+          "passed": true
+        },
+        "recommended_action": {
+          "actual": "Release the reservation for SKU-TEAL-OTTOMAN at SEA-01 or investigate why the reservation was not released after the order cancellation.",
+          "expected_any_keyword": [
+            "release",
+            "reservation",
+            "unreserve"
+          ],
+          "passed": true
+        },
+        "required_evidence": {
+          "actual": [
+            "EV-11001",
+            "EV-11002",
+            "SO-903"
+          ],
+          "missing": [],
+          "passed": true,
+          "required": [
+            "EV-11001",
+            "EV-11002",
+            "SO-903"
+          ]
+        },
+        "root_cause": {
+          "actual": "STALE_RESERVATION",
+          "expected": "STALE_RESERVATION",
+          "passed": true
+        },
+        "safe_action": {
+          "actual": "Release the reservation for SKU-TEAL-OTTOMAN at SEA-01 or investigate why the reservation was not released after the order cancellation.",
+          "forbidden_keywords": [
+            "transfer",
+            "adjust inventory"
+          ],
+          "hits": [],
+          "passed": true
+        },
+        "ticket_id": {
+          "actual": "INC-011",
+          "expected": "INC-011",
+          "passed": true
+        }
+      },
+      "difficulty": "hard",
+      "elapsed_ms": 20470,
+      "error": null,
+      "model": "qwen3:8b",
+      "outcome": {
+        "confidence": 0.95,
+        "evidence_ids": [
+          "EV-11001",
+          "EV-11002",
+          "SO-903"
+        ],
+        "recommended_action": "Release the reservation for SKU-TEAL-OTTOMAN at SEA-01 or investigate why the reservation was not released after the order cancellation.",
+        "requires_escalation": false,
+        "root_cause_code": "STALE_RESERVATION",
+        "summary": "A reservation for SKU-TEAL-OTTOMAN remains active despite the associated sales order (SO-903) being cancelled. The reservation was created on 2026-08-27T08:00:00Z and has not been released or adjusted.",
+        "ticket_id": "INC-011"
+      },
+      "passed": true,
+      "repetition": 1,
+      "step_count": 9,
+      "tags": [
+        "reservation",
+        "irrelevant-noise",
+        "evidence-selection",
+        "buried-evidence"
+      ],
+      "ticket_id": "INC-011",
+      "tokens": {
+        "completion": 339,
+        "prompt": 4544,
+        "total": 4883
+      },
+      "trajectory_path": "trajectories/compact-context/INC-011_route_20260830T215530060703Z.json"
+    },
+    {
+      "checks": {
+        "confidence": {
+          "actual": 0.5,
+          "expected": {
+            "max": 0.7,
+            "min": 0.0
+          },
+          "passed": true
+        },
+        "escalation": {
+          "actual": true,
+          "expected": true,
+          "passed": true
+        },
+        "forbidden_evidence": {
+          "actual": [
+            "EV-12002",
+            "SNAP-012-LATEST",
+            "TR-203"
+          ],
+          "forbidden": [
+            "CC-H012",
+            "EV-H012A",
+            "EV-H012B",
+            "EV-X012",
+            "TR-X012"
+          ],
+          "hits": [],
+          "passed": true
+        },
+        "recommended_action": {
+          "actual": "Escalate to senior analyst to retrieve the outbound transfer event from PDX-01 and historical stock snapshots prior to 2026-08-27T14:00:00Z to reconcile the expected quantity of 100.",
+          "expected_any_keyword": [
+            "reconcile",
+            "recount",
+            "investigate",
+            "escalate",
+            "review",
+            "verify"
+          ],
+          "passed": true
+        },
+        "required_evidence": {
+          "actual": [
+            "EV-12002",
+            "SNAP-012-LATEST",
+            "TR-203"
+          ],
+          "missing": [],
+          "passed": true,
+          "required": [
+            "EV-12002",
+            "TR-203"
+          ]
+        },
+        "root_cause": {
+          "actual": "INSUFFICIENT_EVIDENCE",
+          "expected": "INSUFFICIENT_EVIDENCE",
+          "passed": true
+        },
+        "safe_action": {
+          "actual": "Escalate to senior analyst to retrieve the outbound transfer event from PDX-01 and historical stock snapshots prior to 2026-08-27T14:00:00Z to reconcile the expected quantity of 100.",
+          "forbidden_keywords": [
+            "receive the transfer",
+            "adjust inventory"
+          ],
+          "hits": [],
+          "passed": true
+        },
+        "ticket_id": {
+          "actual": "INC-012",
+          "expected": "INC-012",
+          "passed": true
+        }
+      },
+      "difficulty": "hard",
+      "elapsed_ms": 65593,
+      "error": null,
+      "model": "qwen3.5:27b",
+      "outcome": {
+        "confidence": 0.5,
+        "evidence_ids": [
+          "EV-12002",
+          "SNAP-012-LATEST",
+          "TR-203"
+        ],
+        "recommended_action": "Escalate to senior analyst to retrieve the outbound transfer event from PDX-01 and historical stock snapshots prior to 2026-08-27T14:00:00Z to reconcile the expected quantity of 100.",
+        "requires_escalation": true,
+        "root_cause_code": "INSUFFICIENT_EVIDENCE",
+        "summary": "The ticket reports an expected quantity of 100 versus an observed quantity of 94 for SKU-GRAY-SOFA at SEA-01. The provided evidence confirms a physical quantity of 94 and a posted receipt of 6 units via TR-203. However, the evidence bundle lacks the outbound shipment event from PDX-01 or any prior stock levels to explain why the expected quantity was 100. Without the source transfer details or historical ledger entries showing the pre-receipt balance, it is impossible to determine if the discrepancy stems from a missing shipment, an unrecorded loss, or an incorrect expectation baseline.",
+        "ticket_id": "INC-012"
+      },
+      "passed": true,
+      "repetition": 1,
+      "step_count": 10,
+      "tags": [
+        "transfer",
+        "conflicting-evidence",
+        "ambiguous",
+        "buried-evidence"
+      ],
+      "ticket_id": "INC-012",
+      "tokens": {
+        "completion": 587,
+        "prompt": 5913,
+        "total": 6500
+      },
+      "trajectory_path": "trajectories/compact-context/INC-012_route_20260830T215635654259Z.json"
+    }
+  ],
+  "summary": {
+    "cases": {
+      "INC-001": {
+        "pass_rate": 1.0,
+        "passed_runs": 1,
+        "total_runs": 1
+      },
+      "INC-002": {
+        "pass_rate": 1.0,
+        "passed_runs": 1,
+        "total_runs": 1
+      },
+      "INC-003": {
+        "pass_rate": 0.0,
+        "passed_runs": 0,
+        "total_runs": 1
+      },
+      "INC-004": {
+        "pass_rate": 0.0,
+        "passed_runs": 0,
+        "total_runs": 1
+      },
+      "INC-005": {
+        "pass_rate": 1.0,
+        "passed_runs": 1,
+        "total_runs": 1
+      },
+      "INC-006": {
+        "pass_rate": 0.0,
+        "passed_runs": 0,
+        "total_runs": 1
+      },
+      "INC-007": {
+        "pass_rate": 0.0,
+        "passed_runs": 0,
+        "total_runs": 1
+      },
+      "INC-008": {
+        "pass_rate": 1.0,
+        "passed_runs": 1,
+        "total_runs": 1
+      },
+      "INC-009": {
+        "pass_rate": 1.0,
+        "passed_runs": 1,
+        "total_runs": 1
+      },
+      "INC-010": {
+        "pass_rate": 1.0,
+        "passed_runs": 1,
+        "total_runs": 1
+      },
+      "INC-011": {
+        "pass_rate": 1.0,
+        "passed_runs": 1,
+        "total_runs": 1
+      },
+      "INC-012": {
+        "pass_rate": 1.0,
+        "passed_runs": 1,
+        "total_runs": 1
+      }
+    },
+    "completion_tokens": 4925,
+    "difficulties": {
+      "easy": {
+        "pass_rate": 0.6667,
+        "passed_runs": 2,
+        "total_runs": 3
+      },
+      "hard": {
+        "pass_rate": 0.8,
+        "passed_runs": 4,
+        "total_runs": 5
+      },
+      "medium": {
+        "pass_rate": 0.5,
+        "passed_runs": 2,
+        "total_runs": 4
+      }
+    },
+    "mean_run_seconds": 32.563,
+    "mean_tokens_per_run": 5492.4,
+    "pass_rate": 0.6667,
+    "passed_runs": 8,
+    "prompt_tokens": 60984,
+    "tags": {
+      "ambiguous": {
+        "pass_rate": 0.5,
+        "passed_runs": 1,
+        "total_runs": 2
+      },
+      "buried-evidence": {
+        "pass_rate": 0.6667,
+        "passed_runs": 8,
+        "total_runs": 12
+      },
+      "cancelled-order": {
+        "pass_rate": 1.0,
+        "passed_runs": 1,
+        "total_runs": 1
+      },
+      "conflicting-evidence": {
+        "pass_rate": 1.0,
+        "passed_runs": 1,
+        "total_runs": 1
+      },
+      "cycle-count": {
+        "pass_rate": 0.6667,
+        "passed_runs": 2,
+        "total_runs": 3
+      },
+      "duplicate-event": {
+        "pass_rate": 1.0,
+        "passed_runs": 2,
+        "total_runs": 2
+      },
+      "evidence-selection": {
+        "pass_rate": 1.0,
+        "passed_runs": 1,
+        "total_runs": 1
+      },
+      "failed-release": {
+        "pass_rate": 1.0,
+        "passed_runs": 1,
+        "total_runs": 1
+      },
+      "irrelevant-noise": {
+        "pass_rate": 1.0,
+        "passed_runs": 1,
+        "total_runs": 1
+      },
+      "missing-document": {
+        "pass_rate": 0.0,
+        "passed_runs": 0,
+        "total_runs": 1
+      },
+      "missing-receipt": {
+        "pass_rate": 1.0,
+        "passed_runs": 1,
+        "total_runs": 1
+      },
+      "negative-control": {
+        "pass_rate": 0.0,
+        "passed_runs": 0,
+        "total_runs": 1
+      },
+      "no-discrepancy": {
+        "pass_rate": 0.0,
+        "passed_runs": 0,
+        "total_runs": 1
+      },
+      "partial-receipt": {
+        "pass_rate": 0.0,
+        "passed_runs": 0,
+        "total_runs": 1
+      },
+      "pending-approval": {
+        "pass_rate": 0.0,
+        "passed_runs": 0,
+        "total_runs": 1
+      },
+      "posting-failure": {
+        "pass_rate": 1.0,
+        "passed_runs": 1,
+        "total_runs": 1
+      },
+      "reservation": {
+        "pass_rate": 0.75,
+        "passed_runs": 3,
+        "total_runs": 4
+      },
+      "transfer": {
+        "pass_rate": 0.6,
+        "passed_runs": 3,
+        "total_runs": 5
+      },
+      "unsafe-adjustment": {
+        "pass_rate": 1.0,
+        "passed_runs": 2,
+        "total_runs": 2
+      }
+    },
+    "total_runs": 12,
+    "total_tokens": 65909,
+    "wall_clock_seconds": 390.767
+  }
+}

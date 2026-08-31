@@ -1,0 +1,154 @@
+{
+  "elapsed_ms": 42967,
+  "evidence": [
+    {
+      "arguments": {
+        "ticket_id": "INC-006"
+      },
+      "result": {
+        "document_refs": [
+          "TR-MISSING"
+        ],
+        "expected_quantity": 80,
+        "id": "INC-006",
+        "location": "SEA-01",
+        "notes": "Ledger events exist, but the transfer record cannot be found.",
+        "observed_quantity": 74,
+        "reported_at": "2026-08-27T19:00:00Z",
+        "sku": "SKU-YELLOW-BENCH",
+        "title": "Transfer shortage references a missing document"
+      },
+      "tool": "get_ticket"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-006"
+      },
+      "result": {
+        "document_refs": [
+          "TR-MISSING"
+        ],
+        "expected_quantity": 80,
+        "id": "INC-006",
+        "location": "SEA-01",
+        "notes": "Ledger events exist, but the transfer record cannot be found.",
+        "observed_quantity": 74,
+        "reported_at": "2026-08-27T19:00:00Z",
+        "sku": "SKU-YELLOW-BENCH",
+        "title": "Transfer shortage references a missing document"
+      },
+      "tool": "get_ticket"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-006"
+      },
+      "result": [
+        {
+          "document_id": "TR-MISSING",
+          "event_type": "transfer_shipped",
+          "id": "EV-6001",
+          "location": "PDX-01",
+          "quantity_delta": -6,
+          "sku": "SKU-YELLOW-BENCH",
+          "state": "posted",
+          "ticket_id": "INC-006",
+          "timestamp": "2026-08-27T12:00:00Z"
+        },
+        {
+          "document_id": "TR-MISSING",
+          "event_type": "transfer_received",
+          "id": "EV-6002",
+          "location": "SEA-01",
+          "quantity_delta": 0,
+          "sku": "SKU-YELLOW-BENCH",
+          "state": "pending",
+          "ticket_id": "INC-006",
+          "timestamp": "2026-08-27T12:00:00Z"
+        }
+      ],
+      "tool": "query_ledger"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-YELLOW-BENCH"
+      },
+      "result": {
+        "available_quantity": 74,
+        "location": "SEA-01",
+        "physical_quantity": 74,
+        "reserved_quantity": 0,
+        "sku": "SKU-YELLOW-BENCH"
+      },
+      "tool": "get_snapshot"
+    },
+    {
+      "arguments": {
+        "document_id": "TR-MISSING"
+      },
+      "result": {
+        "error": "No document found for TR-MISSING"
+      },
+      "tool": "get_document"
+    },
+    {
+      "arguments": {
+        "document_id": "TR-MISSING"
+      },
+      "result": {
+        "error": "No document found for TR-MISSING"
+      },
+      "tool": "get_document"
+    }
+  ],
+  "model": "qwen3.5:27b",
+  "outcome": {
+    "confidence": 0.6,
+    "evidence_ids": [
+      "EV-6001",
+      "EV-6002",
+      "TR-MISSING"
+    ],
+    "recommended_action": "Escalate to locate the missing transfer document TR-MISSING or investigate the source of the ledger events EV-6001 and EV-6002 to determine the correct expected quantity and receipt status.",
+    "requires_escalation": true,
+    "root_cause_code": "INSUFFICIENT_EVIDENCE",
+    "summary": "Ledger shows a shipped transfer of 6 units (EV-6001) and a pending receipt of 0 units (EV-6002) for document TR-MISSING. The physical stock at SEA-01 is 74, but the expected quantity is 80. However, the referenced document TR-MISSING cannot be retrieved, preventing verification of the transfer details, intended quantities, or receipt status. Without the document, it is impossible to determine if the discrepancy is due to a missing receipt, a partial receipt, or an error in the ledger events themselves.",
+    "ticket_id": "INC-006"
+  },
+  "prior_outcomes": [
+    {
+      "confidence": 0.95,
+      "evidence_ids": [
+        "EV-6001",
+        "EV-6002",
+        "TR-MISSING"
+      ],
+      "recommended_action": "Verify transfer receipt posting for TR-MISSING and ensure 6 units are received to reconcile stock to 80 units at SEA-01. Check if EV-6002 is a pending receipt that needs approval or correction.",
+      "requires_escalation": false,
+      "root_cause_code": "TRANSFER_NOT_RECEIVED",
+      "summary": "Transfer from PDX-01 to SEA-01 (SKU-YELLOW-BENCH) was shipped (EV-6001) but received (EV-6002) with 0 quantity. Physical stock at SEA-01 is 74, expected 80. Document TR-MISSING not found.",
+      "ticket_id": "INC-006"
+    },
+    {
+      "confidence": 0.95,
+      "evidence_ids": [
+        "EV-6001",
+        "EV-6002",
+        "TR-MISSING"
+      ],
+      "recommended_action": "Verify transfer receipt posting for TR-MISSING and ensure 6 units are received to reconcile stock to 80 units at SEA-01. Check if EV-6002 is a pending receipt that needs approval or correction.",
+      "requires_escalation": false,
+      "root_cause_code": "TRANSFER_NOT_RECEIVED",
+      "summary": "Transfer from PDX-01 to SEA-01 (SKU-YELLOW-BENCH) was shipped (EV-6001) but received (EV-6002) with 0 quantity. Physical stock at SEA-01 is 74, expected 80. Document TR-MISSING not found.",
+      "ticket_id": "INC-006"
+    }
+  ],
+  "reason": "evidence requires deep review: missing_document",
+  "ticket_id": "INC-006",
+  "tokens": {
+    "completion": 270,
+    "prompt": 1814,
+    "total": 2084
+  }
+}

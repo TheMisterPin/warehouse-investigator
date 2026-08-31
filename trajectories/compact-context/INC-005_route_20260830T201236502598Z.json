@@ -1,0 +1,77 @@
+{
+  "elapsed_ms": 257881,
+  "outcome": {
+    "confidence": 1.0,
+    "evidence_ids": [
+      "EV-5002",
+      "EV-5003",
+      "EV-H005A",
+      "EV-H005B",
+      "TR-201",
+      "SNAP-005-LATEST"
+    ],
+    "recommended_action": "No action required. The inventory is reconciled and no discrepancies remain.",
+    "requires_escalation": false,
+    "root_cause_code": "NO_DISCREPANCY",
+    "summary": "The observed quantity of 106 for SKU-BLACK-CABINET at SEA-01 matches the physical quantity in the latest snapshot. The discrepancy between the expected quantity (100) and observed quantity (106) is due to the receipt of 6 units via transfer TR-201 and a count adjustment of 1 unit. The inventory adjustment from the cycle count (CC-H005) has been posted, and the transfer receipt has been fully received. No corrective action is needed.",
+    "ticket_id": "INC-005"
+  },
+  "routing": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "confidence": 1.0,
+        "elapsed_ms": 77870,
+        "error": null,
+        "evidence_flags": [
+          "conflicting_stock",
+          "duplicate_event"
+        ],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "NO_DISCREPANCY",
+        "status": "completed",
+        "tokens": {
+          "completion": 369,
+          "prompt": 3963,
+          "total": 4332
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-005_20260830T200936Z.json"
+      },
+      {
+        "confidence": null,
+        "elapsed_ms": null,
+        "error": "timed out",
+        "evidence_flags": [],
+        "model": "qwen3.5:27b",
+        "reason": "evidence requires deep review: conflicting_stock, duplicate_event",
+        "requires_escalation": null,
+        "root_cause_code": null,
+        "status": "error",
+        "tokens": {
+          "completion": 0,
+          "prompt": 0,
+          "total": 0
+        },
+        "trajectory_path": null
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3:8b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-005",
+  "tokens": {
+    "completion": 369,
+    "prompt": 3963,
+    "total": 4332
+  }
+}

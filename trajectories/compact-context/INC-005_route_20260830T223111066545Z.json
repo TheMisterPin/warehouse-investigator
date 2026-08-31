@@ -1,0 +1,86 @@
+{
+  "elapsed_ms": 52389,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-5001",
+      "EV-5002",
+      "EV-5003",
+      "TR-201"
+    ],
+    "recommended_action": "Escalate to the inventory control team to review and reverse one of the duplicate transfer_received events (EV-5002 or EV-5003) for document TR-201.",
+    "requires_escalation": true,
+    "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+    "summary": "The ledger shows two identical posted transfer_received events (EV-5002 and EV-5003) for document TR-201, each adding 6 units to SEA-01. The physical snapshot confirms 106 units, but the expected quantity was 100. The single shipment of 6 units from PDX-01 (EV-5001) should have increased stock by only 6, not 12. The duplicate receipt event caused an overstatement of inventory by 6 units.",
+    "ticket_id": "INC-005"
+  },
+  "routing": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "confidence": 1.0,
+        "elapsed_ms": 10976,
+        "error": null,
+        "evidence_flags": [
+          "conflicting_stock",
+          "duplicate_event"
+        ],
+        "finalizer": {
+          "pinned": false,
+          "reasons": []
+        },
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "NO_DISCREPANCY",
+        "status": "completed",
+        "tokens": {
+          "completion": 300,
+          "prompt": 4502,
+          "total": 4802
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-005_20260830T223029Z.json"
+      },
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 41407,
+        "error": null,
+        "evidence_flags": [
+          "conflicting_stock",
+          "duplicate_event"
+        ],
+        "finalizer": {
+          "pinned": false,
+          "reasons": []
+        },
+        "model": "qwen3.5:27b",
+        "reason": "evidence requires deep review: duplicate_event",
+        "requires_escalation": true,
+        "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+        "status": "completed",
+        "tokens": {
+          "completion": 258,
+          "prompt": 1738,
+          "total": 1996
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3.5-27b/INC-005_review_20260830T223111064113Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3.5:27b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-005",
+  "tokens": {
+    "completion": 558,
+    "prompt": 6240,
+    "total": 6798
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "elapsed_ms": 263778,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-11001",
+      "EV-11002",
+      "EV-H011A",
+      "EV-H011B",
+      "SO-903"
+    ],
+    "recommended_action": "Review and release the reservation for SKU-TEAL-OTTOMAN at SEA-01 to reconcile the discrepancy.",
+    "requires_escalation": true,
+    "root_cause_code": "STALE_RESERVATION",
+    "summary": "A reservation remains active for SKU-TEAL-OTTOMAN at SEA-01 despite the associated sales order (SO-903) being cancelled. The reservation was created but not released, leading to a discrepancy between expected and observed quantities.",
+    "ticket_id": "INC-011"
+  },
+  "routing": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 83776,
+        "error": null,
+        "evidence_flags": [
+          "multiple_documents"
+        ],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": true,
+        "root_cause_code": "STALE_RESERVATION",
+        "status": "completed",
+        "tokens": {
+          "completion": 317,
+          "prompt": 3798,
+          "total": 4115
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-011_20260830T193456Z.json"
+      },
+      {
+        "confidence": null,
+        "elapsed_ms": null,
+        "error": "timed out",
+        "evidence_flags": [],
+        "model": "qwen3.5:27b",
+        "reason": "primary model requested escalation",
+        "requires_escalation": null,
+        "root_cause_code": null,
+        "status": "error",
+        "tokens": {
+          "completion": 0,
+          "prompt": 0,
+          "total": 0
+        },
+        "trajectory_path": null
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3:8b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-011",
+  "tokens": {
+    "completion": 317,
+    "prompt": 3798,
+    "total": 4115
+  }
+}

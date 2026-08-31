@@ -1,0 +1,61 @@
+{
+  "elapsed_ms": 14833,
+  "outcome": {
+    "confidence": 0.7,
+    "evidence_ids": [
+      "EV-12001",
+      "EV-12002",
+      "TR-203"
+    ],
+    "recommended_action": "Escalate to review why the expected quantity conflicts with the current snapshot.",
+    "requires_escalation": true,
+    "root_cause_code": "INSUFFICIENT_EVIDENCE",
+    "summary": "A transfer of 6 units from PDX-01 to SEA-01 (document TR-203) was posted as shipped, but the receipt at SEA-01 is missing. The observed quantity (94) is 2 units less than the expected quantity (96) based on the transfer. The transfer receipt (TR-203) is posted, but the physical quantity at SEA-01 does not reflect the full receipt.",
+    "ticket_id": "INC-012"
+  },
+  "routing": {
+    "attempt_count": 1,
+    "attempts": [
+      {
+        "confidence": 0.7,
+        "elapsed_ms": 14830,
+        "error": null,
+        "evidence_flags": [
+          "conflicting_stock"
+        ],
+        "finalizer": {
+          "pinned": true,
+          "reasons": [
+            "conflicting_stock"
+          ]
+        },
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": true,
+        "root_cause_code": "INSUFFICIENT_EVIDENCE",
+        "status": "completed",
+        "tokens": {
+          "completion": 337,
+          "prompt": 4432,
+          "total": 4769
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-012_20260830T223326Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3:8b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b"
+    ]
+  },
+  "ticket_id": "INC-012",
+  "tokens": {
+    "completion": 337,
+    "prompt": 4432,
+    "total": 4769
+  }
+}

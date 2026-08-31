@@ -1,0 +1,178 @@
+{
+  "elapsed_ms": 48026,
+  "evidence": [
+    {
+      "arguments": {
+        "ticket_id": "INC-002"
+      },
+      "result": {
+        "document_refs": [
+          "SO-900"
+        ],
+        "expected_quantity": 50,
+        "id": "INC-002",
+        "investigation_window_start": "2026-08-26T18:00:00Z",
+        "location": "SEA-01",
+        "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+        "observed_quantity": 41,
+        "reported_at": "2026-08-27T18:00:00Z",
+        "sku": "SKU-BLUE-LAMP",
+        "title": "Inventory reconciliation alert for SKU-BLUE-LAMP at SEA-01"
+      },
+      "tool": "get_ticket"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-BLUE-LAMP",
+        "ticket_id": "INC-002"
+      },
+      "result": [
+        {
+          "document_id": "TR-X002",
+          "event_type": "transfer_received",
+          "id": "EV-X002",
+          "location": "SEA-01",
+          "quantity_delta": 5,
+          "sku": "SKU-NOISE-002",
+          "state": "posted",
+          "ticket_id": "INC-002",
+          "timestamp": "2026-08-27T17:30:00Z"
+        },
+        {
+          "document_id": "SO-900",
+          "event_type": "order_cancelled",
+          "id": "EV-2002",
+          "location": "SEA-01",
+          "quantity_delta": 0,
+          "sku": "SKU-BLUE-LAMP",
+          "state": "posted",
+          "ticket_id": "INC-002",
+          "timestamp": "2026-08-27T09:00:00Z"
+        },
+        {
+          "document_id": "SO-900",
+          "event_type": "reservation_created",
+          "id": "EV-2001",
+          "location": "SEA-01",
+          "quantity_delta": -9,
+          "sku": "SKU-BLUE-LAMP",
+          "state": "active",
+          "ticket_id": "INC-002",
+          "timestamp": "2026-08-27T08:00:00Z"
+        },
+        {
+          "document_id": "CC-H002",
+          "event_type": "count_adjustment_posted",
+          "id": "EV-H002B",
+          "location": "SEA-01",
+          "quantity_delta": 1,
+          "sku": "SKU-BLUE-LAMP",
+          "state": "posted",
+          "ticket_id": "INC-002",
+          "timestamp": "2026-08-20T18:05:00Z"
+        },
+        {
+          "document_id": "CC-H002",
+          "event_type": "cycle_count_completed",
+          "id": "EV-H002A",
+          "location": "SEA-01",
+          "quantity_delta": 1,
+          "sku": "SKU-BLUE-LAMP",
+          "state": "approved",
+          "ticket_id": "INC-002",
+          "timestamp": "2026-08-20T18:00:00Z"
+        }
+      ],
+      "tool": "query_ledger"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-BLUE-LAMP"
+      },
+      "result": {
+        "available_quantity": 41,
+        "captured_at": "2026-08-27T17:55:00Z",
+        "history": [
+          {
+            "available_quantity": 41,
+            "captured_at": "2026-08-25T18:00:00Z",
+            "location": "SEA-01",
+            "physical_quantity": 50,
+            "reserved_quantity": 9,
+            "sku": "SKU-BLUE-LAMP",
+            "snapshot_id": "SNAP-002-PREVIOUS"
+          },
+          {
+            "available_quantity": 41,
+            "captured_at": "2026-08-20T18:00:00Z",
+            "location": "SEA-01",
+            "physical_quantity": 50,
+            "reserved_quantity": 9,
+            "sku": "SKU-BLUE-LAMP",
+            "snapshot_id": "SNAP-002-HISTORICAL"
+          }
+        ],
+        "location": "SEA-01",
+        "physical_quantity": 50,
+        "reserved_quantity": 9,
+        "sku": "SKU-BLUE-LAMP",
+        "snapshot_id": "SNAP-002-LATEST"
+      },
+      "tool": "get_snapshot"
+    },
+    {
+      "arguments": {
+        "document_id": "SO-900"
+      },
+      "result": {
+        "cancelled_at": "2026-08-27T09:00:00Z",
+        "id": "SO-900",
+        "location": "SEA-01",
+        "quantity": 9,
+        "reservation_release_id": null,
+        "sku": "SKU-BLUE-LAMP",
+        "status": "cancelled",
+        "type": "sales_order"
+      },
+      "tool": "get_document"
+    }
+  ],
+  "model": "qwen3.5:27b",
+  "outcome": {
+    "confidence": 0.98,
+    "evidence_ids": [
+      "EV-2001",
+      "EV-2002",
+      "SO-900"
+    ],
+    "recommended_action": "Manually release the active reservation for SKU-BLUE-LAMP linked to cancelled order SO-900 to restore available stock to 50.",
+    "requires_escalation": true,
+    "root_cause_code": "STALE_RESERVATION",
+    "summary": "Sales order SO-900 was cancelled at 2026-08-27T09:00:00Z, but the associated reservation (EV-2001) for 9 units of SKU-BLUE-LAMP remains active. The document shows no reservation release occurred. This stale reservation reduces available stock to 41 while physical stock is 50, matching the reported discrepancy.",
+    "ticket_id": "INC-002"
+  },
+  "prior_outcomes": [
+    {
+      "confidence": 0.95,
+      "evidence_ids": [
+        "EV-2001",
+        "EV-2002",
+        "SO-900"
+      ],
+      "recommended_action": "Release the reservation for SKU-BLUE-LAMP to update available stock and ensure reconciliation.",
+      "requires_escalation": true,
+      "root_cause_code": "STALE_RESERVATION",
+      "summary": "A reservation for SKU-BLUE-LAMP was created but not released after the sales order was cancelled. The reservation remains active, reducing available stock despite the order being cancelled.",
+      "ticket_id": "INC-002"
+    }
+  ],
+  "reason": "primary model requested escalation",
+  "ticket_id": "INC-002",
+  "tokens": {
+    "completion": 215,
+    "prompt": 2125,
+    "total": 2340
+  }
+}

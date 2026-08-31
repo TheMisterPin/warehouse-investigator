@@ -1,0 +1,142 @@
+{
+  "elapsed_ms": 71976,
+  "evidence": [
+    {
+      "arguments": {
+        "ticket_id": "INC-011"
+      },
+      "result": {
+        "document_refs": [
+          "SO-903",
+          "TR-202"
+        ],
+        "expected_quantity": 50,
+        "id": "INC-011",
+        "investigation_window_start": "2026-08-26T22:00:00Z",
+        "location": "SEA-01",
+        "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+        "observed_quantity": 41,
+        "reported_at": "2026-08-27T22:00:00Z",
+        "sku": "SKU-TEAL-OTTOMAN",
+        "title": "Inventory reconciliation alert for SKU-TEAL-OTTOMAN at SEA-01"
+      },
+      "tool": "get_ticket"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-011"
+      },
+      "result": [
+        {
+          "document_id": "SO-903",
+          "event_type": "order_cancelled",
+          "id": "EV-11002",
+          "location": "SEA-01",
+          "quantity_delta": 0,
+          "sku": "SKU-TEAL-OTTOMAN",
+          "state": "posted",
+          "ticket_id": "INC-011",
+          "timestamp": "2026-08-27T09:00:00Z"
+        },
+        {
+          "document_id": "SO-903",
+          "event_type": "reservation_created",
+          "id": "EV-11001",
+          "location": "SEA-01",
+          "quantity_delta": -9,
+          "sku": "SKU-TEAL-OTTOMAN",
+          "state": "active",
+          "ticket_id": "INC-011",
+          "timestamp": "2026-08-27T08:00:00Z"
+        }
+      ],
+      "tool": "query_ledger"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-TEAL-OTTOMAN"
+      },
+      "result": {
+        "available_quantity": 41,
+        "captured_at": "2026-08-27T21:55:00Z",
+        "location": "SEA-01",
+        "physical_quantity": 50,
+        "reserved_quantity": 9,
+        "sku": "SKU-TEAL-OTTOMAN",
+        "snapshot_id": "SNAP-011-LATEST"
+      },
+      "tool": "get_snapshot"
+    },
+    {
+      "arguments": {
+        "document_id": "SO-903"
+      },
+      "result": {
+        "id": "SO-903",
+        "location": "SEA-01",
+        "quantity": 9,
+        "reservation_release_id": null,
+        "sku": "SKU-TEAL-OTTOMAN",
+        "status": "cancelled",
+        "type": "sales_order"
+      },
+      "tool": "get_document"
+    },
+    {
+      "arguments": {
+        "document_id": "TR-202"
+      },
+      "result": {
+        "destination_location": "SEA-01",
+        "id": "TR-202",
+        "quantity": 20,
+        "received_quantity": 20,
+        "sku": "SKU-PINK-PILLOW",
+        "source_location": "PDX-01",
+        "status": "received",
+        "type": "transfer"
+      },
+      "tool": "get_document"
+    }
+  ],
+  "model": "qwen3.5:27b",
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-11001",
+      "EV-11002",
+      "SO-903",
+      "SNAP-011-LATEST"
+    ],
+    "recommended_action": "Release the stale reservation of 9 units for SKU-TEAL-OTTOMAN at SEA-01 associated with cancelled sales order SO-903.",
+    "requires_escalation": false,
+    "root_cause_code": "STALE_RESERVATION",
+    "summary": "Sales order SO-903 for SKU-TEAL-OTTOMAN at SEA-01 was cancelled (EV-11002), but the associated reservation of 9 units (EV-11001) remains active. The snapshot confirms physical_quantity is 50, reserved_quantity is 9, and available_quantity is 41. The discrepancy between expected (50) and observed (41) quantities is due to the unreleased reservation on a cancelled order.",
+    "ticket_id": "INC-011"
+  },
+  "prior_outcomes": [
+    {
+      "confidence": 0.95,
+      "evidence_ids": [
+        "EV-11001",
+        "EV-11002",
+        "EV-H011A",
+        "EV-H011B",
+        "SO-903"
+      ],
+      "recommended_action": "Review and release the reservation for SKU-TEAL-OTTOMAN at SEA-01 to reconcile the discrepancy.",
+      "requires_escalation": true,
+      "root_cause_code": "STALE_RESERVATION",
+      "summary": "A reservation remains active for SKU-TEAL-OTTOMAN at SEA-01 despite the associated sales order (SO-903) being cancelled. The reservation was created but not released, leading to a discrepancy between expected and observed quantities.",
+      "ticket_id": "INC-011"
+    }
+  ],
+  "reason": "primary model requested escalation",
+  "ticket_id": "INC-011",
+  "tokens": {
+    "completion": 241,
+    "prompt": 1533,
+    "total": 1774
+  }
+}

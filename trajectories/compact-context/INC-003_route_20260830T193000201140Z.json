@@ -1,0 +1,52 @@
+{
+  "elapsed_ms": 72145,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-3001",
+      "CC-300"
+    ],
+    "recommended_action": "Approve the cycle count document CC-300 to reconcile the observed quantity with the expected quantity.",
+    "requires_escalation": false,
+    "root_cause_code": "PENDING_CYCLE_COUNT",
+    "summary": "The cycle count for SKU-GREEN-DESK at PDX-01 is pending approval, leading to a discrepancy between the observed quantity (100) and the expected quantity (97).",
+    "ticket_id": "INC-003"
+  },
+  "routing": {
+    "attempt_count": 1,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 72145,
+        "error": null,
+        "evidence_flags": [],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "PENDING_CYCLE_COUNT",
+        "status": "completed",
+        "tokens": {
+          "completion": 255,
+          "prompt": 3562,
+          "total": 3817
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-003_20260830T193000Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3:8b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b"
+    ]
+  },
+  "ticket_id": "INC-003",
+  "tokens": {
+    "completion": 255,
+    "prompt": 3562,
+    "total": 3817
+  }
+}

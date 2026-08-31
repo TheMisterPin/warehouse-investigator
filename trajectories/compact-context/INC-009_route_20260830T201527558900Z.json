@@ -1,0 +1,75 @@
+{
+  "elapsed_ms": 211688,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-9002",
+      "EV-9003",
+      "CC-301"
+    ],
+    "recommended_action": "Review and reverse one of the duplicate count adjustment events (EV-9002 or EV-9003) to correct the inventory balance.",
+    "requires_escalation": true,
+    "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+    "summary": "The cycle count adjustment for document CC-301 was posted twice (EV-9002 and EV-9003), each applying a -3 quantity delta. The ledger shows two identical 'count_adjustment_posted' events for the same document, resulting in a total reduction of 6 units instead of the intended 3. This explains the discrepancy between the expected quantity (97) and observed quantity (94).",
+    "ticket_id": "INC-009"
+  },
+  "routing": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 105477,
+        "error": null,
+        "evidence_flags": [
+          "duplicate_event"
+        ],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "COUNT_ADJUSTMENT_NOT_POSTED",
+        "status": "completed",
+        "tokens": {
+          "completion": 308,
+          "prompt": 4049,
+          "total": 4357
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-009_20260830T201341Z.json"
+      },
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 106208,
+        "error": null,
+        "evidence_flags": [
+          "duplicate_event"
+        ],
+        "model": "qwen3.5:27b",
+        "reason": "evidence requires deep review: duplicate_event",
+        "requires_escalation": true,
+        "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+        "status": "completed",
+        "tokens": {
+          "completion": 217,
+          "prompt": 1616,
+          "total": 1833
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3.5-27b/INC-009_review_20260830T201527557635Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3.5:27b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-009",
+  "tokens": {
+    "completion": 525,
+    "prompt": 5665,
+    "total": 6190
+  }
+}

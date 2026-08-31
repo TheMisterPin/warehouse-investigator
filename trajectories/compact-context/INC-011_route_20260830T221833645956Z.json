@@ -1,0 +1,55 @@
+{
+  "elapsed_ms": 18007,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-11001",
+      "EV-11002",
+      "SO-903"
+    ],
+    "recommended_action": "Release the reservation for SKU-TEAL-OTTOMAN at SEA-01 or investigate why the reservation was not released after the order cancellation.",
+    "requires_escalation": false,
+    "root_cause_code": "STALE_RESERVATION",
+    "summary": "A reservation for SKU-TEAL-OTTOMAN remains active despite the associated sales order (SO-903) being cancelled. The reservation was created on 2026-08-27T08:00:00Z and has not been released or adjusted.",
+    "ticket_id": "INC-011"
+  },
+  "routing": {
+    "attempt_count": 1,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 18006,
+        "error": null,
+        "evidence_flags": [
+          "multiple_documents"
+        ],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "STALE_RESERVATION",
+        "status": "completed",
+        "tokens": {
+          "completion": 318,
+          "prompt": 4570,
+          "total": 4888
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-011_20260830T221833Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3:8b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b"
+    ]
+  },
+  "ticket_id": "INC-011",
+  "tokens": {
+    "completion": 318,
+    "prompt": 4570,
+    "total": 4888
+  }
+}

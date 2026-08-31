@@ -1,0 +1,125 @@
+{
+  "elapsed_ms": 74554,
+  "evidence": [
+    {
+      "arguments": {
+        "ticket_id": "INC-012"
+      },
+      "result": {
+        "document_refs": [
+          "TR-203"
+        ],
+        "expected_quantity": 100,
+        "id": "INC-012",
+        "investigation_window_start": "2026-08-26T23:00:00Z",
+        "location": "SEA-01",
+        "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+        "observed_quantity": 94,
+        "reported_at": "2026-08-27T23:00:00Z",
+        "sku": "SKU-GRAY-SOFA",
+        "title": "Inventory reconciliation alert for SKU-GRAY-SOFA at SEA-01"
+      },
+      "tool": "get_ticket"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-012"
+      },
+      "result": [
+        {
+          "document_id": "TR-203",
+          "event_type": "transfer_received",
+          "id": "EV-12002",
+          "location": "SEA-01",
+          "quantity_delta": 6,
+          "sku": "SKU-GRAY-SOFA",
+          "state": "posted",
+          "ticket_id": "INC-012",
+          "timestamp": "2026-08-27T14:00:00Z"
+        },
+        {
+          "document_id": "TR-203",
+          "event_type": "transfer_shipped",
+          "id": "EV-12001",
+          "location": "PDX-01",
+          "quantity_delta": -6,
+          "sku": "SKU-GRAY-SOFA",
+          "state": "posted",
+          "ticket_id": "INC-012",
+          "timestamp": "2026-08-27T12:00:00Z"
+        }
+      ],
+      "tool": "query_ledger"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-GRAY-SOFA"
+      },
+      "result": {
+        "available_quantity": 94,
+        "captured_at": "2026-08-27T22:55:00Z",
+        "location": "SEA-01",
+        "physical_quantity": 94,
+        "reserved_quantity": 0,
+        "sku": "SKU-GRAY-SOFA",
+        "snapshot_id": "SNAP-012-LATEST"
+      },
+      "tool": "get_snapshot"
+    },
+    {
+      "arguments": {
+        "document_id": "TR-203"
+      },
+      "result": {
+        "destination_location": "SEA-01",
+        "id": "TR-203",
+        "quantity": 6,
+        "received_at": "2026-08-27T14:00:00Z",
+        "received_quantity": 6,
+        "sku": "SKU-GRAY-SOFA",
+        "source_location": "PDX-01",
+        "status": "received",
+        "type": "transfer"
+      },
+      "tool": "get_document"
+    }
+  ],
+  "model": "qwen3.5:27b",
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-12001",
+      "EV-12002",
+      "TR-203",
+      "SNAP-012-LATEST"
+    ],
+    "recommended_action": "No action required. The inventory records reconcile with the physical count based on the posted transfer receipt.",
+    "requires_escalation": false,
+    "root_cause_code": "NO_DISCREPANCY",
+    "summary": "The transfer TR-203 for 6 units of SKU-GRAY-SOFA from PDX-01 to SEA-01 was fully shipped and received. Ledger events EV-12001 (shipped) and EV-12002 (received) confirm the movement, and document TR-203 shows a status of 'received' with received_quantity matching the transfer quantity. The current snapshot at SEA-01 reflects a physical quantity of 94, which is consistent with the posted receipt. The ticket's reported variance (expected 100 vs observed 94) appears to be based on an incorrect expectation or a pre-transfer baseline not reflected in the provided evidence; the system records show no missing receipt or unposted adjustment.",
+    "ticket_id": "INC-012"
+  },
+  "prior_outcomes": [
+    {
+      "confidence": 0.95,
+      "evidence_ids": [
+        "EV-12001",
+        "EV-12002",
+        "TR-203"
+      ],
+      "recommended_action": "Verify the receipt of the transfer at SEA-01 and investigate why the full quantity of 6 units is not reflected in the physical inventory.",
+      "requires_escalation": true,
+      "root_cause_code": "TRANSFER_NOT_RECEIVED",
+      "summary": "A transfer of 6 units from PDX-01 to SEA-01 was posted as shipped, but the receipt at SEA-01 is missing. The observed quantity (94) is 2 less than the expected quantity (96) based on the transfer. The transfer receipt (TR-203) is posted but not fully accounted for in the physical inventory.",
+      "ticket_id": "INC-012"
+    }
+  ],
+  "reason": "evidence requires deep review: conflicting_stock",
+  "ticket_id": "INC-012",
+  "tokens": {
+    "completion": 298,
+    "prompt": 1505,
+    "total": 1803
+  }
+}

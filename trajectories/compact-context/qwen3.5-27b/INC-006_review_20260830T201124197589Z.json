@@ -1,0 +1,105 @@
+{
+  "elapsed_ms": 90243,
+  "evidence": [
+    {
+      "arguments": {
+        "ticket_id": "INC-006"
+      },
+      "result": {
+        "document_refs": [
+          "TR-MISSING"
+        ],
+        "expected_quantity": 80,
+        "id": "INC-006",
+        "investigation_window_start": "2026-08-26T19:00:00Z",
+        "location": "SEA-01",
+        "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+        "observed_quantity": 74,
+        "reported_at": "2026-08-27T19:00:00Z",
+        "sku": "SKU-YELLOW-BENCH",
+        "title": "Inventory reconciliation alert for SKU-YELLOW-BENCH at SEA-01"
+      },
+      "tool": "get_ticket"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-YELLOW-BENCH",
+        "ticket_id": "INC-006"
+      },
+      "result": [
+        {
+          "document_id": "TR-MISSING",
+          "event_type": "transfer_received",
+          "id": "EV-6002",
+          "location": "SEA-01",
+          "quantity_delta": 0,
+          "sku": "SKU-YELLOW-BENCH",
+          "state": "pending",
+          "ticket_id": "INC-006",
+          "timestamp": "2026-08-27T12:00:00Z"
+        }
+      ],
+      "tool": "query_ledger"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-YELLOW-BENCH"
+      },
+      "result": {
+        "available_quantity": 74,
+        "captured_at": "2026-08-27T18:55:00Z",
+        "location": "SEA-01",
+        "physical_quantity": 74,
+        "reserved_quantity": 0,
+        "sku": "SKU-YELLOW-BENCH",
+        "snapshot_id": "SNAP-006-LATEST"
+      },
+      "tool": "get_snapshot"
+    },
+    {
+      "arguments": {
+        "document_id": "TR-MISSING"
+      },
+      "result": {
+        "error": "No document found for TR-MISSING"
+      },
+      "tool": "get_document"
+    }
+  ],
+  "model": "qwen3.5:27b",
+  "outcome": {
+    "confidence": 0.6,
+    "evidence_ids": [
+      "EV-6002",
+      "TR-MISSING"
+    ],
+    "recommended_action": "Escalate to the warehouse management team to manually locate the physical transfer document or shipment record corresponding to TR-MISSING. Verify if the transfer was actually shipped and what quantity was expected. Once the source document is located, reconcile the ledger event with the actual shipment details.",
+    "requires_escalation": true,
+    "root_cause_code": "INSUFFICIENT_EVIDENCE",
+    "summary": "The ticket reports a discrepancy of 6 units (expected 80, observed 74) for SKU-YELLOW-BENCH at SEA-01. The ledger shows a pending transfer receipt event (EV-6002) with a quantity delta of 0 linked to document TR-MISSING. However, the attempt to retrieve document TR-MISSING failed with 'No document found'. Without the source document details (e.g., expected quantity, origin location, shipment status), it is impossible to determine if the transfer was never shipped, partially received, or if the system record is corrupted. The pending event with zero delta does not explain the 6-unit variance.",
+    "ticket_id": "INC-006"
+  },
+  "prior_outcomes": [
+    {
+      "confidence": 0.85,
+      "evidence_ids": [
+        "EV-6002",
+        "TR-MISSING"
+      ],
+      "recommended_action": "Verify the status of the transfer with document ID TR-MISSING to confirm if it was received or if there was an error in the transfer process. If the transfer was not received, investigate the cause and update the inventory records accordingly.",
+      "requires_escalation": true,
+      "root_cause_code": "TRANSFER_NOT_RECEIVED",
+      "summary": "The ticket indicates an expected quantity of 80 for SKU-YELLOW-BENCH at SEA-01, but the observed quantity is 74. The pending transfer receipt with document ID TR-MISSING has a quantity delta of 0, suggesting the transfer was not received. The posted transfer receipt for TR-X006 with SKU-NOISE-006 is unrelated. The count adjustment and cycle count are completed and posted, but they do not explain the discrepancy. The missing document TR-MISSING indicates the transfer was not received, leading to the discrepancy.",
+      "ticket_id": "INC-006"
+    }
+  ],
+  "reason": "evidence requires deep review: missing_document",
+  "ticket_id": "INC-006",
+  "tokens": {
+    "completion": 286,
+    "prompt": 1456,
+    "total": 1742
+  }
+}

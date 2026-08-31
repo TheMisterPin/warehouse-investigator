@@ -1,0 +1,76 @@
+{
+  "elapsed_ms": 61838,
+  "outcome": {
+    "confidence": 0.98,
+    "evidence_ids": [
+      "EV-9002",
+      "EV-9003",
+      "CC-301",
+      "SNAP-009-LATEST"
+    ],
+    "recommended_action": "Escalate to reverse the duplicate event EV-9003 to correct the inventory balance.",
+    "requires_escalation": true,
+    "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+    "summary": "The cycle count adjustment for document CC-301 was posted twice (EV-9002 and EV-9003), where EV-9003 is a retry of EV-9002. Both events applied a -3 quantity delta, resulting in a total reduction of 6 units instead of the intended 3. The system expected 97 (100 - 3) but the physical stock reflects 94 (100 - 6).",
+    "ticket_id": "INC-009"
+  },
+  "routing": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 16632,
+        "error": null,
+        "evidence_flags": [
+          "duplicate_event"
+        ],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "COUNT_ADJUSTMENT_NOT_POSTED",
+        "status": "completed",
+        "tokens": {
+          "completion": 306,
+          "prompt": 8899,
+          "total": 9205
+        },
+        "trajectory_path": "trajectories/buried-evidence/qwen3-8b/INC-009_20260828T235209Z.json"
+      },
+      {
+        "confidence": 0.98,
+        "elapsed_ms": 45202,
+        "error": null,
+        "evidence_flags": [
+          "duplicate_event"
+        ],
+        "model": "qwen3.5:27b",
+        "reason": "evidence requires deep review: duplicate_event",
+        "requires_escalation": true,
+        "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+        "status": "completed",
+        "tokens": {
+          "completion": 228,
+          "prompt": 2279,
+          "total": 2507
+        },
+        "trajectory_path": "trajectories/buried-evidence/qwen3.5-27b/INC-009_review_20260828T235254837270Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3.5:27b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-009",
+  "tokens": {
+    "completion": 534,
+    "prompt": 11178,
+    "total": 11712
+  }
+}

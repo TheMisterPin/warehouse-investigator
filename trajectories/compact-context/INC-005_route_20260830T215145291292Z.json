@@ -1,0 +1,78 @@
+{
+  "elapsed_ms": 54272,
+  "outcome": {
+    "confidence": 0.9,
+    "evidence_ids": [
+      "EV-5002",
+      "EV-5003",
+      "TR-201",
+      "SNAP-005-LATEST"
+    ],
+    "recommended_action": "Escalate to the inventory control team to investigate and reverse the duplicate ledger event (EV-5003 or EV-5002) to correct the historical record.",
+    "requires_escalation": true,
+    "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+    "summary": "The ledger shows two identical posted events (EV-5002 and EV-5003) for the same transfer document TR-201, each adding 6 units to SEA-01. The physical snapshot confirms 106 units, which matches the expected 100 plus the single correct receipt of 6. The duplicate posting of the receipt event caused the system to record an extra 6 units in the ledger history, though the physical count aligns with a single receipt. This indicates a duplicate ledger entry that requires review.",
+    "ticket_id": "INC-005"
+  },
+  "routing": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "confidence": 1.0,
+        "elapsed_ms": 11763,
+        "error": null,
+        "evidence_flags": [
+          "conflicting_stock",
+          "duplicate_event"
+        ],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "NO_DISCREPANCY",
+        "status": "completed",
+        "tokens": {
+          "completion": 330,
+          "prompt": 4392,
+          "total": 4722
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-005_20260830T215102Z.json"
+      },
+      {
+        "confidence": 0.9,
+        "elapsed_ms": 42507,
+        "error": null,
+        "evidence_flags": [
+          "conflicting_stock",
+          "duplicate_event"
+        ],
+        "model": "qwen3.5:27b",
+        "reason": "evidence requires deep review: conflicting_stock, duplicate_event",
+        "requires_escalation": true,
+        "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+        "status": "completed",
+        "tokens": {
+          "completion": 255,
+          "prompt": 1698,
+          "total": 1953
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3.5-27b/INC-005_review_20260830T215145290077Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3.5:27b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-005",
+  "tokens": {
+    "completion": 585,
+    "prompt": 6090,
+    "total": 6675
+  }
+}

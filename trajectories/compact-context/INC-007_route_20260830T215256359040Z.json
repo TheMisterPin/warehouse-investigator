@@ -1,0 +1,54 @@
+{
+  "elapsed_ms": 15659,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-7001",
+      "EV-7002",
+      "EV-7003",
+      "SO-901"
+    ],
+    "recommended_action": "Release the stale reservation or retry the release process to clear the reservation state.",
+    "requires_escalation": false,
+    "root_cause_code": "STALE_RESERVATION",
+    "summary": "A reservation was created for SKU-PURPLE-RUG at SEA-01, but the associated sales order (SO-901) was cancelled. The reservation was released, but the reservation state remains stale.",
+    "ticket_id": "INC-007"
+  },
+  "routing": {
+    "attempt_count": 1,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 15659,
+        "error": null,
+        "evidence_flags": [],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "STALE_RESERVATION",
+        "status": "completed",
+        "tokens": {
+          "completion": 287,
+          "prompt": 4457,
+          "total": 4744
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-007_20260830T215256Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3:8b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b"
+    ]
+  },
+  "ticket_id": "INC-007",
+  "tokens": {
+    "completion": 287,
+    "prompt": 4457,
+    "total": 4744
+  }
+}

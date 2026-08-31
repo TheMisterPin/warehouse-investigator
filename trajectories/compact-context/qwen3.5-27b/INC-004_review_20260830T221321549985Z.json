@@ -1,0 +1,136 @@
+{
+  "elapsed_ms": 37192,
+  "evidence": [
+    {
+      "arguments": {
+        "ticket_id": "INC-004"
+      },
+      "result": {
+        "document_refs": [
+          "TR-200"
+        ],
+        "expected_quantity": 100,
+        "id": "INC-004",
+        "investigation_window_start": "2026-08-26T16:00:00Z",
+        "location": "SEA-01",
+        "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+        "observed_quantity": 98,
+        "reported_at": "2026-08-27T16:00:00Z",
+        "sku": "SKU-WHITE-SHELF",
+        "title": "Inventory reconciliation alert for SKU-WHITE-SHELF at SEA-01"
+      },
+      "tool": "get_ticket"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-004"
+      },
+      "result": [
+        {
+          "document_id": "TR-200",
+          "event_type": "transfer_received",
+          "id": "EV-4002",
+          "location": "SEA-01",
+          "quantity_delta": 4,
+          "sku": "SKU-WHITE-SHELF",
+          "state": "posted",
+          "ticket_id": "INC-004",
+          "timestamp": "2026-08-27T14:00:00Z"
+        },
+        {
+          "document_id": "TR-200",
+          "event_type": "transfer_received",
+          "id": "EV-4003",
+          "location": "SEA-01",
+          "quantity_delta": 0,
+          "sku": "SKU-WHITE-SHELF",
+          "state": "pending",
+          "ticket_id": "INC-004",
+          "timestamp": "2026-08-27T14:00:00Z"
+        },
+        {
+          "document_id": "TR-200",
+          "event_type": "transfer_shipped",
+          "id": "EV-4001",
+          "location": "PDX-01",
+          "quantity_delta": -6,
+          "sku": "SKU-WHITE-SHELF",
+          "state": "posted",
+          "ticket_id": "INC-004",
+          "timestamp": "2026-08-27T12:00:00Z"
+        }
+      ],
+      "tool": "query_ledger"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-WHITE-SHELF"
+      },
+      "result": {
+        "available_quantity": 98,
+        "captured_at": "2026-08-27T15:55:00Z",
+        "location": "SEA-01",
+        "physical_quantity": 98,
+        "reserved_quantity": 0,
+        "sku": "SKU-WHITE-SHELF",
+        "snapshot_id": "SNAP-004-LATEST"
+      },
+      "tool": "get_snapshot"
+    },
+    {
+      "arguments": {
+        "document_id": "TR-200"
+      },
+      "result": {
+        "destination_location": "SEA-01",
+        "id": "TR-200",
+        "quantity": 6,
+        "received_quantity": 4,
+        "remaining_quantity": 2,
+        "sku": "SKU-WHITE-SHELF",
+        "source_location": "PDX-01",
+        "status": "partially_received",
+        "type": "transfer"
+      },
+      "tool": "get_document"
+    }
+  ],
+  "model": "qwen3.5:27b",
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "TR-200",
+      "EV-4001",
+      "EV-4002"
+    ],
+    "recommended_action": "Locate and receive the remaining 2 units for transfer TR-200 to complete the transaction.",
+    "requires_escalation": false,
+    "root_cause_code": "PARTIAL_TRANSFER_RECEIPT",
+    "summary": "Transfer TR-200 shipped 6 units from PDX-01 to SEA-01. Only 4 units have been received and posted (EV-4002), leaving 2 units outstanding. The document status is 'partially_received' with a remaining quantity of 2. The observed physical stock of 98 reflects the partial receipt, but the discrepancy arises from the unposted balance of the transfer.",
+    "ticket_id": "INC-004"
+  },
+  "prior_outcomes": [
+    {
+      "confidence": 0.95,
+      "evidence_ids": [
+        "TR-200",
+        "EV-4001",
+        "EV-4002",
+        "EV-4003"
+      ],
+      "recommended_action": "Verify the receipt of the remaining 2 units from TR-200 and update the status of the transfer document accordingly.",
+      "requires_escalation": false,
+      "root_cause_code": "TRANSFER_NOT_RECEIVED",
+      "summary": "The transfer document TR-200 shows a quantity of 6 was shipped from PDX-01 to SEA-01, but only 4 has been received and posted. The remaining quantity of 2 is still pending receipt. The observed physical quantity of 98 matches the posted received quantity of 4, but the discrepancy lies in the unaccounted 2 units.",
+      "ticket_id": "INC-004"
+    }
+  ],
+  "reason": "evidence requires deep review: partial_transfer",
+  "ticket_id": "INC-004",
+  "tokens": {
+    "completion": 204,
+    "prompt": 1761,
+    "total": 1965
+  }
+}

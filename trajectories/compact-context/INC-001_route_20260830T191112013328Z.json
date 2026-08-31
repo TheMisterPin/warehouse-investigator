@@ -1,0 +1,53 @@
+{
+  "elapsed_ms": 43715,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-1001",
+      "EV-1002",
+      "TR-100"
+    ],
+    "recommended_action": "Verify the receipt of the transfer shipment and post the transfer_received event for SEA-01 once the goods are confirmed received.",
+    "requires_escalation": false,
+    "root_cause_code": "TRANSFER_NOT_RECEIVED",
+    "summary": "A transfer shipment of 6 units for SKU-RED-CHAIR from PDX-01 to SEA-01 was posted as shipped but not yet received. The transfer document TR-100 shows the quantity as 6 and status as in_transit, with no received_at timestamp. The pending transfer_received event EV-1002 for SEA-01 indicates the receipt is not yet posted.",
+    "ticket_id": "INC-001"
+  },
+  "routing": {
+    "attempt_count": 1,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 43715,
+        "error": null,
+        "evidence_flags": [],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "TRANSFER_NOT_RECEIVED",
+        "status": "completed",
+        "tokens": {
+          "completion": 308,
+          "prompt": 3661,
+          "total": 3969
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-001_20260830T191112Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3:8b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b"
+    ]
+  },
+  "ticket_id": "INC-001",
+  "tokens": {
+    "completion": 308,
+    "prompt": 3661,
+    "total": 3969
+  }
+}

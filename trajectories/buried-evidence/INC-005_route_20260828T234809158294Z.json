@@ -1,0 +1,78 @@
+{
+  "elapsed_ms": 67779,
+  "outcome": {
+    "confidence": 0.9,
+    "evidence_ids": [
+      "EV-5002",
+      "EV-5003",
+      "TR-201",
+      "INC-005"
+    ],
+    "recommended_action": "Review and reverse the duplicate transfer_received event (EV-5003) to correct the inventory discrepancy.",
+    "requires_escalation": true,
+    "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+    "summary": "The ledger shows two posted transfer_received events (EV-5002 and EV-5003) for document TR-201, both adding 6 units of SKU-BLACK-CABINET to SEA-01. Event EV-5003 is marked as a retry_of EV-5002, indicating a duplicate posting. The transfer document TR-201 confirms only 6 units were shipped and received. The snapshot shows a physical quantity of 106, which is 6 units higher than the expected 100, consistent with the duplicate event adding an extra 6 units.",
+    "ticket_id": "INC-005"
+  },
+  "routing": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "confidence": 0.85,
+        "elapsed_ms": 13878,
+        "error": null,
+        "evidence_flags": [
+          "conflicting_stock",
+          "duplicate_event"
+        ],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": true,
+        "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+        "status": "completed",
+        "tokens": {
+          "completion": 339,
+          "prompt": 8593,
+          "total": 8932
+        },
+        "trajectory_path": "trajectories/buried-evidence/qwen3-8b/INC-005_20260828T234715Z.json"
+      },
+      {
+        "confidence": 0.9,
+        "elapsed_ms": 53899,
+        "error": null,
+        "evidence_flags": [
+          "conflicting_stock",
+          "duplicate_event"
+        ],
+        "model": "qwen3.5:27b",
+        "reason": "evidence requires deep review: conflicting_stock, duplicate_event",
+        "requires_escalation": true,
+        "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+        "status": "completed",
+        "tokens": {
+          "completion": 254,
+          "prompt": 2213,
+          "total": 2467
+        },
+        "trajectory_path": "trajectories/buried-evidence/qwen3.5-27b/INC-005_review_20260828T234809156723Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3.5:27b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-005",
+  "tokens": {
+    "completion": 593,
+    "prompt": 10806,
+    "total": 11399
+  }
+}

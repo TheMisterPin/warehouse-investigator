@@ -1,0 +1,76 @@
+{
+  "elapsed_ms": 292696,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-12001",
+      "EV-12002",
+      "TR-203",
+      "SNAP-012-LATEST"
+    ],
+    "recommended_action": "No action required. The inventory records reconcile with the physical count based on the posted transfer receipt.",
+    "requires_escalation": false,
+    "root_cause_code": "NO_DISCREPANCY",
+    "summary": "The transfer TR-203 for 6 units of SKU-GRAY-SOFA from PDX-01 to SEA-01 was fully shipped and received. Ledger events EV-12001 (shipped) and EV-12002 (received) confirm the movement, and document TR-203 shows a status of 'received' with received_quantity matching the transfer quantity. The current snapshot at SEA-01 reflects a physical quantity of 94, which is consistent with the posted receipt. The ticket's reported variance (expected 100 vs observed 94) appears to be based on an incorrect expectation or a pre-transfer baseline not reflected in the provided evidence; the system records show no missing receipt or unposted adjustment.",
+    "ticket_id": "INC-012"
+  },
+  "routing": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 218135,
+        "error": null,
+        "evidence_flags": [
+          "conflicting_stock"
+        ],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": true,
+        "root_cause_code": "TRANSFER_NOT_RECEIVED",
+        "status": "completed",
+        "tokens": {
+          "completion": 308,
+          "prompt": 3660,
+          "total": 3968
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-012_20260830T191836Z.json"
+      },
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 74554,
+        "error": null,
+        "evidence_flags": [
+          "conflicting_stock"
+        ],
+        "model": "qwen3.5:27b",
+        "reason": "evidence requires deep review: conflicting_stock",
+        "requires_escalation": false,
+        "root_cause_code": "NO_DISCREPANCY",
+        "status": "completed",
+        "tokens": {
+          "completion": 298,
+          "prompt": 1505,
+          "total": 1803
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3.5-27b/INC-012_review_20260830T191951347103Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3.5:27b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-012",
+  "tokens": {
+    "completion": 606,
+    "prompt": 5165,
+    "total": 5771
+  }
+}

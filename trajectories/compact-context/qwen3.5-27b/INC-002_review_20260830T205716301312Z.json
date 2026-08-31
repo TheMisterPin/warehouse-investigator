@@ -1,0 +1,126 @@
+{
+  "elapsed_ms": 72673,
+  "evidence": [
+    {
+      "arguments": {
+        "ticket_id": "INC-002"
+      },
+      "result": {
+        "document_refs": [
+          "SO-900"
+        ],
+        "expected_quantity": 50,
+        "id": "INC-002",
+        "investigation_window_start": "2026-08-26T18:00:00Z",
+        "location": "SEA-01",
+        "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+        "observed_quantity": 41,
+        "reported_at": "2026-08-27T18:00:00Z",
+        "sku": "SKU-BLUE-LAMP",
+        "title": "Inventory reconciliation alert for SKU-BLUE-LAMP at SEA-01"
+      },
+      "tool": "get_ticket"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-BLUE-LAMP",
+        "ticket_id": "INC-002"
+      },
+      "result": [
+        {
+          "document_id": "SO-900",
+          "event_type": "order_cancelled",
+          "id": "EV-2002",
+          "location": "SEA-01",
+          "quantity_delta": 0,
+          "sku": "SKU-BLUE-LAMP",
+          "state": "posted",
+          "ticket_id": "INC-002",
+          "timestamp": "2026-08-27T09:00:00Z"
+        },
+        {
+          "document_id": "SO-900",
+          "event_type": "reservation_created",
+          "id": "EV-2001",
+          "location": "SEA-01",
+          "quantity_delta": -9,
+          "sku": "SKU-BLUE-LAMP",
+          "state": "active",
+          "ticket_id": "INC-002",
+          "timestamp": "2026-08-27T08:00:00Z"
+        }
+      ],
+      "tool": "query_ledger"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-BLUE-LAMP"
+      },
+      "result": {
+        "available_quantity": 41,
+        "captured_at": "2026-08-27T17:55:00Z",
+        "location": "SEA-01",
+        "physical_quantity": 50,
+        "reserved_quantity": 9,
+        "sku": "SKU-BLUE-LAMP",
+        "snapshot_id": "SNAP-002-LATEST"
+      },
+      "tool": "get_snapshot"
+    },
+    {
+      "arguments": {
+        "document_id": "SO-900"
+      },
+      "result": {
+        "cancelled_at": "2026-08-27T09:00:00Z",
+        "id": "SO-900",
+        "location": "SEA-01",
+        "quantity": 9,
+        "reservation_release_id": null,
+        "sku": "SKU-BLUE-LAMP",
+        "status": "cancelled",
+        "type": "sales_order"
+      },
+      "tool": "get_document"
+    }
+  ],
+  "model": "qwen3.5:27b",
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-2001",
+      "EV-2002",
+      "SO-900",
+      "SNAP-002-LATEST"
+    ],
+    "recommended_action": "Manually release the stale reservation of 9 units for SKU-BLUE-LAMP at SEA-01 associated with cancelled order SO-900 to restore available inventory.",
+    "requires_escalation": true,
+    "root_cause_code": "STALE_RESERVATION",
+    "summary": "Sales order SO-900 was cancelled at 2026-08-27T09:00:00Z (EV-2002), but the associated reservation of 9 units created at 08:00:00Z (EV-2001) remains active. The document SO-900 shows no reservation release ID, and the current snapshot confirms 9 units are still reserved, reducing available stock from 50 to 41.",
+    "ticket_id": "INC-002"
+  },
+  "prior_outcomes": [
+    {
+      "confidence": 0.95,
+      "evidence_ids": [
+        "EV-2001",
+        "EV-2002",
+        "SO-900"
+      ],
+      "recommended_action": "Investigate and resolve the stale reservation by either releasing the reserved quantity or removing the reservation from the system.",
+      "requires_escalation": true,
+      "root_cause_code": "STALE_RESERVATION",
+      "summary": "A reservation created for SKU-BLUE-LAMP at SEA-01 remains active despite the associated sales order (SO-900) being cancelled. The reservation is not linked to a release, and the available quantity matches the observed quantity, indicating a stale reservation.",
+      "ticket_id": "INC-002"
+    }
+  ],
+  "reason": "primary model requested escalation",
+  "ticket_id": "INC-002",
+  "tokens": {
+    "completion": 260,
+    "prompt": 1521,
+    "total": 1781
+  }
+}

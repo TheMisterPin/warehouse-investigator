@@ -1,0 +1,74 @@
+{
+  "elapsed_ms": 352114,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-12001",
+      "EV-12002",
+      "TR-203",
+      "SNAP-012-LATEST"
+    ],
+    "recommended_action": "Close ticket as resolved; no corrective action required.",
+    "requires_escalation": false,
+    "root_cause_code": "NO_DISCREPANCY",
+    "summary": "The observed quantity (94) matches the physical snapshot. The transfer TR-203 for 6 units was fully shipped from PDX-01 and received at SEA-01, reconciling with the ledger events EV-12001 and EV-12002. No missing receipts or stale reservations were found.",
+    "ticket_id": "INC-012"
+  },
+  "routing": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "confidence": null,
+        "elapsed_ms": null,
+        "error": "timed out",
+        "evidence_flags": [],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": null,
+        "root_cause_code": null,
+        "status": "error",
+        "tokens": {
+          "completion": 0,
+          "prompt": 0,
+          "total": 0
+        },
+        "trajectory_path": null
+      },
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 118226,
+        "error": null,
+        "evidence_flags": [
+          "conflicting_stock"
+        ],
+        "model": "qwen3.5:27b",
+        "reason": "qwen3:8b failed, so the next tier was attempted",
+        "requires_escalation": false,
+        "root_cause_code": "NO_DISCREPANCY",
+        "status": "completed",
+        "tokens": {
+          "completion": 328,
+          "prompt": 4466,
+          "total": 4794
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3.5-27b/INC-012_20260830T201919Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3.5:27b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-012",
+  "tokens": {
+    "completion": 328,
+    "prompt": 4466,
+    "total": 4794
+  }
+}

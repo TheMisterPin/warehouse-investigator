@@ -1,0 +1,160 @@
+{
+  "elapsed_ms": 62027,
+  "evidence": [
+    {
+      "arguments": {
+        "ticket_id": "INC-006"
+      },
+      "result": {
+        "document_refs": [
+          "TR-MISSING"
+        ],
+        "expected_quantity": 80,
+        "id": "INC-006",
+        "investigation_window_start": "2026-08-26T19:00:00Z",
+        "location": "SEA-01",
+        "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+        "observed_quantity": 74,
+        "reported_at": "2026-08-27T19:00:00Z",
+        "sku": "SKU-YELLOW-BENCH",
+        "title": "Inventory reconciliation alert for SKU-YELLOW-BENCH at SEA-01"
+      },
+      "tool": "get_ticket"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-YELLOW-BENCH",
+        "ticket_id": "INC-006"
+      },
+      "result": [
+        {
+          "document_id": "TR-X006",
+          "event_type": "transfer_received",
+          "id": "EV-X006",
+          "location": "SEA-01",
+          "quantity_delta": 5,
+          "sku": "SKU-NOISE-006",
+          "state": "posted",
+          "ticket_id": "INC-006",
+          "timestamp": "2026-08-27T18:30:00Z"
+        },
+        {
+          "document_id": "TR-MISSING",
+          "event_type": "transfer_received",
+          "id": "EV-6002",
+          "location": "SEA-01",
+          "quantity_delta": 0,
+          "sku": "SKU-YELLOW-BENCH",
+          "state": "pending",
+          "ticket_id": "INC-006",
+          "timestamp": "2026-08-27T12:00:00Z"
+        },
+        {
+          "document_id": "CC-H006",
+          "event_type": "count_adjustment_posted",
+          "id": "EV-H006B",
+          "location": "SEA-01",
+          "quantity_delta": 1,
+          "sku": "SKU-YELLOW-BENCH",
+          "state": "posted",
+          "ticket_id": "INC-006",
+          "timestamp": "2026-08-20T19:05:00Z"
+        },
+        {
+          "document_id": "CC-H006",
+          "event_type": "cycle_count_completed",
+          "id": "EV-H006A",
+          "location": "SEA-01",
+          "quantity_delta": 1,
+          "sku": "SKU-YELLOW-BENCH",
+          "state": "approved",
+          "ticket_id": "INC-006",
+          "timestamp": "2026-08-20T19:00:00Z"
+        }
+      ],
+      "tool": "query_ledger"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-YELLOW-BENCH"
+      },
+      "result": {
+        "available_quantity": 74,
+        "captured_at": "2026-08-27T18:55:00Z",
+        "history": [
+          {
+            "available_quantity": 74,
+            "captured_at": "2026-08-25T19:00:00Z",
+            "location": "SEA-01",
+            "physical_quantity": 74,
+            "reserved_quantity": 0,
+            "sku": "SKU-YELLOW-BENCH",
+            "snapshot_id": "SNAP-006-PREVIOUS"
+          },
+          {
+            "available_quantity": 74,
+            "captured_at": "2026-08-20T19:00:00Z",
+            "location": "SEA-01",
+            "physical_quantity": 74,
+            "reserved_quantity": 0,
+            "sku": "SKU-YELLOW-BENCH",
+            "snapshot_id": "SNAP-006-HISTORICAL"
+          }
+        ],
+        "location": "SEA-01",
+        "physical_quantity": 74,
+        "reserved_quantity": 0,
+        "sku": "SKU-YELLOW-BENCH",
+        "snapshot_id": "SNAP-006-LATEST"
+      },
+      "tool": "get_snapshot"
+    },
+    {
+      "arguments": {
+        "document_id": "TR-MISSING"
+      },
+      "result": {
+        "error": "No document found for TR-MISSING"
+      },
+      "tool": "get_document"
+    }
+  ],
+  "model": "qwen3.5:27b",
+  "outcome": {
+    "confidence": 0.65,
+    "evidence_ids": [
+      "INC-006",
+      "EV-6002",
+      "SNAP-006-LATEST",
+      "TR-MISSING"
+    ],
+    "recommended_action": "Escalate to investigate the missing document TR-MISSING. Verify if the transfer was ever created, if it was cancelled, or if the ticket's expected quantity of 80 is based on incorrect data. Do not attempt to post a receipt without valid source documentation.",
+    "requires_escalation": true,
+    "root_cause_code": "INSUFFICIENT_EVIDENCE",
+    "summary": "The ticket references document TR-MISSING to explain a variance between expected (80) and observed (74) quantities for SKU-YELLOW-BENCH at SEA-01. However, the document retrieval returned an error ('No document found'), and the ledger shows a pending event (EV-6002) with a quantity delta of 0 linked to this missing document. The snapshot confirms current physical stock is 74. Without the actual transfer document details (expected quantity, source location, shipment status), it is impossible to determine if the discrepancy is due to a missing receipt, a partial receipt, or an incorrect expectation in the ticket. The prior diagnosis of TRANSFER_NOT_RECEIVED cannot be confirmed because the referenced document does not exist in the system.",
+    "ticket_id": "INC-006"
+  },
+  "prior_outcomes": [
+    {
+      "confidence": 0.85,
+      "evidence_ids": [
+        "EV-6002",
+        "TR-MISSING"
+      ],
+      "recommended_action": "Verify the status of the transfer TR-MISSING and ensure the full quantity is received and posted. If the transfer is confirmed as missing, initiate a corrective action to reconcile the discrepancy.",
+      "requires_escalation": true,
+      "root_cause_code": "TRANSFER_NOT_RECEIVED",
+      "summary": "The ticket indicates an expected quantity of 80 for SKU-YELLOW-BENCH at SEA-01, but only 74 are observed. A transfer receipt (TR-MISSING) with a quantity delta of 0 is pending, suggesting the transfer was not fully received. The missing receipt is likely the cause of the discrepancy.",
+      "ticket_id": "INC-006"
+    }
+  ],
+  "reason": "evidence requires deep review: missing_document",
+  "ticket_id": "INC-006",
+  "tokens": {
+    "completion": 325,
+    "prompt": 1988,
+    "total": 2313
+  }
+}

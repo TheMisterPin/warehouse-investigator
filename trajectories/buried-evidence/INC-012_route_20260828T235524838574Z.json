@@ -1,0 +1,77 @@
+{
+  "elapsed_ms": 70941,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-12002",
+      "EV-H012B",
+      "EV-H012A",
+      "TR-203",
+      "SNAP-012-LATEST"
+    ],
+    "recommended_action": "Close the ticket as resolved; the inventory records match the physical count of 94 units.",
+    "requires_escalation": false,
+    "root_cause_code": "NO_DISCREPANCY",
+    "summary": "The ticket reports an expected quantity of 100 vs observed 94 for SKU-GRAY-SOFA at SEA-01. However, the ledger shows a posted transfer receipt (EV-12002) for 6 units via TR-203 and a posted count adjustment (EV-H012B) for 1 unit via CC-H012. The current snapshot confirms physical_quantity of 94. The 'expected' value in the ticket appears to be based on stale data or an incorrect baseline, as the ledger events fully reconcile with the observed physical stock of 94. No missing receipts, stale reservations, or unposted adjustments exist.",
+    "ticket_id": "INC-012"
+  },
+  "routing": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "confidence": 1.0,
+        "elapsed_ms": 18904,
+        "error": null,
+        "evidence_flags": [
+          "conflicting_stock"
+        ],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "NO_DISCREPANCY",
+        "status": "completed",
+        "tokens": {
+          "completion": 337,
+          "prompt": 8241,
+          "total": 8578
+        },
+        "trajectory_path": "trajectories/buried-evidence/qwen3-8b/INC-012_20260828T235432Z.json"
+      },
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 52035,
+        "error": null,
+        "evidence_flags": [
+          "conflicting_stock"
+        ],
+        "model": "qwen3.5:27b",
+        "reason": "evidence requires deep review: conflicting_stock",
+        "requires_escalation": false,
+        "root_cause_code": "NO_DISCREPANCY",
+        "status": "completed",
+        "tokens": {
+          "completion": 289,
+          "prompt": 2107,
+          "total": 2396
+        },
+        "trajectory_path": "trajectories/buried-evidence/qwen3.5-27b/INC-012_review_20260828T235524838097Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3.5:27b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-012",
+  "tokens": {
+    "completion": 626,
+    "prompt": 10348,
+    "total": 10974
+  }
+}

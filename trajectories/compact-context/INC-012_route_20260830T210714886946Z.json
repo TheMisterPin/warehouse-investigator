@@ -1,0 +1,75 @@
+{
+  "elapsed_ms": 121596,
+  "outcome": {
+    "confidence": 0.6,
+    "evidence_ids": [
+      "EV-12002",
+      "TR-203",
+      "SNAP-012-LATEST"
+    ],
+    "recommended_action": "Escalate to inventory control to locate the source document or system state that established the expected quantity of 100 units and verify if a cycle count was performed but not recorded in the current evidence set.",
+    "requires_escalation": true,
+    "root_cause_code": "INSUFFICIENT_EVIDENCE",
+    "summary": "The ticket reports an expected quantity of 100 versus an observed quantity of 94 for SKU-GRAY-SOFA at SEA-01. The provided evidence confirms a posted transfer receipt (TR-203) of 6 units, resulting in a current physical quantity of 94. However, no evidence explains the origin of the 'expected' quantity of 100 or accounts for the missing 6 units relative to that expectation. The prior outcome citing a completed cycle count (CC-H012) is unsupported by the provided evidence bundle, which contains no records for CC-H012. Without documentation establishing the baseline expectation or the specific event causing the variance from 100 to 94, the root cause cannot be determined.",
+    "ticket_id": "INC-012"
+  },
+  "routing": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "confidence": 1.0,
+        "elapsed_ms": 35705,
+        "error": null,
+        "evidence_flags": [
+          "conflicting_stock"
+        ],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "NO_DISCREPANCY",
+        "status": "completed",
+        "tokens": {
+          "completion": 305,
+          "prompt": 3893,
+          "total": 4198
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-012_20260830T210548Z.json"
+      },
+      {
+        "confidence": 0.6,
+        "elapsed_ms": 85885,
+        "error": null,
+        "evidence_flags": [
+          "conflicting_stock"
+        ],
+        "model": "qwen3.5:27b",
+        "reason": "evidence requires deep review: conflicting_stock",
+        "requires_escalation": true,
+        "root_cause_code": "INSUFFICIENT_EVIDENCE",
+        "status": "completed",
+        "tokens": {
+          "completion": 308,
+          "prompt": 1461,
+          "total": 1769
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3.5-27b/INC-012_review_20260830T210714882993Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3.5:27b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-012",
+  "tokens": {
+    "completion": 613,
+    "prompt": 5354,
+    "total": 5967
+  }
+}

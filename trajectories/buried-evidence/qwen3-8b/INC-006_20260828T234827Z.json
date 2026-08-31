@@ -1,0 +1,268 @@
+{
+  "duration_ms": 18268,
+  "error": null,
+  "events": [
+    {
+      "elapsed_ms": 0,
+      "max_turns": 12,
+      "model": "qwen3:8b",
+      "type": "run_started"
+    },
+    {
+      "completion_tokens": 25,
+      "done_reason": "stop",
+      "elapsed_ms": 6574,
+      "message": {
+        "content": "Requested tool call(s): get_ticket",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-006"
+              },
+              "index": 0,
+              "name": "get_ticket"
+            },
+            "id": "call_wxlecnwz"
+          }
+        ]
+      },
+      "prompt_tokens": 1077,
+      "turn": 1,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-006"
+      },
+      "elapsed_ms": 6574,
+      "name": "get_ticket",
+      "result": {
+        "document_refs": [
+          "TR-MISSING"
+        ],
+        "expected_quantity": 80,
+        "id": "INC-006",
+        "investigation_window_start": "2026-08-26T19:00:00Z",
+        "location": "SEA-01",
+        "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+        "observed_quantity": 74,
+        "reported_at": "2026-08-27T19:00:00Z",
+        "sku": "SKU-YELLOW-BENCH",
+        "title": "Inventory reconciliation alert for SKU-YELLOW-BENCH at SEA-01"
+      },
+      "turn": 1,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 45,
+      "done_reason": "stop",
+      "elapsed_ms": 8371,
+      "message": {
+        "content": "Requested tool call(s): query_ledger",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "location": "SEA-01",
+                "sku": "SKU-YELLOW-BENCH",
+                "ticket_id": "INC-006"
+              },
+              "index": 0,
+              "name": "query_ledger"
+            },
+            "id": "call_xph5wiuc"
+          }
+        ]
+      },
+      "prompt_tokens": 1261,
+      "turn": 2,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-YELLOW-BENCH",
+        "ticket_id": "INC-006"
+      },
+      "elapsed_ms": 8371,
+      "name": "query_ledger",
+      "result": [
+        {
+          "document_id": "TR-X006",
+          "event_type": "transfer_received",
+          "id": "EV-X006",
+          "location": "SEA-01",
+          "quantity_delta": 5,
+          "sku": "SKU-NOISE-006",
+          "state": "posted",
+          "ticket_id": "INC-006",
+          "timestamp": "2026-08-27T18:30:00Z"
+        },
+        {
+          "document_id": "TR-MISSING",
+          "event_type": "transfer_received",
+          "id": "EV-6002",
+          "location": "SEA-01",
+          "quantity_delta": 0,
+          "sku": "SKU-YELLOW-BENCH",
+          "state": "pending",
+          "ticket_id": "INC-006",
+          "timestamp": "2026-08-27T12:00:00Z"
+        },
+        {
+          "document_id": "CC-H006",
+          "event_type": "count_adjustment_posted",
+          "id": "EV-H006B",
+          "location": "SEA-01",
+          "quantity_delta": 1,
+          "sku": "SKU-YELLOW-BENCH",
+          "state": "posted",
+          "ticket_id": "INC-006",
+          "timestamp": "2026-08-20T19:05:00Z"
+        },
+        {
+          "document_id": "CC-H006",
+          "event_type": "cycle_count_completed",
+          "id": "EV-H006A",
+          "location": "SEA-01",
+          "quantity_delta": 1,
+          "sku": "SKU-YELLOW-BENCH",
+          "state": "approved",
+          "ticket_id": "INC-006",
+          "timestamp": "2026-08-20T19:00:00Z"
+        }
+      ],
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 33,
+      "done_reason": "stop",
+      "elapsed_ms": 10691,
+      "message": {
+        "content": "Requested tool call(s): get_snapshot",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "location": "SEA-01",
+                "sku": "SKU-YELLOW-BENCH"
+              },
+              "index": 0,
+              "name": "get_snapshot"
+            },
+            "id": "call_7h3w7yas"
+          }
+        ]
+      },
+      "prompt_tokens": 1712,
+      "turn": 3,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-YELLOW-BENCH"
+      },
+      "elapsed_ms": 10691,
+      "name": "get_snapshot",
+      "result": {
+        "available_quantity": 74,
+        "captured_at": "2026-08-27T18:55:00Z",
+        "history": [
+          {
+            "available_quantity": 74,
+            "captured_at": "2026-08-25T19:00:00Z",
+            "location": "SEA-01",
+            "physical_quantity": 74,
+            "reserved_quantity": 0,
+            "sku": "SKU-YELLOW-BENCH",
+            "snapshot_id": "SNAP-006-PREVIOUS"
+          },
+          {
+            "available_quantity": 74,
+            "captured_at": "2026-08-20T19:00:00Z",
+            "location": "SEA-01",
+            "physical_quantity": 74,
+            "reserved_quantity": 0,
+            "sku": "SKU-YELLOW-BENCH",
+            "snapshot_id": "SNAP-006-HISTORICAL"
+          }
+        ],
+        "location": "SEA-01",
+        "physical_quantity": 74,
+        "reserved_quantity": 0,
+        "sku": "SKU-YELLOW-BENCH",
+        "snapshot_id": "SNAP-006-LATEST"
+      },
+      "turn": 3,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 23,
+      "done_reason": "stop",
+      "elapsed_ms": 12379,
+      "message": {
+        "content": "Requested tool call(s): get_document",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "document_id": "TR-MISSING"
+              },
+              "index": 0,
+              "name": "get_document"
+            },
+            "id": "call_y6cri07n"
+          }
+        ]
+      },
+      "prompt_tokens": 2010,
+      "turn": 4,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "document_id": "TR-MISSING"
+      },
+      "elapsed_ms": 12380,
+      "name": "get_document",
+      "result": {
+        "error": "No document found for TR-MISSING"
+      },
+      "turn": 4,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 184,
+      "done_reason": "stop",
+      "elapsed_ms": 18268,
+      "message": {
+        "content": "{\n  \"ticket_id\": \"INC-006\",\n  \"root_cause_code\": \"TRANSFER_NOT_RECEIVED\",\n  \"summary\": \"The ticket indicates an expected quantity of 80 for SKU-YELLOW-BENCH at SEA-01, but only 74 are observed. A transfer receipt (TR-MISSING) with a quantity delta of 0 is pending, suggesting the transfer was not fully received. The missing receipt is likely the cause of the discrepancy.\",\n  \"evidence_ids\": [\"EV-6002\", \"TR-MISSING\"],\n  \"recommended_action\": \"Verify the status of the transfer TR-MISSING and ensure the full quantity is received and posted. If the transfer is confirmed as missing, initiate a corrective action to reconcile the discrepancy.\",\n  \"confidence\": 0.85,\n  \"requires_escalation\": true\n}",
+        "role": "assistant"
+      },
+      "prompt_tokens": 2058,
+      "turn": 5,
+      "type": "model_response"
+    }
+  ],
+  "result": {
+    "confidence": 0.85,
+    "evidence_ids": [
+      "EV-6002",
+      "TR-MISSING"
+    ],
+    "recommended_action": "Verify the status of the transfer TR-MISSING and ensure the full quantity is received and posted. If the transfer is confirmed as missing, initiate a corrective action to reconcile the discrepancy.",
+    "requires_escalation": true,
+    "root_cause_code": "TRANSFER_NOT_RECEIVED",
+    "summary": "The ticket indicates an expected quantity of 80 for SKU-YELLOW-BENCH at SEA-01, but only 74 are observed. A transfer receipt (TR-MISSING) with a quantity delta of 0 is pending, suggesting the transfer was not fully received. The missing receipt is likely the cause of the discrepancy.",
+    "ticket_id": "INC-006"
+  },
+  "started_at": "2026-08-28T23:48:09.159260+00:00",
+  "ticket_id": "INC-006"
+}

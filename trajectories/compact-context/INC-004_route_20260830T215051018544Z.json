@@ -1,0 +1,55 @@
+{
+  "elapsed_ms": 10851,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "TR-200",
+      "EV-4002",
+      "EV-4003"
+    ],
+    "recommended_action": "Verify the status of the remaining 2 units in TR-200 and confirm if they have been received or if there is an issue with the shipment.",
+    "requires_escalation": false,
+    "root_cause_code": "TRANSFER_NOT_RECEIVED",
+    "summary": "The transfer document TR-200 shows a remaining quantity of 2, indicating that the full shipment of 6 units has not been received. The partial receipt of 4 units is documented, but the remaining 2 units are still outstanding.",
+    "ticket_id": "INC-004"
+  },
+  "routing": {
+    "attempt_count": 1,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 10851,
+        "error": null,
+        "evidence_flags": [
+          "partial_transfer"
+        ],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "TRANSFER_NOT_RECEIVED",
+        "status": "completed",
+        "tokens": {
+          "completion": 300,
+          "prompt": 4385,
+          "total": 4685
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-004_20260830T215051Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3:8b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b"
+    ]
+  },
+  "ticket_id": "INC-004",
+  "tokens": {
+    "completion": 300,
+    "prompt": 4385,
+    "total": 4685
+  }
+}

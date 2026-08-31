@@ -1,0 +1,74 @@
+{
+  "elapsed_ms": 195161,
+  "outcome": {
+    "confidence": 0.85,
+    "evidence_ids": [
+      "EV-6001",
+      "EV-6002"
+    ],
+    "recommended_action": "Locate and verify the physical receipt of the 6 units for transfer TR-MISSING at SEA-01. Once confirmed, post the transfer_received event to update inventory. If the document cannot be located, escalate to resolve the missing document reference before posting.",
+    "requires_escalation": true,
+    "root_cause_code": "TRANSFER_NOT_RECEIVED",
+    "summary": "A transfer_shipped event (EV-6001) for SKU-YELLOW-BENCH from PDX-01 to SEA-01 under document TR-MISSING reduced source stock by 6 units. The corresponding transfer_received event (EV-6002) at SEA-01 is in 'pending' state with a quantity_delta of 0, meaning the receipt has not been posted. The current physical quantity at SEA-01 is 74, which matches the observed count but falls short of the expected 80 by exactly the 6 units shipped but not yet received. The document TR-MISSING could not be retrieved, confirming a missing or inaccessible document reference.",
+    "ticket_id": "INC-006"
+  },
+  "routing": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "confidence": 0.85,
+        "elapsed_ms": 63433,
+        "error": null,
+        "evidence_flags": [
+          "missing_document"
+        ],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": true,
+        "root_cause_code": "TRANSFER_NOT_RECEIVED",
+        "status": "completed",
+        "tokens": {
+          "completion": 290,
+          "prompt": 3577,
+          "total": 3867
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-006_20260830T193043Z.json"
+      },
+      {
+        "confidence": 0.85,
+        "elapsed_ms": 131725,
+        "error": null,
+        "evidence_flags": [
+          "missing_document"
+        ],
+        "model": "qwen3.5:27b",
+        "reason": "evidence requires deep review: missing_document",
+        "requires_escalation": true,
+        "root_cause_code": "TRANSFER_NOT_RECEIVED",
+        "status": "completed",
+        "tokens": {
+          "completion": 282,
+          "prompt": 1413,
+          "total": 1695
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3.5-27b/INC-006_review_20260830T193255515556Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3.5:27b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-006",
+  "tokens": {
+    "completion": 572,
+    "prompt": 4990,
+    "total": 5562
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "elapsed_ms": 16894,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-10001",
+      "EV-10002",
+      "CC-302",
+      "SNAP-010-LATEST"
+    ],
+    "recommended_action": "Post the count adjustment for document CC-302 to reconcile the discrepancy.",
+    "requires_escalation": false,
+    "root_cause_code": "COUNT_ADJUSTMENT_NOT_POSTED",
+    "summary": "A cycle count completed and approved (CC-302) has a pending count adjustment post. The observed quantity (100) matches the physical quantity, but the adjustment (-3) has not been posted, leading to a discrepancy between the counted quantity (97) and the system quantity (100).",
+    "ticket_id": "INC-010"
+  },
+  "routing": {
+    "attempt_count": 1,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 16894,
+        "error": null,
+        "evidence_flags": [
+          "pending_post"
+        ],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "COUNT_ADJUSTMENT_NOT_POSTED",
+        "status": "completed",
+        "tokens": {
+          "completion": 315,
+          "prompt": 8541,
+          "total": 8856
+        },
+        "trajectory_path": "trajectories/buried-evidence/qwen3-8b/INC-010_20260828T235311Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3:8b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b"
+    ]
+  },
+  "ticket_id": "INC-010",
+  "tokens": {
+    "completion": 315,
+    "prompt": 8541,
+    "total": 8856
+  }
+}

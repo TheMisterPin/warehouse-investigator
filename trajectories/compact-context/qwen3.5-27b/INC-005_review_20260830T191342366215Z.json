@@ -1,0 +1,139 @@
+{
+  "elapsed_ms": 130147,
+  "evidence": [
+    {
+      "arguments": {
+        "ticket_id": "INC-005"
+      },
+      "result": {
+        "document_refs": [
+          "TR-201"
+        ],
+        "expected_quantity": 100,
+        "id": "INC-005",
+        "investigation_window_start": "2026-08-26T17:00:00Z",
+        "location": "SEA-01",
+        "notes": "Automated variance monitoring opened this ticket. Determine the cause from warehouse records.",
+        "observed_quantity": 106,
+        "reported_at": "2026-08-27T17:00:00Z",
+        "sku": "SKU-BLACK-CABINET",
+        "title": "Inventory reconciliation alert for SKU-BLACK-CABINET at SEA-01"
+      },
+      "tool": "get_ticket"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-005"
+      },
+      "result": [
+        {
+          "document_id": "TR-201",
+          "event_type": "transfer_received",
+          "id": "EV-5003",
+          "location": "SEA-01",
+          "quantity_delta": 6,
+          "retry_of": "EV-5002",
+          "sku": "SKU-BLACK-CABINET",
+          "state": "posted",
+          "ticket_id": "INC-005",
+          "timestamp": "2026-08-27T13:01:00Z"
+        },
+        {
+          "document_id": "TR-201",
+          "event_type": "transfer_received",
+          "id": "EV-5002",
+          "location": "SEA-01",
+          "quantity_delta": 6,
+          "sku": "SKU-BLACK-CABINET",
+          "state": "posted",
+          "ticket_id": "INC-005",
+          "timestamp": "2026-08-27T13:00:00Z"
+        },
+        {
+          "document_id": "TR-201",
+          "event_type": "transfer_shipped",
+          "id": "EV-5001",
+          "location": "PDX-01",
+          "quantity_delta": -6,
+          "sku": "SKU-BLACK-CABINET",
+          "state": "posted",
+          "ticket_id": "INC-005",
+          "timestamp": "2026-08-27T11:00:00Z"
+        }
+      ],
+      "tool": "query_ledger"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-BLACK-CABINET"
+      },
+      "result": {
+        "available_quantity": 106,
+        "captured_at": "2026-08-27T16:55:00Z",
+        "location": "SEA-01",
+        "physical_quantity": 106,
+        "reserved_quantity": 0,
+        "sku": "SKU-BLACK-CABINET",
+        "snapshot_id": "SNAP-005-LATEST"
+      },
+      "tool": "get_snapshot"
+    },
+    {
+      "arguments": {
+        "document_id": "TR-201"
+      },
+      "result": {
+        "destination_location": "SEA-01",
+        "id": "TR-201",
+        "quantity": 6,
+        "received_quantity": 6,
+        "sku": "SKU-BLACK-CABINET",
+        "source_location": "PDX-01",
+        "status": "received",
+        "type": "transfer"
+      },
+      "tool": "get_document"
+    }
+  ],
+  "model": "qwen3.5:27b",
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-5001",
+      "EV-5002",
+      "EV-5003",
+      "TR-201"
+    ],
+    "recommended_action": "Escalate to inventory control to reverse the duplicate ledger event EV-5003 and reconcile the stock level to 100.",
+    "requires_escalation": true,
+    "root_cause_code": "DUPLICATE_LEDGER_EVENT",
+    "summary": "The observed quantity of 106 at SEA-01 is inflated by a duplicate receipt. Transfer TR-201 shipped 6 units from PDX-01 (EV-5001) and was received once for 6 units (EV-5002). However, EV-5003 is a posted retry of EV-5002 with the same document ID and quantity, incorrectly adding another 6 units to stock. The expected quantity of 100 implies only one receipt should have been applied.",
+    "ticket_id": "INC-005"
+  },
+  "prior_outcomes": [
+    {
+      "confidence": 1.0,
+      "evidence_ids": [
+        "EV-5001",
+        "EV-5002",
+        "EV-5003",
+        "EV-H005A",
+        "EV-H005B",
+        "TR-201"
+      ],
+      "recommended_action": "No action required. The inventory reconciliation is consistent with the provided evidence.",
+      "requires_escalation": false,
+      "root_cause_code": "NO_DISCREPANCY",
+      "summary": "The observed quantity of 106 matches the physical quantity in the snapshot. The discrepancy is resolved by the transfer_shipped event (EV-5001) and the two transfer_received events (EV-5002 and EV-5003) for SKU-BLACK-CABINET at SEA-01. The count adjustment (EV-H005A and EV-H005B) also contributes to the current quantity. No corrective action is needed.",
+      "ticket_id": "INC-005"
+    }
+  ],
+  "reason": "evidence requires deep review: conflicting_stock, duplicate_event",
+  "ticket_id": "INC-005",
+  "tokens": {
+    "completion": 245,
+    "prompt": 1611,
+    "total": 1856
+  }
+}

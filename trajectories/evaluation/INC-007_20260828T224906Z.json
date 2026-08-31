@@ -1,0 +1,210 @@
+{
+  "duration_ms": 70212,
+  "error": null,
+  "events": [
+    {
+      "elapsed_ms": 0,
+      "max_turns": 8,
+      "model": "qwen3.5:27b",
+      "type": "run_started"
+    },
+    {
+      "completion_tokens": 51,
+      "done_reason": "stop",
+      "elapsed_ms": 19208,
+      "message": {
+        "content": "I'll start by retrieving the ticket details for INC-007 to understand the incident.",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-007"
+              },
+              "index": 0,
+              "name": "get_ticket"
+            },
+            "id": "call_lhza6s1q"
+          }
+        ]
+      },
+      "prompt_tokens": 1153,
+      "turn": 1,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-007"
+      },
+      "elapsed_ms": 19208,
+      "name": "get_ticket",
+      "result": {
+        "document_refs": [
+          "SO-901"
+        ],
+        "expected_quantity": 50,
+        "id": "INC-007",
+        "location": "SEA-01",
+        "notes": "Confirm whether any inventory action is still needed.",
+        "observed_quantity": 50,
+        "reported_at": "2026-08-27T20:00:00Z",
+        "sku": "SKU-PURPLE-RUG",
+        "title": "Cancelled order inventory appears reconciled"
+      },
+      "turn": 1,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 218,
+      "done_reason": "stop",
+      "elapsed_ms": 44560,
+      "message": {
+        "content": "Now I have the ticket details. Let me gather all required evidence:\n- SKU: SKU-PURPLE-RUG\n- Location: SEA-01\n- Document reference: SO-901\n- Expected quantity: 50, Observed quantity: 50\n\nI need to:\n1. Query the ledger for this ticket\n2. Get the snapshot for SKU-PURPLE-RUG at SEA-01\n3. Get the document SO-901\n\nLet me start with these calls:",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-007"
+              },
+              "index": 0,
+              "name": "query_ledger"
+            },
+            "id": "call_yw9cdwf3"
+          },
+          {
+            "function": {
+              "arguments": {
+                "location": "SEA-01",
+                "sku": "SKU-PURPLE-RUG"
+              },
+              "index": 1,
+              "name": "get_snapshot"
+            },
+            "id": "call_pq51ev4n"
+          },
+          {
+            "function": {
+              "arguments": {
+                "document_id": "SO-901"
+              },
+              "index": 2,
+              "name": "get_document"
+            },
+            "id": "call_3nkf1hcg"
+          }
+        ]
+      },
+      "prompt_tokens": 1326,
+      "turn": 2,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-007"
+      },
+      "elapsed_ms": 44560,
+      "name": "query_ledger",
+      "result": [
+        {
+          "document_id": "SO-901",
+          "event_type": "reservation_created",
+          "id": "EV-7001",
+          "location": "SEA-01",
+          "quantity_delta": -9,
+          "sku": "SKU-PURPLE-RUG",
+          "state": "posted",
+          "ticket_id": "INC-007",
+          "timestamp": "2026-08-27T08:00:00Z"
+        },
+        {
+          "document_id": "SO-901",
+          "event_type": "order_cancelled",
+          "id": "EV-7002",
+          "location": "SEA-01",
+          "quantity_delta": 0,
+          "sku": "SKU-PURPLE-RUG",
+          "state": "posted",
+          "ticket_id": "INC-007",
+          "timestamp": "2026-08-27T09:00:00Z"
+        },
+        {
+          "document_id": "SO-901",
+          "event_type": "reservation_released",
+          "id": "EV-7003",
+          "location": "SEA-01",
+          "quantity_delta": 9,
+          "sku": "SKU-PURPLE-RUG",
+          "state": "posted",
+          "ticket_id": "INC-007",
+          "timestamp": "2026-08-27T09:01:00Z"
+        }
+      ],
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-PURPLE-RUG"
+      },
+      "elapsed_ms": 44560,
+      "name": "get_snapshot",
+      "result": {
+        "available_quantity": 50,
+        "location": "SEA-01",
+        "physical_quantity": 50,
+        "reserved_quantity": 0,
+        "sku": "SKU-PURPLE-RUG"
+      },
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "arguments": {
+        "document_id": "SO-901"
+      },
+      "elapsed_ms": 44560,
+      "name": "get_document",
+      "result": {
+        "id": "SO-901",
+        "location": "SEA-01",
+        "quantity": 9,
+        "reservation_release_id": "EV-7003",
+        "sku": "SKU-PURPLE-RUG",
+        "status": "cancelled",
+        "type": "sales_order"
+      },
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 193,
+      "done_reason": "stop",
+      "elapsed_ms": 70211,
+      "message": {
+        "content": "{\"ticket_id\": \"INC-007\", \"root_cause_code\": \"NO_DISCREPANCY\", \"summary\": \"Sales order SO-901 was cancelled. A reservation of 9 units was created (EV-7001), then the order was cancelled (EV-7002), and the reservation was released (EV-7003). The current snapshot shows physical_quantity=50, reserved_quantity=0, available_quantity=50, which matches the expected and observed quantities. All events are posted and reconciled.\", \"evidence_ids\": [\"EV-7001\", \"EV-7002\", \"EV-7003\", \"SO-901\"], \"recommended_action\": \"No action required - inventory is fully reconciled after order cancellation and reservation release.\", \"confidence\": 0.95, \"requires_escalation\": false}",
+        "role": "assistant"
+      },
+      "prompt_tokens": 1973,
+      "turn": 3,
+      "type": "model_response"
+    }
+  ],
+  "result": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-7001",
+      "EV-7002",
+      "EV-7003",
+      "SO-901"
+    ],
+    "recommended_action": "No action required - inventory is fully reconciled after order cancellation and reservation release.",
+    "requires_escalation": false,
+    "root_cause_code": "NO_DISCREPANCY",
+    "summary": "Sales order SO-901 was cancelled. A reservation of 9 units was created (EV-7001), then the order was cancelled (EV-7002), and the reservation was released (EV-7003). The current snapshot shows physical_quantity=50, reserved_quantity=0, available_quantity=50, which matches the expected and observed quantities. All events are posted and reconciled.",
+    "ticket_id": "INC-007"
+  },
+  "started_at": "2026-08-28T22:47:55.800294+00:00",
+  "ticket_id": "INC-007"
+}

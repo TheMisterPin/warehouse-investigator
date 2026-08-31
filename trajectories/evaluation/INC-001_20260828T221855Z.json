@@ -1,0 +1,200 @@
+{
+  "duration_ms": 95263,
+  "error": null,
+  "events": [
+    {
+      "elapsed_ms": 0,
+      "max_turns": 8,
+      "model": "qwen3.5:27b",
+      "type": "run_started"
+    },
+    {
+      "completion_tokens": 59,
+      "done_reason": "stop",
+      "elapsed_ms": 9470,
+      "message": {
+        "content": "I'll start by retrieving the ticket details for INC-001 to understand the incident and gather the necessary information for further investigation.",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-001"
+              },
+              "index": 0,
+              "name": "get_ticket"
+            },
+            "id": "call_ff6xn39d"
+          }
+        ]
+      },
+      "prompt_tokens": 872,
+      "turn": 1,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-001"
+      },
+      "elapsed_ms": 9470,
+      "name": "get_ticket",
+      "result": {
+        "document_refs": [
+          "TR-100"
+        ],
+        "expected_quantity": 100,
+        "id": "INC-001",
+        "location": "SEA-01",
+        "notes": "Receiving team expected the scheduled replenishment from PDX-01.",
+        "observed_quantity": 94,
+        "reported_at": "2026-08-27T15:00:00Z",
+        "sku": "SKU-RED-CHAIR",
+        "title": "Destination stock is six units short after replenishment"
+      },
+      "turn": 1,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 229,
+      "done_reason": "stop",
+      "elapsed_ms": 48204,
+      "message": {
+        "content": "Now I have the ticket details. Let me gather the required evidence:\n- SKU: SKU-RED-CHAIR\n- Location: SEA-01\n- Document reference: TR-100\n- Expected quantity: 100, Observed quantity: 94 (6 units short)\n\nI need to call:\n1. query_ledger with ticket_id=INC-001\n2. get_snapshot for SKU-RED-CHAIR at SEA-01\n3. get_document for TR-100\n\nLet me make these calls:",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-001"
+              },
+              "index": 0,
+              "name": "query_ledger"
+            },
+            "id": "call_2x1394o5"
+          },
+          {
+            "function": {
+              "arguments": {
+                "location": "SEA-01",
+                "sku": "SKU-RED-CHAIR"
+              },
+              "index": 1,
+              "name": "get_snapshot"
+            },
+            "id": "call_v8nzh33p"
+          },
+          {
+            "function": {
+              "arguments": {
+                "document_id": "TR-100"
+              },
+              "index": 2,
+              "name": "get_document"
+            },
+            "id": "call_j6kja1i7"
+          }
+        ]
+      },
+      "prompt_tokens": 1063,
+      "turn": 2,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-001"
+      },
+      "elapsed_ms": 48204,
+      "name": "query_ledger",
+      "result": [
+        {
+          "document_id": "TR-100",
+          "event_type": "transfer_shipped",
+          "id": "EV-1001",
+          "location": "PDX-01",
+          "quantity_delta": -6,
+          "sku": "SKU-RED-CHAIR",
+          "state": "posted",
+          "ticket_id": "INC-001",
+          "timestamp": "2026-08-27T12:00:00Z"
+        },
+        {
+          "document_id": "TR-100",
+          "event_type": "transfer_received",
+          "id": "EV-1002",
+          "location": "SEA-01",
+          "quantity_delta": 0,
+          "sku": "SKU-RED-CHAIR",
+          "state": "pending",
+          "ticket_id": "INC-001",
+          "timestamp": "2026-08-27T12:00:00Z"
+        }
+      ],
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-RED-CHAIR"
+      },
+      "elapsed_ms": 48204,
+      "name": "get_snapshot",
+      "result": {
+        "available_quantity": 94,
+        "location": "SEA-01",
+        "physical_quantity": 94,
+        "reserved_quantity": 0,
+        "sku": "SKU-RED-CHAIR"
+      },
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "arguments": {
+        "document_id": "TR-100"
+      },
+      "elapsed_ms": 48204,
+      "name": "get_document",
+      "result": {
+        "destination_location": "SEA-01",
+        "id": "TR-100",
+        "quantity": 6,
+        "received_at": null,
+        "shipped_at": "2026-08-27T12:00:00Z",
+        "sku": "SKU-RED-CHAIR",
+        "source_location": "PDX-01",
+        "status": "in_transit",
+        "type": "transfer"
+      },
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 244,
+      "done_reason": "stop",
+      "elapsed_ms": 95263,
+      "message": {
+        "content": "{\n  \"ticket_id\": \"INC-001\",\n  \"root_cause_code\": \"TRANSFER_NOT_RECEIVED\",\n  \"summary\": \"Transfer TR-100 shipped 6 units from PDX-01 to SEA-01 on 2026-08-27T12:00:00Z. The source location (PDX-01) shows the transfer as posted with -6 quantity delta, but the destination receipt at SEA-01 is still pending with 0 quantity delta. Physical stock at SEA-01 is 94 units, which matches observed quantity. The expected 100 units would require the 6-unit transfer to be received and posted.\",\n  \"evidence_ids\": [\"EV-1001\", \"EV-1002\", \"TR-100\"],\n  \"recommended_action\": \"Post the receipt for transfer TR-100 at SEA-01 to update physical stock from 94 to 100 units.\",\n  \"confidence\": 0.95,\n  \"requires_escalation\": false\n}",
+        "role": "assistant"
+      },
+      "prompt_tokens": 1655,
+      "turn": 3,
+      "type": "model_response"
+    }
+  ],
+  "result": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-1001",
+      "EV-1002",
+      "TR-100"
+    ],
+    "recommended_action": "Post the receipt for transfer TR-100 at SEA-01 to update physical stock from 94 to 100 units.",
+    "requires_escalation": false,
+    "root_cause_code": "TRANSFER_NOT_RECEIVED",
+    "summary": "Transfer TR-100 shipped 6 units from PDX-01 to SEA-01 on 2026-08-27T12:00:00Z. The source location (PDX-01) shows the transfer as posted with -6 quantity delta, but the destination receipt at SEA-01 is still pending with 0 quantity delta. Physical stock at SEA-01 is 94 units, which matches observed quantity. The expected 100 units would require the 6-unit transfer to be received and posted.",
+    "ticket_id": "INC-001"
+  },
+  "started_at": "2026-08-28T22:17:20.552311+00:00",
+  "ticket_id": "INC-001"
+}

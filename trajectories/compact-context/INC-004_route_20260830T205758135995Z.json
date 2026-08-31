@@ -1,0 +1,55 @@
+{
+  "elapsed_ms": 41832,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "TR-200",
+      "EV-4002",
+      "EV-4003"
+    ],
+    "recommended_action": "Verify the remaining quantity of 2 units in TR-200 and ensure the full transfer is received and posted.",
+    "requires_escalation": false,
+    "root_cause_code": "PARTIAL_TRANSFER_RECEIPT",
+    "summary": "The transfer TR-200 for SKU-WHITE-SHELF was partially received, with 4 units received and 2 units remaining. The discrepancy between expected and observed quantities is due to the partial receipt.",
+    "ticket_id": "INC-004"
+  },
+  "routing": {
+    "attempt_count": 1,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 41831,
+        "error": null,
+        "evidence_flags": [
+          "partial_transfer"
+        ],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "PARTIAL_TRANSFER_RECEIPT",
+        "status": "completed",
+        "tokens": {
+          "completion": 288,
+          "prompt": 3956,
+          "total": 4244
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-004_20260830T205758Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3:8b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b"
+    ]
+  },
+  "ticket_id": "INC-004",
+  "tokens": {
+    "completion": 288,
+    "prompt": 3956,
+    "total": 4244
+  }
+}

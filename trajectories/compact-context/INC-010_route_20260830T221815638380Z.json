@@ -1,0 +1,75 @@
+{
+  "elapsed_ms": 56864,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-10002",
+      "EV-10001",
+      "CC-302"
+    ],
+    "recommended_action": "Post the pending count adjustment for document CC-302 to update inventory from 100 to 97.",
+    "requires_escalation": false,
+    "root_cause_code": "COUNT_ADJUSTMENT_NOT_POSTED",
+    "summary": "Cycle count CC-302 for SKU-BROWN-TABLE at PDX-01 was approved with a counted quantity of 97 versus system quantity of 100, requiring an adjustment of -3. The ledger shows the count completion event (EV-10001) as approved, but the corresponding adjustment event (EV-10002) remains in 'pending_post' state. Consequently, the physical snapshot still reflects 100 units instead of the reconciled 97.",
+    "ticket_id": "INC-010"
+  },
+  "routing": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 15583,
+        "error": null,
+        "evidence_flags": [
+          "pending_post"
+        ],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "COUNT_ADJUSTMENT_NOT_POSTED",
+        "status": "completed",
+        "tokens": {
+          "completion": 260,
+          "prompt": 4414,
+          "total": 4674
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-010_20260830T221734Z.json"
+      },
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 41277,
+        "error": null,
+        "evidence_flags": [
+          "pending_post"
+        ],
+        "model": "qwen3.5:27b",
+        "reason": "evidence requires deep review: pending_post",
+        "requires_escalation": false,
+        "root_cause_code": "COUNT_ADJUSTMENT_NOT_POSTED",
+        "status": "completed",
+        "tokens": {
+          "completion": 231,
+          "prompt": 1631,
+          "total": 1862
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3.5-27b/INC-010_review_20260830T221815636535Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3.5:27b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ]
+  },
+  "ticket_id": "INC-010",
+  "tokens": {
+    "completion": 491,
+    "prompt": 6045,
+    "total": 6536
+  }
+}

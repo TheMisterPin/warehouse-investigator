@@ -1,0 +1,240 @@
+{
+  "duration_ms": 233139,
+  "error": null,
+  "events": [
+    {
+      "elapsed_ms": 0,
+      "max_turns": 8,
+      "model": "qwen3:4b",
+      "type": "run_started"
+    },
+    {
+      "completion_tokens": 4174,
+      "done_reason": "stop",
+      "elapsed_ms": 74434,
+      "message": {
+        "content": "Requested tool call(s): get_ticket",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-006"
+              },
+              "index": 0,
+              "name": "get_ticket"
+            },
+            "id": "call_qnq80m2i"
+          }
+        ]
+      },
+      "prompt_tokens": 951,
+      "turn": 1,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-006"
+      },
+      "elapsed_ms": 74434,
+      "name": "get_ticket",
+      "result": {
+        "document_refs": [
+          "TR-MISSING"
+        ],
+        "expected_quantity": 80,
+        "id": "INC-006",
+        "location": "SEA-01",
+        "notes": "Ledger events exist, but the transfer record cannot be found.",
+        "observed_quantity": 74,
+        "reported_at": "2026-08-27T19:00:00Z",
+        "sku": "SKU-YELLOW-BENCH",
+        "title": "Transfer shortage references a missing document"
+      },
+      "turn": 1,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 2958,
+      "done_reason": "stop",
+      "elapsed_ms": 150110,
+      "message": {
+        "content": "Requested tool call(s): query_ledger",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "ticket_id": "INC-006"
+              },
+              "index": 0,
+              "name": "query_ledger"
+            },
+            "id": "call_3hesrdxu"
+          }
+        ]
+      },
+      "prompt_tokens": 5247,
+      "turn": 2,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "ticket_id": "INC-006"
+      },
+      "elapsed_ms": 150110,
+      "name": "query_ledger",
+      "result": [
+        {
+          "document_id": "TR-MISSING",
+          "event_type": "transfer_shipped",
+          "id": "EV-6001",
+          "location": "PDX-01",
+          "quantity_delta": -6,
+          "sku": "SKU-YELLOW-BENCH",
+          "state": "posted",
+          "ticket_id": "INC-006",
+          "timestamp": "2026-08-27T12:00:00Z"
+        },
+        {
+          "document_id": "TR-MISSING",
+          "event_type": "transfer_received",
+          "id": "EV-6002",
+          "location": "SEA-01",
+          "quantity_delta": 0,
+          "sku": "SKU-YELLOW-BENCH",
+          "state": "pending",
+          "ticket_id": "INC-006",
+          "timestamp": "2026-08-27T12:00:00Z"
+        }
+      ],
+      "turn": 2,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 794,
+      "done_reason": "stop",
+      "elapsed_ms": 182759,
+      "message": {
+        "content": "{\n  \"evidence_ids\": [\n    \"EV-6001\",\n    \"EV-6002\"\n  ],\n  \"summary\": \"Transfer of 6 units from PDX-01 to SEA-01 was shipped (EV-6001) but receipt remains pending (EV-6002); expected 80 units at SEA-01, observed 74 units.\",\n  \"root_cause_code\": \"TRANSFER_NOT_RECEIVED\",\n  \"next_action\": \"Post receipt for transfer EV-6002\"\n}",
+        "role": "assistant"
+      },
+      "prompt_tokens": 8414,
+      "turn": 3,
+      "type": "model_response"
+    },
+    {
+      "elapsed_ms": 182759,
+      "missing": [
+        "get_snapshot(ticket.sku, ticket.location)",
+        "get_document(TR-MISSING)"
+      ],
+      "turn": 3,
+      "type": "evidence_gate_retry"
+    },
+    {
+      "completion_tokens": 847,
+      "done_reason": "stop",
+      "elapsed_ms": 213821,
+      "message": {
+        "content": "Requested tool call(s): get_snapshot",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "location": "SEA-01",
+                "sku": "SKU-YELLOW-BENCH"
+              },
+              "index": 0,
+              "name": "get_snapshot"
+            },
+            "id": "call_yqueivli"
+          }
+        ]
+      },
+      "prompt_tokens": 9246,
+      "turn": 4,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "location": "SEA-01",
+        "sku": "SKU-YELLOW-BENCH"
+      },
+      "elapsed_ms": 213821,
+      "name": "get_snapshot",
+      "result": {
+        "available_quantity": 74,
+        "location": "SEA-01",
+        "physical_quantity": 74,
+        "reserved_quantity": 0,
+        "sku": "SKU-YELLOW-BENCH"
+      },
+      "turn": 4,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 292,
+      "done_reason": "stop",
+      "elapsed_ms": 227079,
+      "message": {
+        "content": "Requested tool call(s): get_document",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": {
+                "document_id": "TR-MISSING"
+              },
+              "index": 0,
+              "name": "get_document"
+            },
+            "id": "call_y2o9okhp"
+          }
+        ]
+      },
+      "prompt_tokens": 10144,
+      "turn": 5,
+      "type": "model_response"
+    },
+    {
+      "arguments": {
+        "document_id": "TR-MISSING"
+      },
+      "elapsed_ms": 227079,
+      "name": "get_document",
+      "result": {
+        "error": "No document found for TR-MISSING"
+      },
+      "turn": 5,
+      "type": "tool_call"
+    },
+    {
+      "completion_tokens": 153,
+      "done_reason": "stop",
+      "elapsed_ms": 233139,
+      "message": {
+        "content": "{\n  \"ticket_id\": \"INC-006\",\n  \"root_cause_code\": \"TRANSFER_NOT_RECEIVED\",\n  \"summary\": \"Transfer of 6 units from PDX-01 to SEA-01 was shipped (EV-6001) but receipt remains pending (EV-6:002); SEA-01 has 74 physical units (expected 80).\",\n  \"evidence_ids\": [\n    \"EV-6001\",\n    \"EV-6002\"\n  ],\n  \"recommended_action\": \"Post receipt for transfer EV-6002\",\n  \"confidence\": 0.95,\n  \"requires_escalation\": false\n}",
+        "role": "assistant"
+      },
+      "prompt_tokens": 10460,
+      "turn": 6,
+      "type": "model_response"
+    }
+  ],
+  "result": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "EV-6001",
+      "EV-6002"
+    ],
+    "recommended_action": "Post receipt for transfer EV-6002",
+    "requires_escalation": false,
+    "root_cause_code": "TRANSFER_NOT_RECEIVED",
+    "summary": "Transfer of 6 units from PDX-01 to SEA-01 was shipped (EV-6001) but receipt remains pending (EV-6:002); SEA-01 has 74 physical units (expected 80).",
+    "ticket_id": "INC-006"
+  },
+  "started_at": "2026-08-28T23:09:13.165326+00:00",
+  "ticket_id": "INC-006"
+}

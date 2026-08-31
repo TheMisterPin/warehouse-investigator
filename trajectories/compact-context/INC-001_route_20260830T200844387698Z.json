@@ -1,0 +1,53 @@
+{
+  "elapsed_ms": 70923,
+  "outcome": {
+    "confidence": 0.95,
+    "evidence_ids": [
+      "TR-100",
+      "EV-1002",
+      "SNAP-001-LATEST"
+    ],
+    "recommended_action": "Verify the receipt of the transfer TR-100 and post the transfer receipt event EV-1002 to update the inventory.",
+    "requires_escalation": false,
+    "root_cause_code": "TRANSFER_NOT_RECEIVED",
+    "summary": "The transfer TR-100 for SKU-RED-CHAIR was shipped but not received. The transfer receipt event EV-1002 is pending, and the quantity delta is zero, indicating the receipt has not been posted. The physical quantity in the snapshot is 94, which is 6 less than the expected quantity based on the transfer.",
+    "ticket_id": "INC-001"
+  },
+  "routing": {
+    "attempt_count": 1,
+    "attempts": [
+      {
+        "confidence": 0.95,
+        "elapsed_ms": 70923,
+        "error": null,
+        "evidence_flags": [],
+        "model": "qwen3:8b",
+        "reason": "initial fast pass",
+        "requires_escalation": false,
+        "root_cause_code": "TRANSFER_NOT_RECEIVED",
+        "status": "completed",
+        "tokens": {
+          "completion": 321,
+          "prompt": 3895,
+          "total": 4216
+        },
+        "trajectory_path": "trajectories/compact-context/qwen3-8b/INC-001_20260830T200844Z.json"
+      }
+    ],
+    "configured_models": [
+      "qwen3:8b",
+      "qwen3.5:27b"
+    ],
+    "final_model": "qwen3:8b",
+    "mode": "auto",
+    "models_used": [
+      "qwen3:8b"
+    ]
+  },
+  "ticket_id": "INC-001",
+  "tokens": {
+    "completion": 321,
+    "prompt": 3895,
+    "total": 4216
+  }
+}
